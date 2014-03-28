@@ -8,14 +8,10 @@ import GUI.MainWindow;
 public class MainController
 {
 	List<Signal> signals;
-	
-	
-	//entry point for the program
+	MainWindow window;
+
 	public MainController()
 	{
-		MainWindow window = new MainWindow(this);
-		
-		
-		
+		window = new MainWindow(this);
 	}
 }

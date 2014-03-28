@@ -17,7 +17,7 @@ public class TPFilterPanel extends FilterPanel
 
 	
 	@Override
-	public void performFiltering(Signal signal)
+	public void performFiltering(Signal signal) throws GeneralException
 	{
 		TPFilter tp = new TPFilter(3);
 		tp.performFiltering(signal);

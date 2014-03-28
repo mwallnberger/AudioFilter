@@ -11,7 +11,8 @@ public class IOManager
 {
 	public Signal importFile(File file) throws GeneralException
 	{
-		return new Signal();
+		//TODO
+		return new Signal(null,null,null);
 	}
 	
 	
