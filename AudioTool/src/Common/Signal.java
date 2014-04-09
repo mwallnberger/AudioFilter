@@ -11,6 +11,7 @@ public class Signal
 {
 	private Set<SignalListener> listeners;
 	private AudioFileFormat format;
+	//values from -1 to 1
 	private float[] signalLeft;
 	private float[] signalRight;
 
@@ -55,19 +56,25 @@ public class Signal
 
 	public float[] getSignalLeft()
 	{
-		return signalLeft;
+		return signalLeft.clone();
 	}
 
 	public float[] getSignalRight()
 	{
-		return signalRight;
+		return signalRight.clone();
 	}
-
-	private void fireChangeEvent()
+	
+	private synchronized void fireChangeEvent()
 	{
+		SignalEvent event = new SignalEvent(this);
 		for (SignalListener listener : this.listeners)
 		{
-			listener.SignalChanged(new SignalEvent(this));
+			listener.SignalChanged(event);
 		}
+	}
+	
+	public float[] getSpectrum()
+	{
+		return null;
 	}
 }

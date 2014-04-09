@@ -1,6 +1,10 @@
 package GUI;
 
+import java.io.File;
+
+import Common.GeneralException;
 import Common.Signal;
+import IO.IOManager;
 
 public class SignalEvent
 {

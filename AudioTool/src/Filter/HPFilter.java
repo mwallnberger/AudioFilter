@@ -1,10 +1,12 @@
 package Filter;
 
+import Common.Argument;
 import Common.Signal;
 
 public class HPFilter extends Filter
 {
-	public HPFilter(int f1, int f2)
+	
+	public HPFilter(Signal signal)
 	{
 		
 	}
@@ -15,5 +17,15 @@ public class HPFilter extends Filter
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public Argument[] getParams()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 }

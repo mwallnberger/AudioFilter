@@ -40,7 +40,4 @@ public class MainWindow extends JFrame implements SignalListener
 		}
 		
 	}
-
-	
-	
 }
