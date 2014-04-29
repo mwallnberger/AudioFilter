@@ -7,6 +7,8 @@ import Controller.MainController;
 
 public class MainWindow extends JFrame implements SignalListener
 {
+	
+	//test
 	MainController controller;
 	
 	List<FilterPanel> filterpanels;
