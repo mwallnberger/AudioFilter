@@ -16,48 +16,35 @@ public class MainController
 	MainWindow window;
 	
 
-	public MainController()
-	{
+	public MainController() {
 		window = new MainWindow(this);
 	}
 	
-	public boolean loadFile(File file)
-	{
-		try
-		{
+	public boolean loadFile(File file) {
+		try {
 			IOManager.importFile(file);
-		}
-		catch (GeneralException e)
-		{
+		} catch (GeneralException e) {
 			e.printStackTrace();
 		}	
 		return true;
 	}
 	
-	public boolean export(File file, Signal signal, FileType type)
-	{
-		try
-		{
+	public boolean export(File file, Signal signal, FileType type) {
+		try {
 			IOManager.exportFile(file, signal, type);
-		}
-		catch (GeneralException e)
-		{
+		} catch (GeneralException e) {
 			e.printStackTrace();
 		}	
 		return true;
 	}
 	
-	public boolean signalClose(Signal so)
-	{
+	public boolean signalClose(Signal so) {
 		//TODO
 		return true;
 	}
 	
-	public void performFilter(Filter filter, Signal signal)
-	{
+	public void performFilter(Filter filter, Signal signal) {
 		filter.performFiltering(signal);
 	}	
-	
-	
 	
 }
