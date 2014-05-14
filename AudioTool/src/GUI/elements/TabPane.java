@@ -1,4 +1,4 @@
-package GUI;
+package GUI.elements;
 
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
@@ -6,6 +6,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
+
+import org.jfree.ui.RefineryUtilities;
+
+import GUI.MainWindow;
 
 import java.awt.*;
 
@@ -20,9 +24,11 @@ public class TabPane extends JPanel {
 		add(panel);
 	}
 	protected JPanel createInnerPanel(String text) {
-		//TODO charts/additional functions
-		JPanel jplPanel = new JPanel();
-		return jplPanel;
+		//TODO only testchart, additional functions etc.
+		
+		ChartPan chart = new ChartPan();
+		chart.setVisible(true);
+		return chart.generate();
 	}
 	
 	public void createNewTab(String name) {
@@ -33,7 +39,6 @@ public class TabPane extends JPanel {
 		JPanel closePanel = new JPanel();
 		JButton closeButton = new JButton(closeIcon);
 		JLabel tabTitle = new JLabel(name);
-		
 		closeButton.addActionListener(new CloseTabActionHandler(name, panel));
 		closePanel.add(tabTitle);
 		closePanel.add(closeButton);

@@ -1,21 +1,28 @@
 package GUI;
 
 import java.util.List;
+
 import Common.Signal;
 import Controller.MainController;
+import GUI.elements.TabPane;
 
 import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JToolBar;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -67,8 +74,6 @@ public class MainWindow extends JFrame implements SignalListener {
 		}
 		
 	}
-	
-	
 	
 	private void initialize() {
 		//create frame (maybe change title)
