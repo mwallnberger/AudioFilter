@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="lib/icons.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JCommon 1.0.22"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JFreeChart 1.0.17"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.22.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
