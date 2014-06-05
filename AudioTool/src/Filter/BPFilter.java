@@ -5,31 +5,27 @@ import java.text.DecimalFormat;
 import Common.Argument;
 import Common.Signal;
 
-public class HPFilter extends Filter
+public class BPFilter extends Filter
 {
 	int numberOfTaps;
 	double[] FIRkoeff;
 	double tapTotal;
-	float cutoffFreq, samplingRate;
+	float cutoffFreq, samplingRate, cutoffFreq2;
 
-	public HPFilter(Signal signal)
+	public BPFilter(Signal signal)
 	{
 		this.numberOfTaps = 1000;
 		this.samplingRate = 5000;
 		this.cutoffFreq = 500;
 		init();
 
-		for (int x = 0; x < this.FIRkoeff.length; x++)
-		{
-			System.out.println(new DecimalFormat("#.########").format(this.FIRkoeff[x]));
-		}
-
 	}
 
-	HPFilter(int numberOfTaps, float cutoffFrequ, float samplingRate)
+	BPFilter(int numberOfTaps, float cutoffFrequ, float cutoffFrequ2, float samplingRate)
 	{
 		this.numberOfTaps = numberOfTaps;
 		this.cutoffFreq = cutoffFrequ;
+		this.cutoffFreq2 = cutoffFrequ2;
 		this.samplingRate = samplingRate;
 		this.init();
 	}
@@ -38,7 +34,6 @@ public class HPFilter extends Filter
 	public void performFiltering(Signal sig)
 	{
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -50,19 +45,26 @@ public class HPFilter extends Filter
 
 	public void init()
 	{
-		final double cutoff = this.cutoffFreq / this.samplingRate;
-		FIRkoeff = new double[this.numberOfTaps + 1];
-		final double factor = 2.0 * cutoff;
+		final double[] bs = createLowpass(this.numberOfTaps, this.cutoffFreq, this.cutoffFreq2, this.samplingRate);
+
 		final int half = this.numberOfTaps >> 1;
-		for (int i = 0; i < FIRkoeff.length; i++)
+		for (int i = 0; i < bs.length; i++)
 		{
-			FIRkoeff[i] = (i == half ? 1.0 : 0.0) - factor * sinc(factor * (i - half));
+			bs[i] = (i == half ? 1.0 : 0.0) - bs[i];
 		}
-		windowHamming(this.FIRkoeff);
+		this.FIRkoeff = windowHamming(bs);
+
 	}
 
 	double[] getFIRkoeff()
 	{
 		return FIRkoeff;
 	}
+
+	private double[] createLowpass(int tapTotal, float cutoffFreq, float cutoffFreq2, float samplingRate)
+	{
+		BSFilter filter = new BSFilter(tapTotal, cutoffFreq, cutoffFreq2, samplingRate);
+		return filter.getFIRkoeff();
+	}
+
 }

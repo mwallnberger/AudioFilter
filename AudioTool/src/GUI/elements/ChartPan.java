@@ -5,11 +5,15 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 
-import org.jfree.chart.*;
-import org.jfree.chart.plot.*;
-import org.jfree.chart.renderer.xy.*;
-import org.jfree.data.xy.*;
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 
 
 public class ChartPan extends JPanel {
@@ -49,7 +53,6 @@ public class ChartPan extends JPanel {
 		test.setSeriesPaint(1, Color.BLUE);
 		
         ChartPanel chartPanel = new ChartPanel(chart);
-
 		
         chartPanel.setOpaque(false);
         chartPanel.setPreferredSize(null);
