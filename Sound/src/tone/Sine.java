@@ -73,8 +73,8 @@ public class Sine extends Tone implements ChangeListener,ActionListener
 	    MiniTools.addComponent(this.OptionPanel , amplitude, 0, 1, 1, 1, 1.0, 0.7, GridBagConstraints.CENTER,  GridBagConstraints.BOTH, new Insets(0,0,0,0), 1, 1);
 	    MiniTools.addComponent(this.OptionPanel , this.slideramplitude, 1, 1, 1, 1, 1.0, 0.7, GridBagConstraints.CENTER,  GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 1, 1);
 	    MiniTools.addComponent(this.OptionPanel , this.boxamplitude, 2, 1, 2, 1, 1.0, 0.7, GridBagConstraints.CENTER,  GridBagConstraints.NONE, new Insets(0,0,0,0), 1, 1);
-
 	}
+	
 	public double getValue(double time)
 	{
 		return Math.sin(2*Math.PI*this.frequency*time)*this.amplitude/100;

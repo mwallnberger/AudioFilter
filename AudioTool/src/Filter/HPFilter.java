@@ -25,7 +25,5 @@ public class HPFilter extends Filter
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
 
 }

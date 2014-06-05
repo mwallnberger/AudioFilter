@@ -10,6 +10,7 @@ public abstract class Filter
 	public abstract void performFiltering(Signal sig);
 	public abstract Argument[] getParams();
 	
+	
 	public String getName()
 	{
 		return name;
