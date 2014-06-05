@@ -1,7 +1,5 @@
 package Filter;
 
-import java.text.DecimalFormat;
-
 import Common.Argument;
 import Common.Signal;
 
