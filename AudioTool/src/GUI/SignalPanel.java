@@ -14,10 +14,7 @@ import org.jfree.chart.plot.*;
 import org.jfree.chart.renderer.xy.*;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.*;
-import org.jfree.ui.RectangleInsets;
 import org.jfree.chart.ChartPanel;
-
-import Common.Signal;
 
 
 public class SignalPanel extends JPanel {
@@ -78,8 +75,6 @@ public class SignalPanel extends JPanel {
 //			seriesRight.add(signalRight[i], i);
 //		}
 		
-		
-				
 	}
 	
 	public JPanel refresh() {

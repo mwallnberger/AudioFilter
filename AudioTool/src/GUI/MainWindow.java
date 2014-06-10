@@ -5,8 +5,6 @@ import java.util.List;
 import Common.Signal;
 import Controller.MainController;
 import GUI.elements.TabPanel;
-
-import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -17,17 +15,9 @@ import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JTabbedPane;
-import javax.swing.JPanel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.FlowLayout;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.border.BevelBorder;
 
 public class MainWindow extends JFrame implements SignalListener {
 	

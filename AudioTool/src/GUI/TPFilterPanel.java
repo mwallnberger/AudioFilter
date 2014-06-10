@@ -72,7 +72,7 @@ public class TPFilterPanel extends FilterPanel {
 		JPanel buttonPanel = new JPanel();
 		
 		JButton filter = new JButton("Filter");
-		JButton cancel = new JButton("Cancel");
+		JButton close = new JButton("Close");
 		
 		buttonPanel.add(filter);
 		filter.addActionListener(new ActionListener() {
@@ -80,8 +80,8 @@ public class TPFilterPanel extends FilterPanel {
 				
 			}
 		});
-		buttonPanel.add(cancel);
-		cancel.addActionListener(new closeActionListener(mainFrame));
+		buttonPanel.add(close);
+		close.addActionListener(new closeActionListener(mainFrame));
 		
 		this.add(param1Panel);
 		this.add(param2Panel);
@@ -90,8 +90,7 @@ public class TPFilterPanel extends FilterPanel {
 	
 	@Override
 	public JPanel getFilterPanel() {
-		// TODO Auto-generated method stub
-		return null;
+		return this;
 	}
 
 	
