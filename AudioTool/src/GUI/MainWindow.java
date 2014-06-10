@@ -6,6 +6,7 @@ import Common.Signal;
 import Controller.MainController;
 import GUI.elements.TabPane;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -78,8 +79,9 @@ public class MainWindow extends JFrame implements SignalListener {
 	private void initialize() {
 		//create frame (maybe change title)
 		frmTest.setTitle("AudioTool, FUCKERS!");
-		frmTest.setBounds(100, 100, 800, 800);
+		frmTest.setBounds(100, 100, 1100, 350);
 		frmTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmTest.setResizable(false);
 
 		//create tabframe
 		TabPane tabPanel = new TabPane();
@@ -104,7 +106,7 @@ public class MainWindow extends JFrame implements SignalListener {
 		openButton.setIcon(new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/32x32/folder.png")));
 		toolBar.add(openButton);
 		
-		//TODO create savebutton and add it to toolbar
+		//TODO create savebutton and add it to toolbar (IOManager)
 		JButton saveButton = new JButton("");
 		openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

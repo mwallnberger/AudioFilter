@@ -7,9 +7,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
-import org.jfree.ui.RefineryUtilities;
-
 import GUI.MainWindow;
+import GUI.SignalPanel;
+import GUI.TPFilterPanel;
 
 import java.awt.*;
 
@@ -23,12 +23,19 @@ public class TabPane extends JPanel {
 		setLayout(new GridLayout(1, 1));
 		add(panel);
 	}
+	
 	protected JPanel createInnerPanel(String text) {
-		//TODO only testchart, additional functions etc.
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBackground(Color.white);
 		
-		ChartPan chart = new ChartPan();
-		chart.setVisible(true);
-		return chart.generate();
+		SignalPanel chart = new SignalPanel();
+		TPFilterPanel filter = new TPFilterPanel();
+		
+		panel.add(chart.refresh(), BorderLayout.CENTER);
+		panel.add(filter, BorderLayout.LINE_END);
+
+		return panel;
+		
 	}
 	
 	public void createNewTab(String name) {
@@ -39,6 +46,7 @@ public class TabPane extends JPanel {
 		JPanel closePanel = new JPanel();
 		JButton closeButton = new JButton(closeIcon);
 		JLabel tabTitle = new JLabel(name);
+		closePanel.setOpaque(false);
 		closeButton.addActionListener(new CloseTabActionHandler(name, panel));
 		closePanel.add(tabTitle);
 		closePanel.add(closeButton);
@@ -46,10 +54,10 @@ public class TabPane extends JPanel {
 		panel.setTabComponentAt(index, closePanel);
 	}
 	
-	
-	public static void main(String[] args) {
-		JFrame frame = new JFrame("TabPane");
-		frame.getContentPane().add(new TabPane(), BorderLayout.CENTER);
-		frame.setVisible(true);
-	}
+//	
+//	public static void main(String[] args) {
+//		JFrame frame = new JFrame("TabPane");
+//		frame.getContentPane().add(new TabPane(), BorderLayout.CENTER);
+//		frame.setVisible(true);
+//	}
 }

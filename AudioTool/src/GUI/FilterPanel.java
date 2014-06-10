@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 import Common.GeneralException;
 import Common.Signal;
 
-public abstract class FilterPanel
+public abstract class FilterPanel extends JPanel
 {
 	public abstract JPanel getFilterPanel() throws GeneralException;
 	
