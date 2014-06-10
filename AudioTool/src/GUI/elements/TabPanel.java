@@ -5,21 +5,19 @@ import javax.swing.JTabbedPane;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 
 import GUI.MainWindow;
 import GUI.SignalPanel;
-import GUI.TPFilterPanel;
 
 import java.awt.*;
 
-public class TabPane extends JPanel {
+public class TabPanel extends JPanel {
 
 	JTabbedPane panel = new JTabbedPane();
 	ImageIcon closeIcon = new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/16x16/cross.png"));
 
 	
-	public TabPane() {
+	public TabPanel() {
 		setLayout(new GridLayout(1, 1));
 		add(panel);
 	}
@@ -29,13 +27,12 @@ public class TabPane extends JPanel {
 		panel.setBackground(Color.white);
 		
 		SignalPanel chart = new SignalPanel();
-		TPFilterPanel filter = new TPFilterPanel();
+		OptionPanel options = new OptionPanel();
 		
 		panel.add(chart.refresh(), BorderLayout.CENTER);
-		panel.add(filter, BorderLayout.LINE_END);
+		panel.add(options, BorderLayout.LINE_END);
 
 		return panel;
-		
 	}
 	
 	public void createNewTab(String name) {

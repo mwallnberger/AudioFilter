@@ -4,7 +4,7 @@ import java.util.List;
 
 import Common.Signal;
 import Controller.MainController;
-import GUI.elements.TabPane;
+import GUI.elements.TabPanel;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -84,7 +84,7 @@ public class MainWindow extends JFrame implements SignalListener {
 		frmTest.setResizable(false);
 
 		//create tabframe
-		TabPane tabPanel = new TabPane();
+		TabPanel tabPanel = new TabPanel();
 		frmTest.add(tabPanel);
 		
 		//create toolbar
