@@ -59,7 +59,7 @@ public class TPFilterPanel extends FilterPanel {
 		param2Slider.setPaintLabels(true);
 		param2Slider.addChangeListener(new ChangeListener(){
 			@Override
-			public void stateChanged(ChangeEvent arg0) {
+			public void stateChanged(ChangeEvent arg0) { 
 				param2Text.setText(String.valueOf(param2Slider.getValue()));				
 			}
 		});

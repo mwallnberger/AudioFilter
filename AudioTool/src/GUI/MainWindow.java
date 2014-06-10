@@ -7,7 +7,7 @@ import Controller.MainController;
 import GUI.elements.TabPanel;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
+import javax.swing.JFrame; 
 import javax.swing.JToolBar;
 
 import java.awt.BorderLayout;

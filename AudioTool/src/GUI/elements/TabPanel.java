@@ -24,7 +24,7 @@ public class TabPanel extends JPanel {
 	
 	protected JPanel createInnerPanel(String text) {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBackground(Color.white);
+		panel.setBackground(Color.white); 
 		
 		SignalPanel chart = new SignalPanel();
 		OptionPanel options = new OptionPanel();

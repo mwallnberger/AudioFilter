@@ -87,7 +87,7 @@ public class SignalPanel extends JPanel {
 		
 		xyDataRight.addSeries(seriesRight);
 		xyDataLeft.addSeries(seriesLeft);
-		xyDataSpectrum.addSeries(seriesSpectrum);
+		xyDataSpectrum.addSeries(seriesSpectrum); 
 		
 		JFreeChart chartRight = ChartFactory.createXYLineChart("","","",xyDataRight,PlotOrientation.VERTICAL,false,false,false);
 		chartRight.setBackgroundPaint(new Color(0xC8DDF2));
