@@ -9,12 +9,13 @@ public class BSFilter extends Filter
 	double[] FIRkoeff;
 	double tapTotal;
 	float cutoffFreq, samplingRate,cutoffFreq2;
+	private Argument[] argumentList;
 
 
 	public BSFilter(Signal signal)
 	{
 		this.numberOfTaps = 1000;
-		this.samplingRate = 5000;
+		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
 		this.cutoffFreq = 500;
 		init();
 
@@ -35,15 +36,20 @@ public class BSFilter extends Filter
 		// TODO Auto-generated method stub
 	}
 
-	@Override
 	public Argument[] getParams()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		argumentList = new Argument[3];
+		argumentList[0] = new Argument(0, this.samplingRate, "Grenzfrequenz low");
+		argumentList[1] = new Argument(0, this.samplingRate, "Grenzfrequenz high");
+		argumentList[2] = new Argument(0, 500, "Fenstergröße");
+		return argumentList;
 	}
 
 	public void init()
 	{
+		this.numberOfTaps = (int) argumentList[2].getValue();
+		this.cutoffFreq = (int) argumentList[0].getValue();
+		this.cutoffFreq2 = (int) argumentList[1].getValue();
 		final double[] low = createLowpass(this.numberOfTaps, this.cutoffFreq, this.samplingRate);
 	    final double[] high = createHighpass(this.numberOfTaps, this.cutoffFreq2, this.samplingRate);
 	    for(int i = 0; i < low.length; i++)

@@ -1,6 +1,5 @@
 package Filter;
 
-import java.text.DecimalFormat;
 
 import Common.Argument;
 import Common.Signal;
@@ -11,18 +10,14 @@ public class HPFilter extends Filter
 	double[] FIRkoeff;
 	double tapTotal;
 	float cutoffFreq, samplingRate;
+	private Argument[] argumentList;
 
 	public HPFilter(Signal signal)
 	{
 		this.numberOfTaps = 1000;
-		this.samplingRate = 5000;
+		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
 		this.cutoffFreq = 500;
 		init();
-
-		for (int x = 0; x < this.FIRkoeff.length; x++)
-		{
-			System.out.println(new DecimalFormat("#.########").format(this.FIRkoeff[x]));
-		}
 
 	}
 
@@ -44,8 +39,10 @@ public class HPFilter extends Filter
 	@Override
 	public Argument[] getParams()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		argumentList = new Argument[2];
+		argumentList[0] = new Argument(0, this.samplingRate, "Grenzfrequenz");
+		argumentList[1] = new Argument(0, 500, "Fenstergröße");
+		return argumentList;
 	}
 
 	public void init()

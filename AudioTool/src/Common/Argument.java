@@ -14,6 +14,7 @@ public class Argument
 		this.min = min;
 		this.max = max;
 		this.name = name;
+		this.value = 0; //Default
 	}
 	public float getValue()
 	{

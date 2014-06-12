@@ -11,11 +11,12 @@ public class TPFilter extends Filter
 	double[] FIRkoeff;
 	double tapTotal;
 	float cutoffFreq, samplingRate;
+	private Argument[] argumentList;
 
 	public TPFilter(Signal signal)
 	{
 		this.numberOfTaps = 1000;
-		this.samplingRate = 5000;
+		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
 		this.cutoffFreq = 500;
 		init();
 
@@ -44,12 +45,17 @@ public class TPFilter extends Filter
 	@Override
 	public Argument[] getParams()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		argumentList = new Argument[2];
+		argumentList[0] = new Argument(0, this.samplingRate, "Grenzfrequenz");
+		argumentList[1] = new Argument(0, 500, "Fenstergröße");
+		return argumentList;
 	}
 
 	public void init()
 	{
+		this.cutoffFreq = argumentList[0].getValue();
+		this.numberOfTaps = (int) argumentList[1].getValue();
+		
 
 		final double cutoff = this.cutoffFreq / this.samplingRate;
 		FIRkoeff = new double[this.numberOfTaps + 1];
