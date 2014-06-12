@@ -31,7 +31,6 @@ public class GeneralFilterPanel extends JDialog{
 		Argument[] params = filter.getParams();
 		
 		this.setLayout(new GridLayout(params.length + 1, 1));
-//		this.setPreferredSize(new Dimension(750, (params.length + 1) * 60));
 		
 		for(int i = 0; i < params.length; i++) {
 			
@@ -51,12 +50,7 @@ public class GeneralFilterPanel extends JDialog{
 			paramSlider.setMinorTickSpacing((max - min) / 100);
 			paramSlider.setPaintLabels(true);
 			paramSlider.setPreferredSize(new Dimension(400, 50));
-			paramSlider.addChangeListener(new ChangeListener(){
-				@Override
-				public void stateChanged(ChangeEvent arg0) {
-					paramValue.setText(String.valueOf(paramSlider.getValue()));				
-				}
-			});
+			paramSlider.addChangeListener(new SliderChangedListener(params[i], paramValue, paramSlider));
 			paramPanel.add(paramLabel);
 			paramPanel.add(paramValue);
 			paramPanel.add(paramSlider);
@@ -89,6 +83,27 @@ public class GeneralFilterPanel extends JDialog{
 	public void performFiltering() throws GeneralException {
 		
 	
+	}
+	
+	private class SliderChangedListener implements ChangeListener {
+		
+		private final Argument parameter;
+		private final JTextField paramValue;
+		private final JSlider paramSlider;
+		
+
+		SliderChangedListener(Argument parameter, JTextField paramValue, JSlider paramSlider) {
+			this.parameter = parameter;
+			this.paramValue = paramValue;
+			this.paramSlider = paramSlider;
+		}
+		
+		@Override
+		public void stateChanged(ChangeEvent arg0) {
+			paramValue.setText(String.valueOf(paramSlider.getValue()));	
+			parameter.setValue(paramSlider.getValue());
+		}
+		
 	}
 	
 	private class closeActionListener implements ActionListener {

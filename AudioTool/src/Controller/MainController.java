@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -17,9 +18,10 @@ import IO.IOManager;
 public class MainController
 {
 	private final MainWindow window;
-	
+	private final List<Signal> signals;
 
 	public MainController() {
+		signals = new ArrayList<Signal>();
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -29,16 +31,22 @@ public class MainController
 		window = new MainWindow(this);
 	}
 	
-	public Signal loadFile(File file) {
+	public Signal loadFile(File file) throws GeneralException{
+		for(Signal s : signals) {
+			if(s.getName().equals(file.getName())) {
+				throw new GeneralException("Es ist bereits eine Datei mit dem gleichen Namen geöffnet.");
+			}
+		}
 		try {
-			return IOManager.importFile(file);
+			Signal s = IOManager.importFile(file);
+			signals.add(s);
+			return s;
 		} catch (GeneralException e) {
-			e.printStackTrace();
+			throw e;
 		}	
-		return null;
 	}
 	
-	public boolean export(File file, Signal signal, FileType type) {
+	public boolean export(File file, Signal signal, FileType type) throws GeneralException{
 		try {
 			IOManager.exportFile(file, signal, type);
 		} catch (GeneralException e) {
@@ -47,18 +55,17 @@ public class MainController
 		return true;
 	}
 	
-	public boolean signalClose(Signal so) {
-		//TODO
-		return true;
+	public boolean signalClose(Signal signal) {
+		return signals.remove(signal);
 	}
 	
 	public void performFilter(Filter filter) {
 		filter.performFiltering();
 	}	
 	
-	public Signal getActiveSignal() {
-		return window.getActiveSignal();
-	}
+//	public Signal getActiveSignal() {
+//		return window.getActiveSignal();
+//	}
 	
 	public JFrame getMainWindow() {
 		return window;

@@ -51,11 +51,11 @@ public class TabPanel extends JPanel {
 		closeButton.addActionListener(new CloseTabActionHandler(signal.getName(), panel));
 		closePanel.add(tabTitle);
 		closePanel.add(closeButton);
-		
-		panel.setTabComponentAt(index, closePanel);
+		panel.setTabComponentAt(index, closePanel);	
+		panel.setSelectedIndex(index);
 	}
 	
-	public Signal getActiveSignal() {
-		return ((SignalPanel) panel.getTabComponentAt(panel.getSelectedIndex())).getSignal();
-	}
+//	public Signal getActiveSignal() {
+//		return ((SignalPanel) panel.getTabComponentAt(panel.getSelectedIndex())).getSignal();
+//	}
 }

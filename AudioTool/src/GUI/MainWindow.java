@@ -16,7 +16,9 @@ import java.awt.BorderLayout;
 
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -70,14 +72,15 @@ public class MainWindow extends JFrame{
 				JFileChooser c = new JFileChooser();
 				//TODO use IOManager when available
 			    if (c.showOpenDialog(tabPanel) == JFileChooser.APPROVE_OPTION) {
-			    	Signal signal = controller.loadFile(c.getSelectedFile());
-			    	if(signal != null) {
-			    		tabPanel.createNewTab(signal);
+			    	Signal signal;
+					try {
+						signal = controller.loadFile(c.getSelectedFile());
+						tabPanel.createNewTab(signal);
 			    		repaint();
-			    	}
-			    	else {
-			    		//throw new GeneralException("File konnte nicht geöffnet werden.");
-			    	}
+					} catch (GeneralException e1) {
+						JOptionPane.showMessageDialog(controller.getMainWindow(), e1.toString(), "Fehler", JOptionPane.OK_OPTION);
+					}
+		    		
 			    	
 			    }
 			}
@@ -96,7 +99,7 @@ public class MainWindow extends JFrame{
 		toolBar.add(saveButton);		
 	}
 	
-	public Signal getActiveSignal() {
-		return tabPanel.getActiveSignal();
-	}
+//	public Signal getActiveSignal() {
+//		return tabPanel.getActiveSignal();
+//	}
 }
