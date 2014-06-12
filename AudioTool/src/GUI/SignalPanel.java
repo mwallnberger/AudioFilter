@@ -3,13 +3,9 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
-import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
 import org.jfree.chart.*;
@@ -51,11 +47,8 @@ public class SignalPanel extends JPanel {
 	
 	public void paintSignal() {
 		
-		
 		seriesSpectrum = new XYSeries("Spectrum");
-		
 		seriesRight = new XYSeries("Right");
-		
 		seriesLeft = new XYSeries("Left");
 		
 		float[] leftSignal = signal.getSignalLeft();
@@ -93,7 +86,6 @@ public class SignalPanel extends JPanel {
 			}
 			
 		});
-			
 
 		SignalWindow = new JPanel(new GridLayout(2,1));
 		SpectrumWindow = new JPanel(new GridLayout());
@@ -113,7 +105,6 @@ public class SignalPanel extends JPanel {
 		plotRight.getRangeAxis().setVisible(false);
 		plotRight.getDomainAxis().setVisible(false);
 		
-		
 		JFreeChart chartLeft = ChartFactory.createXYLineChart("","","",xyDataLeft,PlotOrientation.VERTICAL,false,false,false);
 		chartLeft.setBackgroundPaint(new Color(0xC8DDF2));
 		TextTitle leftTitle = new TextTitle("Left", new Font("Verdana", Font.PLAIN, 20));
@@ -130,10 +121,8 @@ public class SignalPanel extends JPanel {
 		plotSpectrum.getRangeAxis().setVisible(false);
 		plotSpectrum.getDomainAxis().setVisible(false);
 		
-		
 		XYItemRenderer test = plotRight.getRenderer();
         test.setSeriesPaint(0, Color.BLUE);		
-		
 		
         ChartPanel panelRight = new ChartPanel(chartRight);
         ChartPanel panelLeft = new ChartPanel(chartLeft);
@@ -143,18 +132,11 @@ public class SignalPanel extends JPanel {
         SignalWindow.add(panelLeft);
         SignalWindow.setMinimumSize(new Dimension(700, 180));
         SpectrumWindow.add(panelSpectrum);
-
         
         this.add(SignalWindow, BorderLayout.WEST);
         this.add(SpectrumWindow, BorderLayout.CENTER);
 
 	}
-	
 
-	
-	public Signal getSignal() {
-		return signal;
-	}
-		
 	
 }

@@ -1,7 +1,5 @@
 package GUI;
 
-import java.util.List;
-
 import Common.GeneralException;
 import Common.Signal;
 import Controller.MainController;
@@ -18,8 +16,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -28,7 +24,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 public class MainWindow extends JFrame{
 	
@@ -67,7 +62,7 @@ public class MainWindow extends JFrame{
 			public void windowClosing(WindowEvent arg0) {
 				
 				if(JOptionPane.showConfirmDialog(jFrame, 
-			            "Are you sure to close this window?", "Really Closing?", 
+			            "Möchten Sie AudioTool wirklich beenden ?", "Beenden", 
 			            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					
 					for(Signal s : controller.getSignals()) {

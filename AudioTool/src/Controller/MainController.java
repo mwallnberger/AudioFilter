@@ -6,13 +6,11 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import Common.GeneralException;
 import Common.Signal;
 import Filter.Filter;
 import GUI.MainWindow;
-import IO.FileType;
 import IO.IOManager;
 
 public class MainController

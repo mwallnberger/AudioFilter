@@ -2,7 +2,6 @@ package Common;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.sound.sampled.AudioFileFormat;
 
@@ -27,7 +26,7 @@ public class Signal
 		this.signalRight = signalRight;
 		this.name = name;
 		changed = false;
-		listeners = new ArrayList();
+		listeners = new ArrayList<SignalListener>();
 	}
 
 	public String getName() {
