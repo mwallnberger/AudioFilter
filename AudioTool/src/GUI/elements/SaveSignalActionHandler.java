@@ -26,17 +26,17 @@ public class SaveSignalActionHandler implements ActionListener{
 	public void actionPerformed(ActionEvent arg0){
 		JFileChooser c = new JFileChooser();
 		
-	    if (c.showOpenDialog(component) == JFileChooser.APPROVE_OPTION) {
-			try {
-				Signal signal = controller.getActiveSignal();
-				if(signal == null) {
-					throw new GeneralException("Actives Signal konnte nicht gefunden werden.");
-				}
+		try {
+			Signal signal = controller.getActiveSignal();
+			if(signal == null) {
+				throw new GeneralException("Es ist kein Signal geöffnet.");
+			}
+			if (c.showSaveDialog(component) == JFileChooser.APPROVE_OPTION) {
 				controller.export(c.getSelectedFile(), signal);
 				signal.resetChanged();
-			} catch (GeneralException e1) {
-				JOptionPane.showMessageDialog(controller.getMainWindow(), e1.toString(), "Fehler", JOptionPane.OK_OPTION);
 			}
+		} catch (GeneralException e1) {
+			JOptionPane.showMessageDialog(controller.getMainWindow(), e1.toString(), "Fehler", JOptionPane.OK_OPTION);
 		}
 		
 	}

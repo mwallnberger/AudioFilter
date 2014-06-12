@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -8,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
+import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 
 import org.jfree.chart.*;
@@ -34,12 +36,11 @@ public class SignalPanel extends JPanel {
 	XYPlot plotSpectrum;
 	private JPanel SignalWindow;
 	private JPanel SpectrumWindow;
-//	private JPanel chartWindow;
 
 	public SignalPanel(Signal signal) {
 		super();
 		this.setBackground(new Color(0xC8DDF2));
-		this.setLayout(new GridLayout(1,2));
+		this.setLayout(new BorderLayout());
 		this.signal = signal;
 		xyDataRight = new XYSeriesCollection();
 		xyDataSpectrum = new XYSeriesCollection();
@@ -93,10 +94,9 @@ public class SignalPanel extends JPanel {
 			
 		});
 			
-//		chartWindow = new JPanel(new FlowLayout());
-		SignalWindow = new JPanel(new GridLayout(2, 1));
+
+		SignalWindow = new JPanel(new GridLayout(2,1));
 		SpectrumWindow = new JPanel(new GridLayout());
-//		chartWindow.setBackground(new Color(0xC8DDF2));
 		
 		paintSignal();
 		
@@ -138,34 +138,19 @@ public class SignalPanel extends JPanel {
         ChartPanel panelRight = new ChartPanel(chartRight);
         ChartPanel panelLeft = new ChartPanel(chartLeft);
         ChartPanel panelSpectrum = new ChartPanel(chartSpectrum);
-//        panelSpectrum.setMaximumSize(new Dimension(200, 200));
         
         SignalWindow.add(panelRight);
         SignalWindow.add(panelLeft);
-//        SignalWindow.setPreferredSize(new Dimension(600, 180));
+        SignalWindow.setMinimumSize(new Dimension(700, 180));
         SpectrumWindow.add(panelSpectrum);
-//        SpectrumWindow.setPreferredSize(new Dimension(250, 180));
+
         
-//        chartWindow.add(SignalWindow);
-//        chartWindow.add(SpectrumWindow);
-        this.add(SignalWindow);
-        this.add(SpectrumWindow);
-//        this.add(chartWindow);
+        this.add(SignalWindow, BorderLayout.WEST);
+        this.add(SpectrumWindow, BorderLayout.CENTER);
+
 	}
 	
-//	@Override
-//	protected void paintComponent(final Graphics g) {
-//		int x = (int) this.getWidth();
-//		int y = (int) this.getHeight();
-//		this.chartWindow.setPreferredSize(new Dimension(x - 10, y - 10));
-//		
-//		x = (int) chartWindow.getWidth();
-//		y = (int) chartWindow.getHeight();
-////		System.out.println("X: " + x + " SignalWindow: " + (int) (x / 10.0 * 7));
-//		SignalWindow.setPreferredSize(new Dimension((int) (x / 10.0 * 7.0), y));
-//		SpectrumWindow.setPreferredSize(new Dimension((int) (x / 10.0 * 3.0), y));
-//		super.paintComponent(g);
-//	}
+
 	
 	public Signal getSignal() {
 		return signal;

@@ -63,6 +63,10 @@ public class TabPanel extends JPanel {
 	}
 	
 	public Signal getActiveSignal() {
+		if(signals.size() < 1 || panel.getTabCount() < 1) {
+			return null;
+		}
+		
 		return signals.get(panel.getSelectedIndex());
 	}
 	
