@@ -48,10 +48,11 @@ public class OptionPanel extends JPanel {
 		
 		JButton play = new JButton("Play");
 		play.setBackground(Color.red);
+		play.addActionListener(new PlaySignalActionListener(signal));
 
 		this.add(play);
 		
-		}
+	}
 		
 	class OpenFilterPanelAction implements ActionListener {
 		

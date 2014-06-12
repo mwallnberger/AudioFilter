@@ -46,16 +46,17 @@ public class MainController
 		}	
 	}
 	
-	public boolean export(File file, Signal signal, FileType type) throws GeneralException{
+	public boolean export(File file, Signal signal) throws GeneralException{
 		try {
-			IOManager.exportFile(file, signal, type);
+			IOManager.exportFile(file, signal);
 		} catch (GeneralException e) {
-			e.printStackTrace();
+			throw e;
 		}	
 		return true;
 	}
 	
 	public boolean signalClose(Signal signal) {
+		window.removeSignal(signal);
 		return signals.remove(signal);
 	}
 	
@@ -63,12 +64,12 @@ public class MainController
 		filter.performFiltering();
 	}	
 	
-//	public Signal getActiveSignal() {
-//		return window.getActiveSignal();
-//	}
-	
 	public JFrame getMainWindow() {
 		return window;
+	}
+	
+	public Signal getActiveSignal() {
+		return window.getActiveSignal();
 	}
 	
 }

@@ -68,7 +68,7 @@ public class IOManager
 
 	}
 
-	public static void exportFile(File file, Signal signal, FileType fileType) throws GeneralException
+	public static void exportFile(File file, Signal signal) throws GeneralException // , FileType fileType) throws GeneralException
 	{
 		/*
 		 * try { AudioFormat out = signal.getFormat().getFormat();

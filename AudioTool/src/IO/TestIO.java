@@ -25,7 +25,7 @@ public class TestIO
 				e.printStackTrace();
 			}
 			Signal sig = IOManager.importFile(new File("C:/test.wav"));
-			IOManager.exportFile(file2,sig , FileType.WAVE);
+			IOManager.exportFile(file2,sig);
 			System.out.print("");
 		}
 		catch (GeneralException e)

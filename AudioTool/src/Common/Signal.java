@@ -12,6 +12,7 @@ public class Signal
 	private Set<SignalListener> listeners;
 	private AudioFileFormat format;
 	private String name;
+	private boolean changed;
 	// values from -1 to 1
 	private float[] signalLeft;
 	private float[] signalRight;
@@ -23,6 +24,7 @@ public class Signal
 		this.signalLeft = signalLeft;
 		this.signalRight = signalRight;
 		this.name = name;
+		changed = false;
 	}
 
 	public String getName() {
@@ -81,10 +83,19 @@ public class Signal
 	private synchronized void fireChangeEvent()
 	{
 		SignalEvent event = new SignalEvent(this);
+		changed = true;
 		for (SignalListener listener : this.listeners)
 		{
 			listener.SignalChanged(event);
 		}
+	}
+	
+	public boolean isChanged() {
+		return changed;
+	}
+	
+	public void resetChanged() {
+		changed = false;
 	}
 
 	public float[] getSpectrum()

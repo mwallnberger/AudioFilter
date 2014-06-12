@@ -13,16 +13,21 @@ import GUI.SignalPanel;
 
 import java.awt.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TabPanel extends JPanel {
 
 	private final JTabbedPane panel = new JTabbedPane();
 	private final ImageIcon closeIcon = new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/16x16/cross.png"));
 	private final MainController controller;
+	private final List<Signal> signals;
 	
 	public TabPanel(MainController controller) {
 		super();
 		this.controller = controller;
 		setLayout(new GridLayout(1, 1));
+		signals = new ArrayList<Signal>();
 		add(panel);
 	}
 	
@@ -48,14 +53,21 @@ public class TabPanel extends JPanel {
 		JButton closeButton = new JButton(closeIcon);
 		JLabel tabTitle = new JLabel(signal.getName());
 		closePanel.setOpaque(false);
-		closeButton.addActionListener(new CloseTabActionHandler(signal.getName(), panel));
+		closeButton.addActionListener(new CloseTabActionHandler(signal.getName(), panel, controller));
+		
 		closePanel.add(tabTitle);
 		closePanel.add(closeButton);
+		signals.add(index, signal);
 		panel.setTabComponentAt(index, closePanel);	
 		panel.setSelectedIndex(index);
 	}
 	
-//	public Signal getActiveSignal() {
-//		return ((SignalPanel) panel.getTabComponentAt(panel.getSelectedIndex())).getSignal();
-//	}
+	public Signal getActiveSignal() {
+		return signals.get(panel.getSelectedIndex());
+	}
+	
+	public void removeSignal(Signal signal) {
+		signals.remove(signal);
+	}
+
 }

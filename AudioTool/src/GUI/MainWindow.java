@@ -5,6 +5,8 @@ import java.util.List;
 import Common.GeneralException;
 import Common.Signal;
 import Controller.MainController;
+import GUI.elements.OpenSignalActionHandler;
+import GUI.elements.SaveSignalActionHandler;
 import GUI.elements.TabPanel;
 
 import java.awt.EventQueue;
@@ -67,39 +69,24 @@ public class MainWindow extends JFrame{
 		
 		//create openbutton and add it to toolbar
 		JButton openButton = new JButton("");
-		openButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser c = new JFileChooser();
-				//TODO use IOManager when available
-			    if (c.showOpenDialog(tabPanel) == JFileChooser.APPROVE_OPTION) {
-			    	Signal signal;
-					try {
-						signal = controller.loadFile(c.getSelectedFile());
-						tabPanel.createNewTab(signal);
-			    		repaint();
-					} catch (GeneralException e1) {
-						JOptionPane.showMessageDialog(controller.getMainWindow(), e1.toString(), "Fehler", JOptionPane.OK_OPTION);
-					}
-		    		
-			    	
-			    }
-			}
-		});
+		openButton.addActionListener(new OpenSignalActionHandler(tabPanel, controller));
+		
 		openButton.setIcon(new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/32x32/folder.png")));
 		toolBar.add(openButton);
 		
 		//TODO create savebutton and add it to toolbar (IOManager)
 		JButton saveButton = new JButton("");
-		openButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
+		saveButton.addActionListener(new SaveSignalActionHandler(frmTest, controller));
+		
 		saveButton.setIcon(new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/32x32/disk.png")));
 		toolBar.add(saveButton);		
 	}
 	
-//	public Signal getActiveSignal() {
-//		return tabPanel.getActiveSignal();
-//	}
+	public Signal getActiveSignal() {
+		return tabPanel.getActiveSignal();
+	}
+	
+	public void removeSignal(Signal signal) {
+		tabPanel.removeSignal(signal);
+	}
 }
