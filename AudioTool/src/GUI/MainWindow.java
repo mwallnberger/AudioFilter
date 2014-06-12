@@ -4,18 +4,18 @@ import java.util.List;
 
 import Common.Signal;
 import Controller.MainController;
-import GUI.FilterPanel;
-import GUI.SignalEvent;
-import GUI.SignalListener;
-import GUI.SignalPanel;
-import GUI.elements.TabPane;
+import GUI.elements.TabPanel;
 import java.awt.EventQueue;
-import javax.swing.JFrame;
+
+import javax.swing.JFrame; 
 import javax.swing.JToolBar;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -69,11 +69,12 @@ public class MainWindow extends JFrame implements SignalListener {
 	private void initialize() {
 		//create frame (maybe change title)
 		frmTest.setTitle("AudioTool, FUCKERS!");
-		frmTest.setBounds(100, 100, 800, 800);
+		frmTest.setBounds(100, 100, 1100, 350);
 		frmTest.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmTest.setResizable(false);
 
 		//create tabframe
-		TabPane tabPanel = new TabPane();
+		TabPanel tabPanel = new TabPanel();
 		frmTest.add(tabPanel);
 		
 		//create toolbar
@@ -95,7 +96,7 @@ public class MainWindow extends JFrame implements SignalListener {
 		openButton.setIcon(new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/32x32/folder.png")));
 		toolBar.add(openButton);
 		
-		//TODO create savebutton and add it to toolbar
+		//TODO create savebutton and add it to toolbar (IOManager)
 		JButton saveButton = new JButton("");
 		openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -107,5 +108,4 @@ public class MainWindow extends JFrame implements SignalListener {
 		
 		
 	}
-
 }
