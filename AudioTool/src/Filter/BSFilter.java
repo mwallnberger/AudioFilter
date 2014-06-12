@@ -6,14 +6,14 @@ import Common.Signal;
 public class BSFilter extends Filter
 {
 	int numberOfTaps;
-	double[] FIRkoeff;
 	double tapTotal;
-	float cutoffFreq, samplingRate,cutoffFreq2;
+	float cutoffFreq, cutoffFreq2;
 	private Argument[] argumentList;
 
 
 	public BSFilter(Signal signal)
 	{
+		this.signal = signal;
 		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
 		this.cutoffFreq = 500;
@@ -31,7 +31,7 @@ public class BSFilter extends Filter
 	}
 
 	@Override
-	public void performFiltering(Signal sig)
+	public void performFiltering()
 	{
 		// TODO Auto-generated method stub
 	}

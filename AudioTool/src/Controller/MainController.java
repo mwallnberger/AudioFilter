@@ -3,6 +3,10 @@ package Controller;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import Common.GeneralException;
 import Common.Signal;
 import Filter.Filter;
@@ -12,21 +16,26 @@ import IO.IOManager;
 
 public class MainController
 {
-	List<Signal> signals;
-	MainWindow window;
+	private final MainWindow window;
 	
 
 	public MainController() {
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+
+		}
 		window = new MainWindow(this);
 	}
 	
-	public boolean loadFile(File file) {
+	public Signal loadFile(File file) {
 		try {
-			IOManager.importFile(file);
+			return IOManager.importFile(file);
 		} catch (GeneralException e) {
 			e.printStackTrace();
 		}	
-		return true;
+		return null;
 	}
 	
 	public boolean export(File file, Signal signal, FileType type) {
@@ -43,8 +52,16 @@ public class MainController
 		return true;
 	}
 	
-	public void performFilter(Filter filter, Signal signal) {
-		filter.performFiltering(signal);
+	public void performFilter(Filter filter) {
+		filter.performFiltering();
 	}	
+	
+	public Signal getActiveSignal() {
+		return window.getActiveSignal();
+	}
+	
+	public JFrame getMainWindow() {
+		return window;
+	}
 	
 }

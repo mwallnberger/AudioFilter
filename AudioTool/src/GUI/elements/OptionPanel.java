@@ -6,23 +6,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import GUI.TPFilterPanel;
+import Controller.MainController;
+import GUI.GeneralFilterPanel;
 
 public class OptionPanel extends JPanel {
 
-	public OptionPanel() {
-		this.setLayout(new GridLayout(3, 0));
+	private final MainController controller;
+	
+	public OptionPanel(MainController controller) {
+		this.controller = controller;
+		this.setLayout(new GridLayout(5, 0));
 		JButton tpfilter = new JButton("TPFilter");
 		
 		tpfilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFrame popup = new JFrame("TPFilter"); 
-				popup.setBounds(1200, 100, 500, 500);
-				popup.add(new TPFilterPanel(popup));
+				JDialog popup = new GeneralFilterPanel(controller.getMainWindow()); 
 				popup.pack();
+				popup.setLocationRelativeTo(controller.getMainWindow());
 				popup.setVisible(true);
 			}
 		});

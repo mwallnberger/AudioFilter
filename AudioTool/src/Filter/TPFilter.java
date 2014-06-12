@@ -8,13 +8,13 @@ import Common.Signal;
 public class TPFilter extends Filter
 {
 	int numberOfTaps;
-	double[] FIRkoeff;
 	double tapTotal;
-	float cutoffFreq, samplingRate;
+	float cutoffFreq;
 	private Argument[] argumentList;
 
 	public TPFilter(Signal signal)
 	{
+		this.signal = signal;
 		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
 		this.cutoffFreq = 500;
@@ -36,7 +36,7 @@ public class TPFilter extends Filter
 	}
 
 	@Override
-	public void performFiltering(Signal sig)
+	public void performFiltering()
 	{
 		// TODO Auto-generated method stub
 

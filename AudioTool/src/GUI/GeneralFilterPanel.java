@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,13 +18,16 @@ import javax.swing.event.ChangeListener;
 import Common.GeneralException;
 import Common.Signal;
 
-public class TPFilterPanel extends FilterPanel {
+public class GeneralFilterPanel extends JDialog{
 	
 	static final int max = 50;
 	static final int min = 0;
 	static final int init = 10;
 	
-	public TPFilterPanel(JFrame mainFrame) {
+	public GeneralFilterPanel(JFrame mainFrame) {
+		
+		super(mainFrame);
+		this.setModal(true);
 		
 		this.setLayout(new GridLayout(4, 1));
 		
@@ -72,7 +76,12 @@ public class TPFilterPanel extends FilterPanel {
 		JPanel buttonPanel = new JPanel();
 		
 		JButton filter = new JButton("Filter");
-		JButton close = new JButton("Close");
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mainFrame.dispose();
+			}
+		});
 		
 		buttonPanel.add(filter);
 		filter.addActionListener(new ActionListener() {
@@ -80,22 +89,17 @@ public class TPFilterPanel extends FilterPanel {
 				
 			}
 		});
-		buttonPanel.add(close);
-		close.addActionListener(new closeActionListener(mainFrame));
+		buttonPanel.add(cancel);
 		
 		this.add(param1Panel);
 		this.add(param2Panel);
 		this.add(buttonPanel);
-	}
-	
-	@Override
-	public JPanel getFilterPanel() {
-		return this;
+
+		
 	}
 
 	
-	@Override
-	public void performFiltering(Signal signal) throws GeneralException {
+	public void performFiltering() throws GeneralException {
 		
 	
 	}

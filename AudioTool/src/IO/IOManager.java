@@ -59,7 +59,7 @@ public class IOManager
 					}
 				}
 			}
-			return new Signal(fileFormat, left, right);
+			return new Signal(fileFormat, left, right, file.getName());
 		}
 		catch (Exception e)
 		{

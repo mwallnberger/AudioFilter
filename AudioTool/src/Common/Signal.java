@@ -11,18 +11,24 @@ public class Signal
 {
 	private Set<SignalListener> listeners;
 	private AudioFileFormat format;
+	private String name;
 	// values from -1 to 1
 	private float[] signalLeft;
 	private float[] signalRight;
 
-	public Signal(AudioFileFormat format, float[] signalLeft, float[] signalRight)
+	public Signal(AudioFileFormat format, float[] signalLeft, float[] signalRight, String name)
 	{
 		super();
 		this.format = format;
 		this.signalLeft = signalLeft;
 		this.signalRight = signalRight;
+		this.name = name;
 	}
 
+	public String getName() {
+		return name;
+	}
+	
 	public synchronized void addListener(SignalListener listener)
 	{
 		if (this.listeners != null)

@@ -16,12 +16,15 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.*;
 import org.jfree.chart.ChartPanel;
 
+import Common.Signal;
+
 
 public class SignalPanel extends JPanel {
 	byte[] data;
 	private XYSeries seriesRight;
 	private XYSeries seriesLeft;
 	private XYSeries seriesSpectrum;
+	private Signal signal;
 	XYSeriesCollection xyDataRight;
 	XYSeriesCollection xyDataSpectrum;
 	XYSeriesCollection xyDataLeft;
@@ -29,61 +32,69 @@ public class SignalPanel extends JPanel {
 	XYPlot plotLeft;
 	XYPlot plotSpectrum;
 
-	//TODO add Signal signal, create chart from signal array
-	public SignalPanel() {
+	public SignalPanel(Signal signal) {
+		super();
 		this.setBackground(Color.BLUE);
 		this.setLayout(new GridBagLayout());
-		
+		this.signal = signal;
 		xyDataRight = new XYSeriesCollection();
 		xyDataSpectrum = new XYSeriesCollection();
-		xyDataLeft = new XYSeriesCollection();
+		xyDataLeft = new XYSeriesCollection();		
 		
-
-		seriesRight = new XYSeries("Right");
-		for (int i = 0; i < 500; i++) {
-			seriesRight.add(i, i%2);
-		}
+		initialize();
+	}
+	
+	public void paintSignal() {
+		
 		
 		seriesSpectrum = new XYSeries("Spectrum");
-		for (int i = 0; i < 50; i++) {
-			seriesSpectrum.add(i, i%2);
-		}
 		
+		seriesRight = new XYSeries("Right");
 		
 		seriesLeft = new XYSeries("Left");
-		for (int i = 0; i < 150; i++) {
-			seriesLeft.add(i, i%2);
+		
+		float[] leftSignal = signal.getSignalLeft();
+		float[] rightSignal = signal.getSignalRight();
+		for(int i = 0; i < leftSignal.length; i++) {
+			seriesLeft.add(i, leftSignal[i]);
 		}
-		
-		
-		
-		//if signal array is available
-		
-//		float signalRight[];
-//		float signalLeft[];
-//		float signalSpectrum[];
-//		signalRight = signal.getSignalRight();
-//		signalLeft = signal.getSignalLeft();
-//		signalSpectrum = signal.getSpectrum();
-//		for (int i = 0; i < signalRight.length; i++) {
-//			seriesRight.add(signalRight[i], i);
-//		}
-//		for (int i = 0; i < signalLeft.length; i++) {
-//			seriesRight.add(signalRight[i], i);
-//		}
-//		for (int i = 0; i < signalSpectrum.length; i++) {
-//			seriesRight.add(signalRight[i], i);
-//		}
+		if(rightSignal != null) {
+			for(int i = 0; i < rightSignal.length; i++) {
+				seriesRight.add(i, rightSignal[i]);
+			}
+		}
 		
 	}
 	
-	public JPanel refresh() {
+	public void refresh() {
+		xyDataRight.removeSeries(seriesRight);
+		xyDataLeft.removeSeries(seriesLeft);
+		xyDataSpectrum.removeSeries(seriesSpectrum);
+		
+		paintSignal();
+		
+		xyDataRight.addSeries(seriesRight);
+		xyDataLeft.addSeries(seriesLeft);
+		xyDataSpectrum.addSeries(seriesSpectrum);
+	}
+	
+	public void initialize() {
+		
+		signal.addListener(new SignalListener() {
+
+			@Override
+			public void SignalChanged(SignalEvent e) {
+				refresh();
+			}
+			
+		});
 			
 		JPanel chartWindow = new JPanel(new FlowLayout());
 		JPanel SignalWindow = new JPanel(new GridLayout(2, 0));
 		JPanel SpectrumWindow = new JPanel(new GridLayout());
 		chartWindow.setBackground(new Color(0xC8DDF2));
 		
+		paintSignal();
 		
 		xyDataRight.addSeries(seriesRight);
 		xyDataLeft.addSeries(seriesLeft);
@@ -133,8 +144,11 @@ public class SignalPanel extends JPanel {
         
         chartWindow.add(SignalWindow);
         chartWindow.add(SpectrumWindow);
-                
-        return chartWindow;
+        this.add(chartWindow);
+	}
+	
+	public Signal getSignal() {
+		return signal;
 	}
 		
 	

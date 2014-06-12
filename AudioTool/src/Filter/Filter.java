@@ -5,9 +5,12 @@ import Common.Signal;
 
 public abstract class Filter
 {
-	String name;
+	protected String name;
+	protected Signal signal;
+	protected double[] FIRkoeff;
+	protected float samplingRate;
 	
-	public abstract void performFiltering(Signal sig);
+	public abstract void performFiltering();
 	public abstract Argument[] getParams();
 	
 	
