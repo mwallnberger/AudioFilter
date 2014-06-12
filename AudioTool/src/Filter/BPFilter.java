@@ -8,7 +8,6 @@ public class BPFilter extends Filter
 	int numberOfTaps;
 	double tapTotal;
 	float cutoffFreq, samplingRate, cutoffFreq2;
-	private Argument[] argumentList;
 
 	public BPFilter(Signal signal)
 	{
@@ -17,6 +16,11 @@ public class BPFilter extends Filter
 		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
 		this.cutoffFreq = 500;
+		
+		argumentList = new Argument[3];
+		argumentList[0] = new Argument(0, this.samplingRate, this.cutoffFreq, "Grenzfrequenz low");
+		argumentList[1] = new Argument(0, this.samplingRate, this.cutoffFreq2, "Grenzfrequenz high");
+		argumentList[2] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
 		
 		init();
 
@@ -28,6 +32,12 @@ public class BPFilter extends Filter
 		this.cutoffFreq = cutoffFrequ;
 		this.cutoffFreq2 = cutoffFrequ2;
 		this.samplingRate = samplingRate;
+		
+		argumentList = new Argument[3];
+		argumentList[0] = new Argument(0, this.samplingRate, this.cutoffFreq, "Grenzfrequenz low");
+		argumentList[1] = new Argument(0, this.samplingRate, this.cutoffFreq2, "Grenzfrequenz high");
+		argumentList[2] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
+		
 		this.init();
 	}
 
@@ -40,18 +50,16 @@ public class BPFilter extends Filter
 	@Override
 	public Argument[] getParams()
 	{
-		argumentList = new Argument[3];
-		argumentList[0] = new Argument(0, this.samplingRate, "Grenzfrequenz low");
-		argumentList[1] = new Argument(0, this.samplingRate, "Grenzfrequenz high");
-		argumentList[2] = new Argument(0, 500, "Fenstergröße");
 		return argumentList;
 	}
 
 	public void init()
-	{
-		this.numberOfTaps = (int) argumentList[2].getValue();
-		this.cutoffFreq = (int) argumentList[0].getValue();
-		this.cutoffFreq2 = (int) argumentList[1].getValue();
+	{		
+		//nicht mehr nötig?
+//		this.numberOfTaps = (int) argumentList[2].getValue();
+//		this.cutoffFreq = (int) argumentList[0].getValue();
+//		this.cutoffFreq2 = (int) argumentList[1].getValue();
+		
 		final double[] bs = createLowpass(this.numberOfTaps, this.cutoffFreq, this.cutoffFreq2, this.samplingRate);
 
 		final int half = this.numberOfTaps >> 1;

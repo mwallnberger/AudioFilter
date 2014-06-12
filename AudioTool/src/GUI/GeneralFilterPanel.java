@@ -15,67 +15,58 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import Common.Argument;
 import Common.GeneralException;
 import Common.Signal;
+import Filter.Filter;
 
 public class GeneralFilterPanel extends JDialog{
 	
-	static final int max = 50;
-	static final int min = 0;
-	static final int init = 10;
-	
-	public GeneralFilterPanel(JFrame mainFrame) {
-		
+	public GeneralFilterPanel(Filter filter, JFrame mainFrame) {
 		super(mainFrame);
+		this.setTitle(filter.getName());
 		this.setModal(true);
 		
-		this.setLayout(new GridLayout(4, 1));
 		
+		Argument[] params = filter.getParams();
 		
-		JPanel param1Panel = new JPanel();
-		JLabel param1 = new JLabel("param1: ");
-		JTextField param1Text = new JTextField("10");
-		param1Text.setEditable(false);
-		param1Text.setPreferredSize(new Dimension(20, 20));
-		JSlider param1Slider = new JSlider(JSlider.HORIZONTAL, min, max, init);
-		param1Slider.setMajorTickSpacing(10);
-		param1Slider.setMinorTickSpacing(1);
-		param1Slider.setPaintLabels(true);
-		param1Slider.addChangeListener(new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				param1Text.setText(String.valueOf(param1Slider.getValue()));				
-			}
-		});
-		param1Panel.add(param1);
-		param1Panel.add(param1Text);
-		param1Panel.add(param1Slider);
+		this.setLayout(new GridLayout(params.length + 1, 1));
+//		this.setPreferredSize(new Dimension(750, (params.length + 1) * 60));
 		
-
-		JPanel param2Panel = new JPanel();
-		JLabel param2 = new JLabel("param2: ");
-		JTextField param2Text = new JTextField("10");
-		param2Text.setEditable(false);
-		param2Text.setPreferredSize(new Dimension(20, 20));
-		JSlider param2Slider = new JSlider(JSlider.HORIZONTAL, min, max, init);
-		param2Slider.setMajorTickSpacing(10);
-		param2Slider.setMinorTickSpacing(1);
-		param2Slider.setPaintLabels(true);
-		param2Slider.addChangeListener(new ChangeListener(){
-			@Override
-			public void stateChanged(ChangeEvent arg0) { 
-				param2Text.setText(String.valueOf(param2Slider.getValue()));				
-			}
-		});
-		param2Panel.add(param2);
-		param2Panel.add(param2Text);
-		param2Panel.add(param2Slider);
-		
-		
+		for(int i = 0; i < params.length; i++) {
+			
+			JPanel paramPanel = new JPanel();
+			JLabel paramLabel = new JLabel(params[i].getName());
+			paramLabel.setPreferredSize(new Dimension(100, 50));
+			paramLabel.setHorizontalAlignment(JLabel.RIGHT);
+			JTextField paramValue = new JTextField(String.valueOf(params[i].getValue()));
+			paramValue.setEditable(false);
+			paramValue.setPreferredSize(new Dimension(50, 20));
+			paramValue.setHorizontalAlignment(JTextField.RIGHT);
+			int max = Math.round(params[i].getMax());
+			int min = Math.round(params[i].getMin());
+			int init = Math.round(params[i].getValue());
+			JSlider paramSlider = new JSlider(JSlider.HORIZONTAL, min, max, init);
+			paramSlider.setMajorTickSpacing((max - min) / 10);
+			paramSlider.setMinorTickSpacing((max - min) / 100);
+			paramSlider.setPaintLabels(true);
+			paramSlider.setPreferredSize(new Dimension(400, 50));
+			paramSlider.addChangeListener(new ChangeListener(){
+				@Override
+				public void stateChanged(ChangeEvent arg0) {
+					paramValue.setText(String.valueOf(paramSlider.getValue()));				
+				}
+			});
+			paramPanel.add(paramLabel);
+			paramPanel.add(paramValue);
+			paramPanel.add(paramSlider);
+			
+			this.add(paramPanel);
+		}		
 		
 		JPanel buttonPanel = new JPanel();
 		
-		JButton filter = new JButton("Filter");
+		JButton btnFilter = new JButton("Filter");
 		JButton cancel = new JButton("Cancel");
 		cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -83,19 +74,15 @@ public class GeneralFilterPanel extends JDialog{
 			}
 		});
 		
-		buttonPanel.add(filter);
-		filter.addActionListener(new ActionListener() {
+		buttonPanel.add(btnFilter);
+		btnFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				filter.performFiltering();				
 			}
 		});
 		buttonPanel.add(cancel);
 		
-		this.add(param1Panel);
-		this.add(param2Panel);
 		this.add(buttonPanel);
-
-		
 	}
 
 	

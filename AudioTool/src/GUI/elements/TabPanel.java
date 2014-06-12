@@ -26,12 +26,12 @@ public class TabPanel extends JPanel {
 		add(panel);
 	}
 	
-	protected JPanel createInnerPanel(String text, Signal signal) {
+	protected JPanel createInnerPanel(Signal signal) {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBackground(Color.white); 
 		
 		SignalPanel chart = new SignalPanel(signal);
-		OptionPanel options = new OptionPanel(controller);
+		OptionPanel options = new OptionPanel(signal, controller);
 		
 		panel.add(chart, BorderLayout.CENTER);
 		panel.add(options, BorderLayout.LINE_END);
@@ -40,7 +40,7 @@ public class TabPanel extends JPanel {
 	}
 	
 	public void createNewTab(Signal signal) {
-		panel.addTab(signal.getName(), createInnerPanel(signal.getName(), signal));
+		panel.addTab(signal.getName(), createInnerPanel(signal));
 		int index = panel.indexOfTab(signal.getName());
 		
 		//for "x" button in tab

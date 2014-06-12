@@ -90,7 +90,7 @@ public class SignalPanel extends JPanel {
 		});
 			
 		JPanel chartWindow = new JPanel(new FlowLayout());
-		JPanel SignalWindow = new JPanel(new GridLayout(2, 0));
+		JPanel SignalWindow = new JPanel(new GridLayout(2, 1));
 		JPanel SpectrumWindow = new JPanel(new GridLayout());
 		chartWindow.setBackground(new Color(0xC8DDF2));
 		
@@ -138,9 +138,9 @@ public class SignalPanel extends JPanel {
         
         SignalWindow.add(panelRight);
         SignalWindow.add(panelLeft);
-        SignalWindow.setPreferredSize(new Dimension(700, 200));
+        SignalWindow.setPreferredSize(new Dimension(700, 210));
         SpectrumWindow.add(panelSpectrum);
-        SpectrumWindow.setPreferredSize(new Dimension(300, 200));
+        SpectrumWindow.setPreferredSize(new Dimension(300, 210));
         
         chartWindow.add(SignalWindow);
         chartWindow.add(SpectrumWindow);

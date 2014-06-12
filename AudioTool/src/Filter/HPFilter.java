@@ -9,7 +9,6 @@ public class HPFilter extends Filter
 	int numberOfTaps;
 	double tapTotal;
 	float cutoffFreq;
-	private Argument[] argumentList;
 
 	public HPFilter(Signal signal)
 	{
@@ -18,6 +17,11 @@ public class HPFilter extends Filter
 		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
 		this.cutoffFreq = 500;
+		
+		argumentList = new Argument[2];
+		argumentList[0] = new Argument(0, this.samplingRate, this.cutoffFreq, "Grenzfrequenz");
+		argumentList[1] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
+		
 		init();
 
 	}
@@ -27,6 +31,7 @@ public class HPFilter extends Filter
 		this.numberOfTaps = numberOfTaps;
 		this.cutoffFreq = cutoffFrequ;
 		this.samplingRate = samplingRate;
+		
 		this.init();
 	}
 
@@ -40,9 +45,6 @@ public class HPFilter extends Filter
 	@Override
 	public Argument[] getParams()
 	{
-		argumentList = new Argument[2];
-		argumentList[0] = new Argument(0, this.samplingRate, "Grenzfrequenz");
-		argumentList[1] = new Argument(0, 500, "Fenstergröße");
 		return argumentList;
 	}
 

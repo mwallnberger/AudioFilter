@@ -10,6 +10,8 @@ public abstract class Filter
 	protected double[] FIRkoeff;
 	protected float samplingRate;
 	
+	protected Argument[] argumentList;
+	
 	public abstract void performFiltering();
 	public abstract Argument[] getParams();
 	public abstract String getFilterInfo();

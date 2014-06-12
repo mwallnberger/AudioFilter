@@ -8,11 +8,12 @@ public class Argument
 	float max;
 	String name;
 	
-	public Argument(float min, float max, String name)
+	public Argument(float min, float max, float initValue, String name)
 	{
 		super();
 		this.min = min;
 		this.max = max;
+		this.value = initValue;
 		this.name = name;
 		this.value = 0; //Default
 	}
