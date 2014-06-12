@@ -72,4 +72,8 @@ public class MainController
 		return window.getActiveSignal();
 	}
 	
+	public List<Signal> getSignals() {
+		return signals;
+	}
+	
 }

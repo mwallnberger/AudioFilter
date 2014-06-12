@@ -3,8 +3,10 @@ package GUI.elements;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
+import Common.GeneralException;
 import Common.Signal;
 import Controller.MainController;
 /***
@@ -31,10 +33,11 @@ public class CloseTabActionHandler implements ActionListener {
         int index = tabPane.indexOfTab(getTabName());
         Signal signal = controller.getActiveSignal();
         if (index >= 0) {
-        	if(signal.isChanged()) {
-        		SaveSignalActionHandler saveSignal = new SaveSignalActionHandler(tabPane, controller);
-        		saveSignal.actionPerformed(null);
-        	}
+        	try {
+				SaveSignal.save(tabPane, controller);
+			} catch (GeneralException e) {
+
+			}
         	controller.signalClose(signal);
             tabPane.removeTabAt(index);
         }
