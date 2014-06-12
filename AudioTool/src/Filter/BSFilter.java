@@ -13,6 +13,7 @@ public class BSFilter extends Filter
 
 	public BSFilter(Signal signal)
 	{
+		this.name = "BSFilter";
 		this.signal = signal;
 		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
@@ -74,6 +75,12 @@ public class BSFilter extends Filter
 	{
 		TPFilter filter = new TPFilter(tapTotal,cutoffFreq,samplingRate);
 		return filter.getFIRkoeff();
+	}
+
+	@Override
+	public String getFilterInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

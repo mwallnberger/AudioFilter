@@ -13,6 +13,7 @@ public class HPFilter extends Filter
 
 	public HPFilter(Signal signal)
 	{
+		this.name = "HPFilter";
 		this.signal = signal;
 		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
@@ -61,5 +62,11 @@ public class HPFilter extends Filter
 	double[] getFIRkoeff()
 	{
 		return FIRkoeff;
+	}
+
+	@Override
+	public String getFilterInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

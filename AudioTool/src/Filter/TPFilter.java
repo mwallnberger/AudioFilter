@@ -14,6 +14,7 @@ public class TPFilter extends Filter
 
 	public TPFilter(Signal signal)
 	{
+		this.name = "TPFilter";
 		this.signal = signal;
 		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
@@ -55,7 +56,6 @@ public class TPFilter extends Filter
 	{
 		this.cutoffFreq = argumentList[0].getValue();
 		this.numberOfTaps = (int) argumentList[1].getValue();
-		
 
 		final double cutoff = this.cutoffFreq / this.samplingRate;
 		FIRkoeff = new double[this.numberOfTaps + 1];
@@ -74,5 +74,11 @@ public class TPFilter extends Filter
 	double[] getFIRkoeff()
 	{
 		return FIRkoeff;
+	}
+
+	@Override
+	public String getFilterInfo() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

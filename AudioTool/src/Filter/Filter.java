@@ -5,13 +5,14 @@ import Common.Signal;
 
 public abstract class Filter
 {
-	protected String name;
+	protected String name = "Unknown";
 	protected Signal signal;
 	protected double[] FIRkoeff;
 	protected float samplingRate;
 	
 	public abstract void performFiltering();
 	public abstract Argument[] getParams();
+	public abstract String getFilterInfo();
 	
 	
 	public String getName()
@@ -37,7 +38,6 @@ public abstract class Filter
 	        fir[i] *= 0.54 - 0.46 * Math.cos(2.0 * Math.PI * i / m);
 	    }
 	    return fir;
-	}
-	
+	}	
 	
 }
