@@ -9,10 +9,10 @@ import javax.swing.JPanel;
 import Common.Signal;
 import Controller.MainController;
 import GUI.MainWindow;
+import GUI.OptionPanel;
 import GUI.SignalPanel;
 
 import java.awt.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +35,9 @@ public class TabPanel extends JPanel {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setBackground(Color.white); 
 		
-		SignalPanel chart = new SignalPanel(signal);
 		OptionPanel options = new OptionPanel(signal, controller);
+		SignalPanel chart = new SignalPanel(signal, controller);
+		
 		
 		panel.add(chart, BorderLayout.CENTER);
 		panel.add(options, BorderLayout.LINE_END);

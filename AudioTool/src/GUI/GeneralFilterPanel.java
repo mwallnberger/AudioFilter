@@ -1,4 +1,4 @@
-package GUI.elements;
+package GUI;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -18,11 +18,12 @@ import javax.swing.event.ChangeListener;
 import Common.Argument;
 import Common.GeneralException;
 import Common.Signal;
+import Controller.MainController;
 import Filter.Filter;
 
 public class GeneralFilterPanel extends JDialog{
 	
-	public GeneralFilterPanel(Filter filter, JFrame mainFrame) {
+	public GeneralFilterPanel(Filter filter, JFrame mainFrame, MainController controller) {
 		super(mainFrame);
 		this.setTitle(filter.getName());
 		this.setModal(true);
@@ -70,7 +71,10 @@ public class GeneralFilterPanel extends JDialog{
 		buttonPanel.add(btnFilter);
 		btnFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				filter.performFiltering();				
+				controller.pauseAllPlaying();
+				controller.performFilter(filter);
+				mainFrame.dispose();
+				
 			}
 		});
 		buttonPanel.add(cancel);

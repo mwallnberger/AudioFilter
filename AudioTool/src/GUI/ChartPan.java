@@ -1,4 +1,4 @@
-package GUI.elements;
+package GUI;
 
 import java.awt.Color;
 import java.awt.GridBagLayout;

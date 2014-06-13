@@ -41,6 +41,7 @@ public class MainWindow extends JFrame{
 		super();
 		this.controller = controller;
 		jFrame = new JFrame();
+		initialize();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -50,7 +51,7 @@ public class MainWindow extends JFrame{
 				}
 			}
 		});
-		initialize();
+		
 	}
 	
 	private void initialize(){

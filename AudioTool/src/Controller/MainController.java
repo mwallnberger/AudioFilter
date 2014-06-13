@@ -42,11 +42,7 @@ public class MainController
 			}
 		}
 		try {
-			for(Signal s : signals) {
-				if(playThreads.get(s).isPlaying()) {
-					pausePlaying(s);
-				}
-			}
+			pauseAllPlaying();
 			return IOManager.importFile(file);
 		} catch (GeneralException e) {
 			throw e;
@@ -125,6 +121,15 @@ public class MainController
 		PlayingThread thread = playThreads.get(s);
 		if(thread != null) {
 			thread.stopPlaying();
+		}
+	}
+	
+	public void pauseAllPlaying() {
+		List<Signal> signals = tabPanel.getSignals();
+		for(Signal s : signals) {
+			if(playThreads.get(s).isPlaying()) {
+				pausePlaying(s);
+			}
 		}
 	}
 	

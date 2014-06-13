@@ -16,6 +16,11 @@ import org.jfree.data.xy.*;
 import org.jfree.chart.ChartPanel;
 
 import Common.Signal;
+import Controller.MainController;
+import GUI.elements.MarkerChangedEvent;
+import GUI.elements.MarkerChangedListener;
+import GUI.elements.SignalEvent;
+import GUI.elements.SignalListener;
 
 
 public class SignalPanel extends JPanel {
@@ -32,16 +37,22 @@ public class SignalPanel extends JPanel {
 	XYPlot plotSpectrum;
 	private JPanel SignalWindow;
 	private JPanel SpectrumWindow;
+	private boolean stereo;
 	
 	private int ticking = 1;
+	private int signalLength;
+	private ValueMarker valueMarker;
+	private MainController controller;
 	
 	private static int MAX_NUMBER_OF_VALUES = 250000;
 
-	public SignalPanel(Signal signal) {
+	public SignalPanel(Signal signal, MainController controller) {
 		super();
 		this.setBackground(new Color(0xC8DDF2));
 		this.setLayout(new BorderLayout());
 		this.signal = signal;
+		this.stereo = false;
+		this.controller = controller;
 		xyDataRight = new XYSeriesCollection();
 		xyDataSpectrum = new XYSeriesCollection();
 		xyDataLeft = new XYSeriesCollection();		
@@ -51,12 +62,19 @@ public class SignalPanel extends JPanel {
 	
 	public void paintSignal() {
 		
-		seriesSpectrum = new XYSeries("Spectrum");
-		seriesRight = new XYSeries("Right");
 		seriesLeft = new XYSeries("Left");
+		seriesRight = new XYSeries("Right");
+		seriesSpectrum = new XYSeries("Spectrum");
 		
 		float[] leftSignal = signal.getSignalLeft();
 		float[] rightSignal = signal.getSignalRight();
+		float[] spectrumSignal = signal.getSpectrum();
+		
+		signalLength = leftSignal.length;
+		
+		if(rightSignal != null) {
+			stereo = true;
+		}
 		
 		while(leftSignal.length / ticking > MAX_NUMBER_OF_VALUES) {
 			ticking ++;
@@ -65,12 +83,15 @@ public class SignalPanel extends JPanel {
 		for(int i = 0; i < leftSignal.length; i+= ticking) {
 			seriesLeft.add(i, leftSignal[i]);
 		}
-		if(rightSignal != null) {
+		if(stereo) {
 			for(int i = 0; i < rightSignal.length; i+=ticking) {
 				seriesRight.add(i, rightSignal[i]);
 			}
-		}
+		}	
 		
+		for(int i = 0; i < spectrumSignal.length; i+= ticking) {
+			seriesSpectrum.add(i, spectrumSignal[i]);
+		}
 	}
 	
 	public void refresh() {
@@ -83,6 +104,10 @@ public class SignalPanel extends JPanel {
 		xyDataRight.addSeries(seriesRight);
 		xyDataLeft.addSeries(seriesLeft);
 		xyDataSpectrum.addSeries(seriesSpectrum);
+	}
+	
+	public void refreshMarker(double currIndexFloat) {
+		valueMarker.setValue(currIndexFloat * signalLength);
 	}
 	
 	public void initialize() {
@@ -99,11 +124,7 @@ public class SignalPanel extends JPanel {
 		SignalWindow = new JPanel(new GridLayout(2,1));
 		SpectrumWindow = new JPanel(new GridLayout());
 		
-		paintSignal();
 		
-		xyDataRight.addSeries(seriesRight);
-		xyDataLeft.addSeries(seriesLeft);
-		xyDataSpectrum.addSeries(seriesSpectrum); 
 		
 		JFreeChart chartRight = ChartFactory.createXYLineChart("","","",xyDataRight,PlotOrientation.VERTICAL,false,false,false);
 		chartRight.setBackgroundPaint(new Color(0xC8DDF2));
@@ -144,6 +165,29 @@ public class SignalPanel extends JPanel {
         
         this.add(SignalWindow, BorderLayout.WEST);
         this.add(SpectrumWindow, BorderLayout.CENTER);
+        
+        paintSignal();
+		
+		xyDataRight.addSeries(seriesRight);
+		xyDataLeft.addSeries(seriesLeft);
+		xyDataSpectrum.addSeries(seriesSpectrum); 
+		
+		valueMarker = new ValueMarker(0);
+		plotLeft.addDomainMarker(valueMarker);
+		plotSpectrum.addDomainMarker(valueMarker);
+		if(stereo) {
+			plotRight.addDomainMarker(valueMarker);
+		}
+		
+		// add MarkerChangedListener 
+		controller.getPlayingThread(signal).addMarkerChangedListener(new MarkerChangedListener() {
+
+			@Override
+			public void MarkerChanged(MarkerChangedEvent e) {
+				refreshMarker(e.getValue());
+			}
+			
+		});
 
 	}
 

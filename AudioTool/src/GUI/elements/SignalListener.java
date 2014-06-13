@@ -1,4 +1,4 @@
-package GUI;
+package GUI.elements;
 
 public interface SignalListener
 {

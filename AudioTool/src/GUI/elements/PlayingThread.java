@@ -2,6 +2,8 @@ package GUI.elements;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -10,12 +12,11 @@ import javax.sound.sampled.SourceDataLine;
 import javax.swing.JButton;
 
 import Common.Signal;
-import GUI.SignalEvent;
-import GUI.SignalListener;
 import IO.IOManager;
 
 public class PlayingThread implements Runnable{
 	
+	private List<MarkerChangedListener> listeners;
 	private final Signal signal;
 	private volatile boolean playing;
 	private volatile boolean paused;
@@ -25,6 +26,8 @@ public class PlayingThread implements Runnable{
 	private int currIndex;
 	
 	private byte[] byteBuffer;
+	private double currIndexDouble;
+	private static double MARKER_STEPS = 0.001;
 
 	public PlayingThread(Signal signal, JButton button) {
 		this.signal = signal;
@@ -41,6 +44,8 @@ public class PlayingThread implements Runnable{
 			}
 		});
 		
+		listeners = new ArrayList<MarkerChangedListener>();
+		
 		playing = false;
 		audioFormat = signal.getFormat().getFormat();
 //		bufferStream = new ByteArrayOutputStream();
@@ -49,8 +54,15 @@ public class PlayingThread implements Runnable{
 	}
 	
 	private void initSignal() {
+		paused = false;
+		playing = false;
 		currIndex = 0;
-		byteBuffer = IOManager.convertToBytes(signal);
+		currIndexDouble = 0;
+		if(button != null) {
+			button.setText("Play");
+			button.setForeground(new Color(12, 206, 2));
+			button.setBackground(new Color(12, 206, 2));
+		}
 
 	}
 	
@@ -66,6 +78,7 @@ public class PlayingThread implements Runnable{
 		if(!playing || paused) {
 			playing = true;
 			paused = false;
+			byteBuffer = IOManager.convertToBytes(signal);
 			new Thread(this).start();
 		}		
 	}
@@ -80,6 +93,8 @@ public class PlayingThread implements Runnable{
 		paused = false;
 		playing = false;
 		currIndex = 0;
+		currIndexDouble = 0;
+        fireChangeEvent();
 	}
 	
 	@Override
@@ -107,21 +122,18 @@ public class PlayingThread implements Runnable{
 	        	if((len * index + len) < byteBuffer.length) {
 	        		soundLine.write(byteBuffer, index * len, len);
 	        	}
+	        	if(((float) (index * len) / (float)byteBuffer.length) >= currIndexDouble + MARKER_STEPS) {
+	        		currIndexDouble = (double) (index * len) / (double)byteBuffer.length;
+	        		fireChangeEvent();
+	        	}
 	        	index ++;
 	        }
 	        if(paused && (len * index) < byteBuffer.length) {
 	        	currIndex = index;
 	        }
 	        else {
-	        	currIndex = 0;
-	        	playing = false;
-	        	paused = false;
+	        	stopPlaying();
 	        }
-	        if(button != null) {
-    			button.setText("Play");
-    			button.setForeground(new Color(12, 206, 2));
-    			button.setBackground(new Color(12, 206, 2));
-    		}
 	        soundLine.stop();
 	        soundLine.close();
 		        
@@ -131,9 +143,32 @@ public class PlayingThread implements Runnable{
 		playing = false;
 		if(button != null) {
 			button.setText("Play");
+			button.setForeground(new Color(12, 206, 2));
+			button.setBackground(new Color(12, 206, 2));
 		}
 	}
 	
+	public synchronized void addMarkerChangedListener(MarkerChangedListener listener)
+	{
+		if (this.listeners != null)
+		{
+			this.listeners.add(listener);
+		}
+	}
 	
+	public synchronized void removeMarkerChangedListener(MarkerChangedListener listener) {
+		if(this.listeners != null) {
+			this.listeners.remove(listener);
+		}
+	}
+	
+	private synchronized void fireChangeEvent()
+	{
+		MarkerChangedEvent event = new MarkerChangedEvent(currIndexDouble);
+		for (MarkerChangedListener listener : this.listeners)
+		{
+			listener.MarkerChanged(event);
+		}
+	}
 
 }

@@ -7,8 +7,8 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 
 import edu.emory.mathcs.jtransforms.fft.FloatFFT_1D;
-import GUI.SignalEvent;
-import GUI.SignalListener;
+import GUI.elements.SignalEvent;
+import GUI.elements.SignalListener;
 
 public class Signal
 {
@@ -41,6 +41,12 @@ public class Signal
 		if (this.listeners != null)
 		{
 			this.listeners.add(listener);
+		}
+	}
+	
+	public synchronized void removeListener(SignalListener listener) {
+		if(this.listeners != null) {
+			this.listeners.remove(listener);
 		}
 	}
 

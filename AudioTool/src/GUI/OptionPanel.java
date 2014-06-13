@@ -1,4 +1,4 @@
-package GUI.elements;
+package GUI;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -17,6 +17,7 @@ import Filter.BSFilter;
 import Filter.Filter;
 import Filter.HPFilter;
 import Filter.TPFilter;
+import GUI.elements.PlayingThread;
 
 public class OptionPanel extends JPanel {
 	
@@ -36,7 +37,7 @@ public class OptionPanel extends JPanel {
 		
 		for(int i = 0; i < filters.length; i++) {
 			JButton btnFilter = new JButton(filters[i].getName());
-			btnFilter.addActionListener(new OpenFilterPanelAction(filters[i], mainWindow));
+			btnFilter.addActionListener(new OpenFilterPanelAction(filters[i], mainWindow, controller));
 			this.add(btnFilter);
 		}
 		
@@ -72,15 +73,17 @@ public class OptionPanel extends JPanel {
 		
 		private final Filter filter;
 		private final JFrame mainWindow;
+		private MainController controller;
 		
-		public OpenFilterPanelAction(Filter filter, JFrame mainWindow) {
+		public OpenFilterPanelAction(Filter filter, JFrame mainWindow, MainController controller) {
 			this.filter = filter;
 			this.mainWindow = mainWindow;
+			this.controller = controller;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			JDialog popup = new GeneralFilterPanel(filter, mainWindow); 
+			JDialog popup = new GeneralFilterPanel(filter, mainWindow, controller); 
 			popup.pack();
 			popup.setLocationRelativeTo(mainWindow);
 			popup.setVisible(true);

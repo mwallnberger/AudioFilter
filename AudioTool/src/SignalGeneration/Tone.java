@@ -78,23 +78,23 @@ public class Tone
 				Signal, "Sägezahn");
 	}
 
-	public static float getSawtoothValue(float time, float signalFrequency)
+	private static float getSawtoothValue(float time, float signalFrequency)
 	{
 		return (float) Math.abs(Math.signum(Math.cos(2 * Math.PI * signalFrequency * time * 3))
 				* (signalFrequency * time * 3 - Math.PI * Math.floor(signalFrequency * time * 3 / Math.PI + 1 / 2)));
 	}
 
-	public static float getTriangleValue(float time, float signalFrequency)
+	private static float getTriangleValue(float time, float signalFrequency)
 	{
 		return (float) Math.asin(Math.sin(2 * Math.PI * signalFrequency * time));
 	}
 
-	public static float getRectangleValue(float time, float signalFrequency)
+	private static float getRectangleValue(float time, float signalFrequency)
 	{
 		return (float) Math.signum(Math.sin(Math.PI * signalFrequency * time * 2));
 	}
 
-	public static float getSinusValue(float time, float signalFrequency)
+	private static float getSinusValue(float time, float signalFrequency)
 	{
 		return (float) Math.sin(2 * Math.PI * signalFrequency * time);
 	}
