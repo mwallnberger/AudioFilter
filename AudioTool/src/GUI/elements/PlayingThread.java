@@ -54,6 +54,7 @@ public class PlayingThread implements Runnable{
 	}
 	
 	private void initSignal() {
+		byteBuffer = IOManager.convertToBytes(signal);
 		paused = false;
 		playing = false;
 		currIndex = 0;
@@ -78,7 +79,6 @@ public class PlayingThread implements Runnable{
 		if(!playing || paused) {
 			playing = true;
 			paused = false;
-			byteBuffer = IOManager.convertToBytes(signal);
 			new Thread(this).start();
 		}		
 	}

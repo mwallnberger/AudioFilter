@@ -44,7 +44,7 @@ public class SignalPanel extends JPanel {
 	private ValueMarker valueMarker;
 	private MainController controller;
 	
-	private static int MAX_NUMBER_OF_VALUES = 100000;
+	private static int MAX_NUMBER_OF_VALUES = 50000;
 
 	public SignalPanel(Signal signal, MainController controller) {
 		super();
