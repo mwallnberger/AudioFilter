@@ -3,6 +3,7 @@ package Filter;
 import java.text.DecimalFormat;
 
 import Common.Argument;
+import Common.GeneralException;
 import Common.Signal;
 
 public class TPFilter extends Filter
@@ -44,7 +45,14 @@ public class TPFilter extends Filter
 	@Override
 	public void performFiltering()
 	{
-		// TODO Auto-generated method stub
+		try
+		{
+			PerformFiltering(signal, false, 0);
+		}
+		catch (GeneralException e)
+		{
+			e.printStackTrace();
+		}
 
 	}
 

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
 
+import edu.emory.mathcs.jtransforms.fft.FloatFFT_1D;
 import GUI.SignalEvent;
 import GUI.SignalListener;
 
@@ -29,10 +31,11 @@ public class Signal
 		listeners = new ArrayList<SignalListener>();
 	}
 
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
-	
+
 	public synchronized void addListener(SignalListener listener)
 	{
 		if (this.listeners != null)
@@ -91,17 +94,32 @@ public class Signal
 			listener.SignalChanged(event);
 		}
 	}
-	
-	public boolean isChanged() {
+
+	public boolean isChanged()
+	{
 		return changed;
 	}
-	
-	public void resetChanged() {
+
+	public void resetChanged()
+	{
 		changed = false;
 	}
 
 	public float[] getSpectrum()
 	{
-		return null;
+		FloatFFT_1D fft = new FloatFFT_1D((int) (this.format.getFormat().getSampleRate()/2.0));
+		float[] left = this.signalLeft;
+		fft.realForward(left);
+		
+		if(this.signalRight!=null)
+		{
+			float[] right = this.signalRight;
+			fft.realForward(right);
+			for(int x = 0 ; x< left.length; x++)
+			{
+				left[x]=(float) ((left[x]+right[x])/2.0);
+			}
+		}
+		return left;
 	}
 }
