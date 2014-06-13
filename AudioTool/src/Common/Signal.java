@@ -53,20 +53,28 @@ public class Signal
 	public void setFormat(AudioFileFormat format)
 	{
 		this.format = format;
-		fireChangeEvent();
+//		fireChangeEvent();
 	}
-
-	public void setSignalLeft(float[] signalLeft)
-	{
+	
+	public void setSignal(float[] signalLeft, float[] signalRight) {
 		this.signalLeft = signalLeft;
+		if(signalRight != null) {
+			this.signalRight = signalRight;
+		}
 		fireChangeEvent();
 	}
 
-	public void setSignalRight(float[] signalRight)
-	{
-		this.signalRight = signalRight;
-		fireChangeEvent();
-	}
+//	public void setSignalLeft(float[] signalLeft)
+//	{
+//		this.signalLeft = signalLeft;
+//		fireChangeEvent();
+//	}
+//
+//	public void setSignalRight(float[] signalRight)
+//	{
+//		this.signalRight = signalRight;
+//		fireChangeEvent();
+//	}
 
 	public AudioFileFormat getFormat()
 	{

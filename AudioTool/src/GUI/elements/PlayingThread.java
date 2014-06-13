@@ -27,7 +27,7 @@ public class PlayingThread implements Runnable{
 	
 	private byte[] byteBuffer;
 	private double currIndexDouble;
-	private static double MARKER_STEPS = 0.001;
+	private static double MARKER_STEPS = 0.005;
 
 	public PlayingThread(Signal signal, JButton button) {
 		this.signal = signal;

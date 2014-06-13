@@ -27,10 +27,10 @@ public class TPFilter extends Filter
 		
 		init();
 
-		for (int x = 0; x < this.FIRkoeff.length; x++)
-		{
-			System.out.println(new DecimalFormat("#.########").format(this.FIRkoeff[x]));
-		}
+//		for (int x = 0; x < this.FIRkoeff.length; x++)
+//		{
+//			System.out.println(new DecimalFormat("#.########").format(this.FIRkoeff[x]));
+//		}
 
 	}
 

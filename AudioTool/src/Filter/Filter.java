@@ -116,11 +116,7 @@ public abstract class Filter
 			}
 		}
 
-		signal.setSignalLeft(OutLeft);
-		if (OutRight != null)
-		{
-			signal.setSignalRight(OutRight);
-		}
+		signal.setSignal(OutLeft, OutRight);
 	}
 
 	public String getName()

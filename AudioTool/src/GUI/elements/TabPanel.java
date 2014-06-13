@@ -41,7 +41,6 @@ public class TabPanel extends JPanel {
 		
 		panel.add(chart, BorderLayout.CENTER);
 		panel.add(options, BorderLayout.LINE_END);
-		chart.refresh();
 		return panel;
 	}
 	
