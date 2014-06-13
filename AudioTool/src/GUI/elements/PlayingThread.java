@@ -1,5 +1,6 @@
 package GUI.elements;
 
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 
 import javax.sound.sampled.AudioFormat;
@@ -17,9 +18,11 @@ public class PlayingThread implements Runnable{
 	
 	private final Signal signal;
 	private volatile boolean playing;
+	private volatile boolean paused;
 	private AudioFormat audioFormat;
 //	private ByteArrayOutputStream bufferStream;
 	private JButton button;
+	private int currIndex;
 	
 	private byte[] byteBuffer;
 
@@ -46,62 +49,43 @@ public class PlayingThread implements Runnable{
 	}
 	
 	private void initSignal() {
-//		float[] floatLeft = signal.getSignalLeft();
-//		float[] floatRight = signal.getSignalRight();
-		
+		currIndex = 0;
 		byteBuffer = IOManager.convertToBytes(signal);
-		
-//		boolean stereo = floatRight != null;
-//		
-//		bufferStream.reset();
-//		
-//		int sampleBits = audioFormat.getSampleSizeInBits();
-//		int bytesPerSample = audioFormat.getFrameSize();	//sampleBits / Byte.SIZE;
-//		int maxValue = (int) Math.pow(2, sampleBits) - 1;
-//		
-//		
-//		int floatIndex = 0;
-//		while(floatIndex < floatLeft.length) {
-//			float in = floatLeft[floatIndex];
-//			if (in < -1.0) in = -1.0f;
-//	        if (in > +1.0) in = +1.0f;
-//	        
-//	        // convert to bytes
-//	        int s = (int) (maxValue * in);
-//	        for(int i = 0; i < bytesPerSample; i++) {
-//	        	bufferStream.write((byte) s);
-//	        	s = s >> 8;
-//	        }
-//
-//	        
-//	        if(stereo) {
-//	        	in = floatRight[floatIndex];
-//				if (in < -1.0) in = -1.0f;
-//		        if (in > +1.0) in = +1.0f;
-//		        floatIndex ++;
-//		        // convert to bytes
-//		        s = (int) (maxValue * in);
-//		        for(int i = 0; i < bytesPerSample; i++) {
-//		        	bufferStream.write((byte) s);
-//		        	s = s >> 8;
-//		        }
-//	        }
-//	        floatIndex ++;
-//		}
+
+	}
+	
+	public boolean isPlaying() {
+		return playing;
+	}
+	
+	public boolean isPaused() {
+		return paused;
 	}
 	
 	public void startPlaying() {
-		if(!playing) {
+		if(!playing || paused) {
 			playing = true;
+			paused = false;
 			new Thread(this).start();
-		}
-		
+		}		
+	}
+	
+	public void pausePlaying() {
+		paused = true;
+	}
+	
+	public void stopPlaying() {
+		paused = false;
+		playing = false;
+		currIndex = 0;
 	}
 	
 	@Override
 	public void run() {
 		if(button != null) {
-			button.setText("Stop");
+			button.setText("Pause");
+			button.setForeground(new Color(205, 205, 0));
+			button.setBackground(new Color(205, 205, 0));
 		}
 		
 		SourceDataLine soundLine;
@@ -111,15 +95,31 @@ public class PlayingThread implements Runnable{
 			soundLine.start();
 		        
 	        //byte[] byteBuffer = bufferStream.toByteArray();
-	        int len = audioFormat.getFrameSize() * (byteBuffer.length/1000);
-	        int index = 0;
-	        while(playing && (len * index) < byteBuffer.length) {
+	        int len = audioFormat.getFrameSize() * (byteBuffer.length/10000);
+	        if(len < audioFormat.getFrameSize()) {
+	        	len = audioFormat.getFrameSize();
+	        }
+	        int index = currIndex;
+	        while(playing && !paused && (len * index) < byteBuffer.length) {
 	        	
 	        	if((len * index + len) < byteBuffer.length) {
 	        		soundLine.write(byteBuffer, index * len, len);
 	        	}
 	        	index ++;
 	        }
+	        if(paused && (len * index) < byteBuffer.length) {
+	        	currIndex = index;
+	        }
+	        else {
+	        	currIndex = 0;
+	        	playing = false;
+	        	paused = false;
+	        }
+	        if(button != null) {
+    			button.setText("Play");
+    			button.setForeground(new Color(12, 206, 2));
+    			button.setBackground(new Color(12, 206, 2));
+    		}
 	        soundLine.stop();
 	        soundLine.close();
 		        
@@ -132,12 +132,6 @@ public class PlayingThread implements Runnable{
 		}
 	}
 	
-	public boolean isPlaying() {
-		return playing;
-	}
 	
-	public void stopPlaying() {
-		playing = false;
-	}
 
 }

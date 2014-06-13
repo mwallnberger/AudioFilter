@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
@@ -93,17 +92,20 @@ public class MainController
 	}
 	
 	public void tooglePlaying(Signal s) {
-		if(playThreads.get(s).isPlaying()) {
-			playThreads.get(s).stopPlaying();
-		}
-		else {
-			playThreads.get(s).startPlaying();
+		PlayingThread playThread = playThreads.get(s);
+		if(playThread != null) {
+			if(!playThread.isPlaying() || playThread.isPaused()) {
+				playThread.startPlaying();
+			}
+			else {
+				playThread.pausePlaying();
+			}
 		}
 	}
 	
-	public void startPlaying(Signal s) {
-		playThreads.get(s).startPlaying();
-	}
+//	public void startPlaying(Signal s) {
+//		playThreads.get(s).startPlaying();
+//	}
 	
 	public void stopPlaying(Signal s) {
 		playThreads.get(s).stopPlaying();

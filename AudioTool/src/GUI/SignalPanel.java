@@ -35,7 +35,7 @@ public class SignalPanel extends JPanel {
 	
 	private int ticking = 1;
 	
-	private static int MAX_NUMBER_OF_VALUES = 500000;
+	private static int MAX_NUMBER_OF_VALUES = 250000;
 
 	public SignalPanel(Signal signal) {
 		super();

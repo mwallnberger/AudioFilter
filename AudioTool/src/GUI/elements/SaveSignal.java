@@ -1,9 +1,12 @@
 package GUI.elements;
 
 import java.awt.Component;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Common.GeneralException;
 import Common.Signal;
@@ -55,10 +58,15 @@ public class SaveSignal{
         		if(savesuccess <= 0) {
         			
         			JFileChooser c = new JFileChooser();
-        			
+        			FileFilter filter = new FileNameExtensionFilter("WAV File","wav");
+        			c.setFileFilter(filter);
         			if (c.showSaveDialog(component) == JFileChooser.APPROVE_OPTION) {
         				try {
-							controller.export(c.getSelectedFile(), signal);
+        					File file = new File(c.getSelectedFile().getAbsolutePath());
+        					if(!filter.accept(file)) {
+        						file = new File(file.getAbsolutePath() + ".wav");
+        					}
+							controller.export(file, signal);
 							signal.resetChanged();
 	        				savesuccess = 1;
 						} catch (GeneralException e) {

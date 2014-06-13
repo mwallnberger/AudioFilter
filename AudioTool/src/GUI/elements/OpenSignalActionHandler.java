@@ -1,10 +1,16 @@
 package GUI.elements;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import Common.GeneralException;
 import Common.Signal;
@@ -25,7 +31,8 @@ public class OpenSignalActionHandler implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser c = new JFileChooser();
-		
+		FileFilter filter = new FileNameExtensionFilter("WAV File","wav");
+		c.setFileFilter(filter);
 	    if (c.showOpenDialog(tabPanel) == JFileChooser.APPROVE_OPTION) {
 	    	Signal signal;
 			try {

@@ -17,7 +17,6 @@ import Filter.BSFilter;
 import Filter.Filter;
 import Filter.HPFilter;
 import Filter.TPFilter;
-import GUI.GeneralFilterPanel;
 
 public class OptionPanel extends JPanel {
 	
@@ -33,7 +32,7 @@ public class OptionPanel extends JPanel {
 		
 		JFrame mainWindow = controller.getMainWindow();
 		
-		this.setLayout(new GridLayout(filters.length +1, 1));
+		this.setLayout(new GridLayout(0, 1));
 		
 		for(int i = 0; i < filters.length; i++) {
 			JButton btnFilter = new JButton(filters[i].getName());
@@ -42,7 +41,8 @@ public class OptionPanel extends JPanel {
 		}
 		
 		JButton play = new JButton("Play");
-		play.setBackground(Color.red);
+		play.setForeground(new Color(12, 206, 2));
+		play.setBackground(new Color(12, 206, 2));
 		
 		//create new thread for playing sound (controller manages starting and stopping)
 		controller.addPlayingThread(new PlayingThread(signal, play), signal);
@@ -54,6 +54,17 @@ public class OptionPanel extends JPanel {
 			}
 		});
 		this.add(play);
+		
+		JButton stop = new JButton("Stop");
+		stop.setForeground(Color.red);
+		stop.setBackground(Color.red);
+		stop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.stopPlaying(signal);
+			}
+		});
+		this.add(stop);
 		
 	}
 		

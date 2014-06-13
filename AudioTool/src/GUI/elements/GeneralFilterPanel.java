@@ -1,4 +1,4 @@
-package GUI;
+package GUI.elements;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -26,7 +26,6 @@ public class GeneralFilterPanel extends JDialog{
 		super(mainFrame);
 		this.setTitle(filter.getName());
 		this.setModal(true);
-		
 		
 		Argument[] params = filter.getParams();
 		
@@ -105,20 +104,5 @@ public class GeneralFilterPanel extends JDialog{
 		}
 		
 	}
-	
-	private class closeActionListener implements ActionListener {
-
-		JFrame mainFrame;
-		
-		public closeActionListener(JFrame mainFrame) {
-			this.mainFrame = mainFrame;
-		}
-		
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			mainFrame.dispose();
-		}
-		
-	};
 	
 }
