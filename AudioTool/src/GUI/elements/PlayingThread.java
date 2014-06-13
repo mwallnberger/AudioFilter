@@ -112,7 +112,7 @@ public class PlayingThread implements Runnable{
 			soundLine.start();
 		        
 	        //byte[] byteBuffer = bufferStream.toByteArray();
-	        int len = audioFormat.getFrameSize() * (byteBuffer.length/10000);
+	        int len = audioFormat.getFrameSize() * (byteBuffer.length/40000);
 	        if(len < audioFormat.getFrameSize()) {
 	        	len = audioFormat.getFrameSize();
 	        }
@@ -122,11 +122,12 @@ public class PlayingThread implements Runnable{
 	        	if((len * index + len) < byteBuffer.length) {
 	        		soundLine.write(byteBuffer, index * len, len);
 	        	}
+	        	index ++;
 	        	if(((float) (index * len) / (float)byteBuffer.length) >= currIndexDouble + MARKER_STEPS) {
 	        		currIndexDouble = (double) (index * len) / (double)byteBuffer.length;
 	        		fireChangeEvent();
 	        	}
-	        	index ++;
+	        	
 	        }
 	        if(paused && (len * index) < byteBuffer.length) {
 	        	currIndex = index;
