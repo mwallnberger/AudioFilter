@@ -16,8 +16,6 @@ import java.awt.BorderLayout;
 
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
@@ -113,12 +111,8 @@ public class MainWindow extends JFrame{
 		saveButton.setIcon(new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/32x32/disk.png")));
 		toolBar.add(saveButton);		
 	}
-	
-	public Signal getActiveSignal() {
-		return tabPanel.getActiveSignal();
-	}
-	
-	public void removeSignal(Signal signal) {
-		tabPanel.removeSignal(signal);
+
+	public TabPanel getTabPanel() {
+		return tabPanel;
 	}
 }

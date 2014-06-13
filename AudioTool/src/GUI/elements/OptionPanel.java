@@ -22,13 +22,8 @@ import GUI.GeneralFilterPanel;
 public class OptionPanel extends JPanel {
 	
 	private final Filter[] filters;
-
-//	private final MainController controller;
-//	private final Signal signal;
 	
 	public OptionPanel(Signal signal, MainController controller) {
-//		this.controller = controller;
-//		this.signal = signal;
 		
 		filters = new Filter[4];
 		filters[0] = new TPFilter(signal);
@@ -48,8 +43,16 @@ public class OptionPanel extends JPanel {
 		
 		JButton play = new JButton("Play");
 		play.setBackground(Color.red);
-		play.addActionListener(new PlaySignalActionListener(signal));
-
+		
+		//create new thread for playing sound (controller manages starting and stopping)
+		controller.addPlayingThread(new PlayingThread(signal, play), signal);
+		
+		play.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.tooglePlaying(signal);
+			}
+		});
 		this.add(play);
 		
 	}

@@ -32,6 +32,10 @@ public class SignalPanel extends JPanel {
 	XYPlot plotSpectrum;
 	private JPanel SignalWindow;
 	private JPanel SpectrumWindow;
+	
+	private int ticking = 1;
+	
+	private static int MAX_NUMBER_OF_VALUES = 500000;
 
 	public SignalPanel(Signal signal) {
 		super();
@@ -53,11 +57,16 @@ public class SignalPanel extends JPanel {
 		
 		float[] leftSignal = signal.getSignalLeft();
 		float[] rightSignal = signal.getSignalRight();
-		for(int i = 0; i < leftSignal.length; i++) {
+		
+		while(leftSignal.length / ticking > MAX_NUMBER_OF_VALUES) {
+			ticking ++;
+		}
+		
+		for(int i = 0; i < leftSignal.length; i+= ticking) {
 			seriesLeft.add(i, leftSignal[i]);
 		}
 		if(rightSignal != null) {
-			for(int i = 0; i < rightSignal.length; i++) {
+			for(int i = 0; i < rightSignal.length; i+=ticking) {
 				seriesRight.add(i, rightSignal[i]);
 			}
 		}

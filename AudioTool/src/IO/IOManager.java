@@ -136,7 +136,7 @@ public class IOManager
 		RiffChunk_fmt_ fmtChunk = new RiffChunk_fmt_();
 		fmtChunk.setAudioChannelCount(buffer[0].length);
 		fmtChunk.setAudioFormatCode(1);// 1 for PCM
-		fmtChunk.setBitsPerSample(16);
+		fmtChunk.setBitsPerSample(signal.getFormat().getFormat().getSampleSizeInBits());
 		fmtChunk.setBlockAlign(2 * buffer[0].length);
 		fmtChunk.setByteRate(sampleRate * 2 * fmtChunk.getAudioChannelCount());
 		fmtChunk.setSampleRate(sampleRate);

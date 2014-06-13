@@ -1,9 +1,11 @@
 package Controller;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
@@ -11,15 +13,18 @@ import Common.GeneralException;
 import Common.Signal;
 import Filter.Filter;
 import GUI.MainWindow;
+import GUI.elements.PlayingThread;
+import GUI.elements.TabPanel;
 import IO.IOManager;
 
 public class MainController
 {
 	private final MainWindow window;
-	private final List<Signal> signals;
+	private final TabPanel tabPanel;
+	private final Map<Signal, PlayingThread> playThreads;
 
 	public MainController() {
-		signals = new ArrayList<Signal>();
+		playThreads = new HashMap<Signal, PlayingThread>();
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -27,18 +32,17 @@ public class MainController
 
 		}
 		window = new MainWindow(this);
+		tabPanel = window.getTabPanel();
 	}
 	
 	public Signal loadFile(File file) throws GeneralException{
-		for(Signal s : signals) {
+		for(Signal s : tabPanel.getSignals()) {
 			if(s.getName().equals(file.getName())) {
 				throw new GeneralException("Es ist bereits eine Datei mit dem gleichen Namen geöffnet.");
 			}
 		}
 		try {
-			Signal s = IOManager.importFile(file);
-			signals.add(s);
-			return s;
+			return IOManager.importFile(file);
 		} catch (GeneralException e) {
 			throw e;
 		}	
@@ -54,8 +58,14 @@ public class MainController
 	}
 	
 	public boolean signalClose(Signal signal) {
-		window.removeSignal(signal);
-		return signals.remove(signal);
+		//wiedergabe stoppen
+		PlayingThread playThread = playThreads.get(signal);
+		if(playThread != null) {
+			while(playThread.isPlaying()) {
+				playThread.stopPlaying();
+			}
+		}
+		return tabPanel.removeSignal(signal) && removePlayingThread(signal);
 	}
 	
 	public void performFilter(Filter filter) {
@@ -67,11 +77,44 @@ public class MainController
 	}
 	
 	public Signal getActiveSignal() {
-		return window.getActiveSignal();
+		return tabPanel.getActiveSignal();
 	}
 	
 	public List<Signal> getSignals() {
-		return signals;
+		return tabPanel.getSignals();
 	}
+	
+	public void addPlayingThread(PlayingThread playThread, Signal signal) {
+		playThreads.put(signal, playThread);
+	}
+	
+	public PlayingThread getPlayingThread(Signal s) {
+		return playThreads.get(s);
+	}
+	
+	public void tooglePlaying(Signal s) {
+		if(playThreads.get(s).isPlaying()) {
+			playThreads.get(s).stopPlaying();
+		}
+		else {
+			playThreads.get(s).startPlaying();
+		}
+	}
+	
+	public void startPlaying(Signal s) {
+		playThreads.get(s).startPlaying();
+	}
+	
+	public void stopPlaying(Signal s) {
+		playThreads.get(s).stopPlaying();
+	}
+	
+	private boolean removePlayingThread(Signal s) {
+		if(playThreads.remove(s) != null) {
+			return true;
+		}
+		return false;
+	}
+
 	
 }

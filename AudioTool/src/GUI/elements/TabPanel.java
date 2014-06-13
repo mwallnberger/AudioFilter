@@ -53,7 +53,7 @@ public class TabPanel extends JPanel {
 		JButton closeButton = new JButton(closeIcon);
 		JLabel tabTitle = new JLabel(signal.getName());
 		closePanel.setOpaque(false);
-		closeButton.addActionListener(new CloseTabActionHandler(signal.getName(), panel, controller));
+		closeButton.addActionListener(new CloseTabActionHandler(signal, panel, controller));
 		
 		closePanel.add(tabTitle);
 		closePanel.add(closeButton);
@@ -70,8 +70,12 @@ public class TabPanel extends JPanel {
 		return signals.get(panel.getSelectedIndex());
 	}
 	
-	public void removeSignal(Signal signal) {
-		signals.remove(signal);
+	public boolean removeSignal(Signal signal) {
+		return signals.remove(signal);
+	}
+
+	public List<Signal> getSignals() {
+		return signals;
 	}
 
 }
