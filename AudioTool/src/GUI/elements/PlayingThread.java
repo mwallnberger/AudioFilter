@@ -71,7 +71,9 @@ public class PlayingThread implements Runnable{
 	}
 	
 	public void pausePlaying() {
-		paused = true;
+		if(playing) {
+			paused = true;
+		}
 	}
 	
 	public void stopPlaying() {

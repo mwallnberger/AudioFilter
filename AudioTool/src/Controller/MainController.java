@@ -35,12 +35,18 @@ public class MainController
 	}
 	
 	public Signal loadFile(File file) throws GeneralException{
-		for(Signal s : tabPanel.getSignals()) {
+		List<Signal> signals = tabPanel.getSignals();
+		for(Signal s : signals) {
 			if(s.getName().equals(file.getName())) {
 				throw new GeneralException("Es ist bereits eine Datei mit dem gleichen Namen geöffnet.");
 			}
 		}
 		try {
+			for(Signal s : signals) {
+				if(playThreads.get(s).isPlaying()) {
+					pausePlaying(s);
+				}
+			}
 			return IOManager.importFile(file);
 		} catch (GeneralException e) {
 			throw e;
@@ -60,9 +66,7 @@ public class MainController
 		//wiedergabe stoppen
 		PlayingThread playThread = playThreads.get(signal);
 		if(playThread != null) {
-			while(playThread.isPlaying()) {
-				playThread.stopPlaying();
-			}
+			playThread.stopPlaying();
 		}
 		return tabPanel.removeSignal(signal) && removePlayingThread(signal);
 	}
@@ -103,12 +107,25 @@ public class MainController
 		}
 	}
 	
-//	public void startPlaying(Signal s) {
-//		playThreads.get(s).startPlaying();
-//	}
+	public void startPlaying(Signal s) {
+		PlayingThread thread = playThreads.get(s);
+		if(thread != null) {
+			thread.startPlaying();
+		}
+	}
+	
+	public void pausePlaying(Signal s) {
+		PlayingThread thread = playThreads.get(s);
+		if(thread != null) {
+			thread.pausePlaying();
+		}
+	}
 	
 	public void stopPlaying(Signal s) {
-		playThreads.get(s).stopPlaying();
+		PlayingThread thread = playThreads.get(s);
+		if(thread != null) {
+			thread.stopPlaying();
+		}
 	}
 	
 	private boolean removePlayingThread(Signal s) {

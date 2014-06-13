@@ -1,10 +1,11 @@
 package GUI;
 
 import Common.GeneralException;
+import Common.SaveSignal;
 import Common.Signal;
 import Controller.MainController;
 import GUI.elements.OpenSignalActionHandler;
-import GUI.elements.SaveSignal;
+import GUI.elements.PlayingThread;
 import GUI.elements.TabPanel;
 
 import java.awt.EventQueue;
@@ -16,6 +17,9 @@ import java.awt.BorderLayout;
 
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
@@ -65,7 +69,7 @@ public class MainWindow extends JFrame{
 					
 					for(Signal s : controller.getSignals()) {
 						try {
-							SaveSignal.save(jFrame, s, controller);
+							SaveSignal.saveSignalIfChanged(jFrame, s, controller);
 						} catch (GeneralException e) {
 							
 						}
@@ -74,20 +78,111 @@ public class MainWindow extends JFrame{
 				}
 			}
 		});
+		
 
 		//create tabframe
 		tabPanel = new TabPanel(controller);
-		jFrame.add(tabPanel);
+		
+		OpenSignalActionHandler openAction = new OpenSignalActionHandler(tabPanel, controller);
+		
+		JMenuBar menuBar = new JMenuBar();
+		jFrame.setJMenuBar(menuBar);
+		JMenu fileMenu = new JMenu("Datei");
+		menuBar.add(fileMenu);
+		JMenuItem open = new JMenuItem("Datei öffnen");
+		open.addActionListener(openAction);
+		fileMenu.add(open);
+		
+		JMenuItem saveifChanged = new JMenuItem("Änderung speichern");
+		saveifChanged.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					SaveSignal.saveActiveSignal(tabPanel, controller, -1, false);
+				} catch (GeneralException e) {
+					
+				}
+			}
+		});
+		fileMenu.add(saveifChanged);
+		
+		JMenuItem save = new JMenuItem("Datei speichern");
+		save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					SaveSignal.saveActiveSignal(tabPanel, controller, -1, true);
+				} catch (GeneralException e) {
+					
+				}
+			}
+		});
+		fileMenu.add(save);
+		
+		fileMenu.addSeparator();
+		
+		JMenuItem exit = new JMenuItem("Beenden");
+		exit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(JOptionPane.showConfirmDialog(jFrame, 
+			            "Möchten Sie AudioTool wirklich beenden ?", "Beenden", 
+			            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					
+					for(Signal s : controller.getSignals()) {
+						try {
+							SaveSignal.saveSignalIfChanged(jFrame, s, controller);
+						} catch (GeneralException e) {
+							
+						}
+					}
+					jFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+					jFrame.dispose();
+				}
+			}
+			
+		});
+		fileMenu.add(exit);
+		
+		JMenu playMenu = new JMenu("Abspielen");
+		menuBar.add(playMenu);
+		
+		JMenuItem play = new JMenuItem("Play");
+		play.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.startPlaying(controller.getActiveSignal());
+			}
+		});
+		playMenu.add(play);
+		
+		JMenuItem pause = new JMenuItem("Pause");
+		pause.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.pausePlaying(controller.getActiveSignal());
+			}
+		});
+		playMenu.add(pause);
+		
+		JMenuItem stop = new JMenuItem("Stop");
+		stop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.stopPlaying(controller.getActiveSignal());
+			}
+		});
+		playMenu.add(stop);
 		
 		//create toolbar
 		JToolBar toolBar = new JToolBar();
 		toolBar.setFloatable(false);
-		jFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
+		jFrame.add(toolBar, BorderLayout.NORTH);
 		
 		//create openbutton and add it to toolbar
 		JButton openButton = new JButton("");
 		
-		openButton.addActionListener(new OpenSignalActionHandler(tabPanel, controller));
+		openButton.addActionListener(openAction);
 		
 		openButton.setIcon(new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/32x32/folder.png")));
 		toolBar.add(openButton);
@@ -99,7 +194,7 @@ public class MainWindow extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					SaveSignal.save(jFrame, controller);
+					SaveSignal.saveActiveSignal(jFrame, controller, -1, false);
 				} catch (GeneralException e) {
 					JOptionPane.showMessageDialog(jFrame, "Es ist kein Signal geöffnet.");
 				}
@@ -109,7 +204,9 @@ public class MainWindow extends JFrame{
 		});
 		
 		saveButton.setIcon(new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/32x32/disk.png")));
-		toolBar.add(saveButton);		
+		toolBar.add(saveButton);	
+		
+		jFrame.add(tabPanel);
 	}
 
 	public TabPanel getTabPanel() {

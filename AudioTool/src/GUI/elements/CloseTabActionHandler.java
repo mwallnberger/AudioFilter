@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JTabbedPane;
 
 import Common.GeneralException;
+import Common.SaveSignal;
 import Common.Signal;
 import Controller.MainController;
 /***
@@ -34,7 +35,7 @@ public class CloseTabActionHandler implements ActionListener {
         int index = tabPane.indexOfTab(getTabName());
         if (index >= 0) {
         	try {
-				SaveSignal.save(tabPane, signal, controller);
+				SaveSignal.saveSignalIfChanged(tabPane, signal, controller);
 			} catch (GeneralException e) {
 
 			}
