@@ -5,10 +5,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import org.jfree.chart.*;
+import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.*;
 import org.jfree.chart.renderer.xy.*;
 import org.jfree.chart.title.TextTitle;
@@ -19,11 +22,15 @@ import Common.Signal;
 import Controller.MainController;
 import GUI.elements.MarkerChangedEvent;
 import GUI.elements.MarkerChangedListener;
+import GUI.elements.PlayingThread;
 import GUI.elements.SignalEvent;
 import GUI.elements.SignalListener;
 
 
 public class SignalPanel extends JPanel {
+	
+	private List<MarkerChangedListener> listeners;
+	
 	byte[] data;
 	private XYSeries seriesRight;
 	private XYSeries seriesLeft;
@@ -41,6 +48,7 @@ public class SignalPanel extends JPanel {
 	
 	private int ticking = 1;
 	private int signalLength;
+	private double currIndexDouble;
 	private ValueMarker valueMarker;
 	private MainController controller;
 	
@@ -56,7 +64,7 @@ public class SignalPanel extends JPanel {
 		xyDataRight = new XYSeriesCollection();
 		xyDataSpectrum = new XYSeriesCollection();
 		xyDataLeft = new XYSeriesCollection();		
-		
+		listeners = new ArrayList<MarkerChangedListener>();
 		initialize();
 	}
 	
@@ -92,7 +100,7 @@ public class SignalPanel extends JPanel {
 		for(int i = 0; i < spectrumSignal.length; i+= ticking) {
 			seriesSpectrum.add(i, spectrumSignal[i]);
 		}
-		String test = "";
+		
 		
 	}
 	
@@ -108,9 +116,35 @@ public class SignalPanel extends JPanel {
 		xyDataSpectrum.addSeries(seriesSpectrum);
 	}
 	
-	public void refreshMarker(double currIndexFloat) {
-		valueMarker.setValue(currIndexFloat * signalLength);
+	public void refreshMarker(double currIndexDouble) {
+		this.currIndexDouble = currIndexDouble;
+		valueMarker.setValue(this.currIndexDouble * signalLength);
 	}
+	
+	public synchronized void addMarkerChangedListener(MarkerChangedListener listener)
+	{
+		if (this.listeners != null)
+		{
+			this.listeners.add(listener);
+		}
+	}
+	
+	public synchronized void removeMarkerChangedListener(MarkerChangedListener listener) {
+		if(this.listeners != null) {
+			this.listeners.remove(listener);
+		}
+	}
+	
+	private synchronized void fireChangeEvent()
+	{
+		MarkerChangedEvent event = new MarkerChangedEvent(currIndexDouble);
+		for (MarkerChangedListener listener : this.listeners)
+		{
+			listener.MarkerChanged(event);
+		}
+	}
+	
+	
 	
 	public void initialize() {
 		
@@ -176,22 +210,51 @@ public class SignalPanel extends JPanel {
 		
 		valueMarker = new ValueMarker(0);
 		plotLeft.addDomainMarker(valueMarker);
-		plotSpectrum.addDomainMarker(valueMarker);
 		if(stereo) {
 			plotRight.addDomainMarker(valueMarker);
 		}
 		
-		// add MarkerChangedListener 
-		controller.getPlayingThread(signal).addMarkerChangedListener(new MarkerChangedListener() {
-
-			@Override
-			public void MarkerChanged(MarkerChangedEvent e) {
-				refreshMarker(e.getValue());
-			}
-			
-		});
-
+		// add MarkerChangedListener in PlayingThread and also add this Thrad as Listener
+		PlayingThread thread = controller.getPlayingThread(signal);
+		
+		if(thread != null) {
+			addMarkerChangedListener(thread);
+			thread.addMarkerChangedListener(new MarkerChangedListener() {
+	
+				@Override
+				public void MarkerChanged(MarkerChangedEvent e) {
+					refreshMarker(e.getValue());
+				}
+				
+			});
+		}
+		
+		ChartMouseClickListener mouseListener = new ChartMouseClickListener();
+		panelLeft.addChartMouseListener(mouseListener);
+		if(stereo) {
+			panelRight.addChartMouseListener(mouseListener);
+		}
 	}
 
-	
+	class ChartMouseClickListener implements ChartMouseListener {
+
+		@Override
+		public void chartMouseClicked(ChartMouseEvent e) {
+			if(e.getEntity() instanceof XYItemEntity) {
+				XYItemEntity item = (XYItemEntity) e.getEntity();
+				XYDataset dataset = item.getDataset();
+//				System.out.println("value: " + dataset.getXValue(item.getSeriesIndex(), item.getItem()) + " relativ: " + dataset.getXValue(item.getSeriesIndex(), item.getItem()) / signalLength);
+				double markerValue = dataset.getXValue(item.getSeriesIndex(), item.getItem());
+				currIndexDouble = markerValue / signalLength;
+				valueMarker.setValue(markerValue);
+				fireChangeEvent();
+			}
+			
+		}
+
+		@Override
+		public void chartMouseMoved(ChartMouseEvent e) {
+			
+		}
+	}
 }

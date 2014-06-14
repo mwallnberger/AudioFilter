@@ -14,19 +14,20 @@ import javax.swing.JButton;
 import Common.Signal;
 import IO.IOManager;
 
-public class PlayingThread implements Runnable{
+public class PlayingThread implements Runnable, MarkerChangedListener{
 	
 	private List<MarkerChangedListener> listeners;
 	private final Signal signal;
 	private volatile boolean playing;
 	private volatile boolean paused;
 	private AudioFormat audioFormat;
-//	private ByteArrayOutputStream bufferStream;
 	private JButton button;
 	private int currIndex;
 	
 	private byte[] byteBuffer;
 	private double currIndexDouble;
+	private int playByteLength;
+	private boolean running;
 	private static double MARKER_STEPS = 0.005;
 
 	public PlayingThread(Signal signal, JButton button) {
@@ -38,7 +39,7 @@ public class PlayingThread implements Runnable{
 			@Override
 			public void SignalChanged(SignalEvent e) {
 				if(playing) {
-					playing = false;
+					stopPlaying();
 				}
 				initSignal();
 			}
@@ -48,7 +49,6 @@ public class PlayingThread implements Runnable{
 		
 		playing = false;
 		audioFormat = signal.getFormat().getFormat();
-//		bufferStream = new ByteArrayOutputStream();
 		initSignal();
 
 	}
@@ -59,6 +59,10 @@ public class PlayingThread implements Runnable{
 		playing = false;
 		currIndex = 0;
 		currIndexDouble = 0;
+		playByteLength = audioFormat.getFrameSize() * (byteBuffer.length/40000);
+        if(playByteLength < audioFormat.getFrameSize()) {
+        	playByteLength = audioFormat.getFrameSize();
+        }
 		if(button != null) {
 			button.setText("Play");
 			button.setForeground(new Color(12, 206, 2));
@@ -99,6 +103,7 @@ public class PlayingThread implements Runnable{
 	
 	@Override
 	public void run() {
+		running = true;
 		if(button != null) {
 			button.setText("Pause");
 			button.setForeground(new Color(205, 205, 0));
@@ -111,28 +116,27 @@ public class PlayingThread implements Runnable{
 			soundLine.open(audioFormat);
 			soundLine.start();
 		        
-	        //byte[] byteBuffer = bufferStream.toByteArray();
-	        int len = audioFormat.getFrameSize() * (byteBuffer.length/40000);
-	        if(len < audioFormat.getFrameSize()) {
-	        	len = audioFormat.getFrameSize();
-	        }
-	        int index = currIndex;
-	        while(playing && !paused && (len * index) < byteBuffer.length) {
+	        
+	        while(playing && !paused && (playByteLength * currIndex) <= byteBuffer.length) {
 	        	
-	        	if((len * index + len) < byteBuffer.length) {
-	        		soundLine.write(byteBuffer, index * len, len);
+	        	if((playByteLength * currIndex + playByteLength) <= byteBuffer.length) {
+	        		soundLine.write(byteBuffer, currIndex * playByteLength, playByteLength);
+	        	} 
+	        	else {
+	        		int restPlayLength = byteBuffer.length - currIndex * playByteLength;
+	        		while(restPlayLength % audioFormat.getFrameSize() != 0) {
+	        			restPlayLength--;
+	        		}
+	        		soundLine.write(byteBuffer, currIndex * playByteLength, restPlayLength);
 	        	}
-	        	index ++;
-	        	if(((float) (index * len) / (float)byteBuffer.length) >= currIndexDouble + MARKER_STEPS) {
-	        		currIndexDouble = (double) (index * len) / (double)byteBuffer.length;
+	        	currIndex ++;
+	        	if(((double) (currIndex * playByteLength) / (double)byteBuffer.length) >= currIndexDouble + MARKER_STEPS) {
+	        		currIndexDouble = (double) (currIndex * playByteLength) / (double)byteBuffer.length;
 	        		fireChangeEvent();
 	        	}
 	        	
 	        }
-	        if(paused && (len * index) < byteBuffer.length) {
-	        	currIndex = index;
-	        }
-	        else {
+	        if(!paused && (playByteLength * currIndex) > byteBuffer.length) {
 	        	stopPlaying();
 	        }
 	        soundLine.stop();
@@ -141,12 +145,12 @@ public class PlayingThread implements Runnable{
 		} catch (LineUnavailableException e) {
 
 		}
-		playing = false;
 		if(button != null) {
 			button.setText("Play");
 			button.setForeground(new Color(12, 206, 2));
 			button.setBackground(new Color(12, 206, 2));
 		}
+		running = false;
 	}
 	
 	public synchronized void addMarkerChangedListener(MarkerChangedListener listener)
@@ -170,6 +174,29 @@ public class PlayingThread implements Runnable{
 		{
 			listener.MarkerChanged(event);
 		}
+	}
+
+	@Override
+	public void MarkerChanged(MarkerChangedEvent e) {
+		boolean oldplaying = playing;
+		boolean oldpaused = paused;
+		while(running) {
+			paused = true;
+		}		
+
+		currIndexDouble = e.getValue();
+		currIndex = (int) (currIndexDouble * (byteBuffer.length / playByteLength));
+		//fireChangeEvent();
+
+		if(oldplaying && !oldpaused) {
+			startPlaying();
+		}
+		else {
+			playing = oldplaying;
+			paused = oldpaused;
+		}
+		
+		
 	}
 
 }
