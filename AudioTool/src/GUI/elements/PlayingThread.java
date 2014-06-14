@@ -28,7 +28,7 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 	private double currIndexDouble;
 	private int playByteLength;
 	private boolean running;
-	private static double MARKER_STEPS = 0.005;
+	private static double MARKER_STEPS = 0.001;
 
 	public PlayingThread(Signal signal, JButton button) {
 		this.signal = signal;

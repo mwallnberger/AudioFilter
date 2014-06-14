@@ -202,8 +202,9 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
         ChartPanel panelLeft = new ChartPanel(chartLeft);
         ChartPanel panelSpectrum = new ChartPanel(chartSpectrum);
         
-        SignalWindow.add(panelRight);
+        
         SignalWindow.add(panelLeft);
+        SignalWindow.add(panelRight);
         SignalWindow.setMinimumSize(new Dimension(700, 180));
         SpectrumWindow.add(panelSpectrum);
         
@@ -217,6 +218,7 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 		xyDataSpectrum.addSeries(seriesSpectrum); 
 		
 		valueMarker = new ValueMarker(0);
+		valueMarker.setPaint(Color.BLACK);
 		plotLeft.addDomainMarker(valueMarker);
 		if(stereo) {
 			plotRight.addDomainMarker(valueMarker);
