@@ -20,15 +20,19 @@ import Common.GeneralException;
 import Common.Signal;
 import Controller.MainController;
 import Filter.Filter;
+import GUI.elements.SliderChangedListener;
 
-public class GeneralFilterPanel extends JDialog{
+public class GeneralFilterWindow extends JDialog{
 	
-	public GeneralFilterPanel(Filter filter, JFrame mainFrame, MainController controller) {
+	JDialog dialog;
+	
+	public GeneralFilterWindow(Filter filter, JFrame mainFrame, MainController controller) {
 		super(mainFrame);
 		this.setTitle(filter.getName());
 		this.setModal(true);
+		dialog = this;
 		
-		Argument[] params = filter.getParams();
+		Argument[] params = filter.getParamList();
 		
 		this.setLayout(new GridLayout(params.length + 1, 1));
 		
@@ -61,52 +65,25 @@ public class GeneralFilterPanel extends JDialog{
 		JPanel buttonPanel = new JPanel();
 		
 		JButton btnFilter = new JButton("Filter");
-		JButton cancel = new JButton("Cancel");
-		cancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				mainFrame.dispose();
-			}
-		});
-		
-		buttonPanel.add(btnFilter);
 		btnFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.pauseAllPlaying();
 				controller.performFilter(filter);
-				mainFrame.dispose();
+				dialog.dispose();
 				
+			}
+		});
+		buttonPanel.add(btnFilter);
+		
+		JButton cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dialog.dispose();
 			}
 		});
 		buttonPanel.add(cancel);
 		
 		this.add(buttonPanel);
-	}
-
-	
-	public void performFiltering() throws GeneralException {
-		
-	
-	}
-	
-	private class SliderChangedListener implements ChangeListener {
-		
-		private final Argument parameter;
-		private final JTextField paramValue;
-		private final JSlider paramSlider;
-		
-
-		SliderChangedListener(Argument parameter, JTextField paramValue, JSlider paramSlider) {
-			this.parameter = parameter;
-			this.paramValue = paramValue;
-			this.paramSlider = paramSlider;
-		}
-		
-		@Override
-		public void stateChanged(ChangeEvent arg0) {
-			paramValue.setText(String.valueOf(paramSlider.getValue()));	
-			parameter.setValue(paramSlider.getValue());
-		}
-		
 	}
 	
 }

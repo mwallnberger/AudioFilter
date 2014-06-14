@@ -16,11 +16,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import Common.GeneralException;
 import Common.Signal;
 import Controller.MainController;
+import GUI.TabPanel;
 
 public class OpenSignalActionHandler implements ActionListener{
 
-	
-	
 	private TabPanel tabPanel;
 	private MainController controller;
 	

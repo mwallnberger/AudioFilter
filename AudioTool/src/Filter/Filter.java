@@ -15,7 +15,7 @@ public abstract class Filter
 
 	public abstract void performFiltering();
 
-	public abstract Argument[] getParams();
+	public abstract Argument[] getParamList();
 
 	public abstract String getFilterInfo();
 

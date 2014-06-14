@@ -6,7 +6,6 @@ import Common.Signal;
 import Controller.MainController;
 import GUI.elements.OpenSignalActionHandler;
 import GUI.elements.PlayingThread;
-import GUI.elements.TabPanel;
 
 import java.awt.EventQueue;
 
@@ -17,6 +16,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -166,6 +166,21 @@ public class MainWindow extends JFrame{
 		});
 		playMenu.add(pause);
 		
+		JMenu signalMenu = new JMenu("Signalerzeugung");
+		menuBar.add(signalMenu);
+		
+		JMenuItem signalGen = new JMenuItem("Signal erzeugen");
+		signalGen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JDialog popup = new SignalGenerationWindow(jFrame, controller); 
+				popup.pack();
+				popup.setLocationRelativeTo(jFrame);
+				popup.setVisible(true);
+			}
+		});
+		signalMenu.add(signalGen);
+		
 		JMenuItem stop = new JMenuItem("Stop");
 		stop.addActionListener(new ActionListener() {
 			@Override
@@ -197,7 +212,7 @@ public class MainWindow extends JFrame{
 				try {
 					SaveSignal.saveActiveSignal(jFrame, controller, -1, false);
 				} catch (GeneralException e) {
-					JOptionPane.showMessageDialog(jFrame, "Es ist kein Signal geöffnet.");
+					JOptionPane.showMessageDialog(jFrame, e.toString());
 				}
 				
 			}

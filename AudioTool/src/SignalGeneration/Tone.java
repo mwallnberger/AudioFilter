@@ -13,7 +13,7 @@ public class Tone
 	{
 		Argument[] argument = new Argument[2];
 		argument[0] = new Argument(1,15000, 500,"Frequenz");
-		argument[1] = new Argument(1,15000, 500,"Länge[sec]");
+		argument[1] = new Argument(1,200, 10,"Länge[sec]");
 		return argument;
 	}
 

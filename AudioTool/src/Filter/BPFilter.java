@@ -56,7 +56,7 @@ public class BPFilter extends Filter
 	}
 
 	@Override
-	public Argument[] getParams()
+	public Argument[] getParamList()
 	{
 		return argumentList;
 	}

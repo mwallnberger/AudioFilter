@@ -37,7 +37,7 @@ public class RiffChunk_data extends RiffChunk
 	@Override
 	public void _toData(ByteBuffer buffer)
 		{
-//		buffer.putInt(rawData.length);
+		buffer.putInt(rawData.length);
 		try{buffer.put(rawData);}
 		catch(BufferOverflowException e)
 			{
@@ -48,7 +48,7 @@ public class RiffChunk_data extends RiffChunk
 	@Override
 	public int _sizeEstimateInBytes()
 		{
-		return /*4*/ +rawData.length;//data size indicator plus data
+		return 4 + rawData.length;//data size indicator plus data
 		}
 	
 	/**

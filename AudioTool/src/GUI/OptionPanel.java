@@ -83,7 +83,7 @@ public class OptionPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			JDialog popup = new GeneralFilterPanel(filter, mainWindow, controller); 
+			JDialog popup = new GeneralFilterWindow(filter, mainWindow, controller); 
 			popup.pack();
 			popup.setLocationRelativeTo(mainWindow);
 			popup.setVisible(true);

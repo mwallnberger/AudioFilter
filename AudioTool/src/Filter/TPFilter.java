@@ -57,7 +57,7 @@ public class TPFilter extends Filter
 	}
 
 	@Override
-	public Argument[] getParams()
+	public Argument[] getParamList()
 	{
 		return argumentList;
 	}

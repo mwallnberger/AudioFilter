@@ -1,4 +1,4 @@
-package GUI.elements;
+package GUI;
 
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
@@ -8,9 +8,7 @@ import javax.swing.JPanel;
 
 import Common.Signal;
 import Controller.MainController;
-import GUI.MainWindow;
-import GUI.OptionPanel;
-import GUI.SignalPanel;
+import GUI.elements.CloseTabActionHandler;
 
 import java.awt.*;
 import java.util.ArrayList;

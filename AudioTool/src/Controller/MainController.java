@@ -12,8 +12,8 @@ import Common.GeneralException;
 import Common.Signal;
 import Filter.Filter;
 import GUI.MainWindow;
+import GUI.TabPanel;
 import GUI.elements.PlayingThread;
-import GUI.elements.TabPanel;
 import IO.IOManager;
 
 public class MainController
@@ -32,6 +32,16 @@ public class MainController
 		}
 		window = new MainWindow(this);
 		tabPanel = window.getTabPanel();
+	}
+	
+	public boolean signalExists(Signal signal) {
+		List<Signal> signals = tabPanel.getSignals();
+		for(Signal s : signals) {
+			if(s.getName().equals(signal.getName())) {
+				return true;
+			}
+		}
+		return false;		
 	}
 	
 	public Signal loadFile(File file) throws GeneralException{
@@ -138,6 +148,13 @@ public class MainController
 			return true;
 		}
 		return false;
+	}
+	
+	public void addNewTab(Signal s) throws GeneralException {
+		if(signalExists(s)) {
+			throw new GeneralException("Es ist bereits eine Datei mit dem gleichen Namen geöffnet.");
+		}
+		tabPanel.createNewTab(s);
 	}
 
 	

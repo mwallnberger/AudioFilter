@@ -55,7 +55,7 @@ public class BSFilter extends Filter
 		}
 	}
 
-	public Argument[] getParams()
+	public Argument[] getParamList()
 	{
 		return argumentList;
 	}

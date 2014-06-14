@@ -51,7 +51,7 @@ public class HPFilter extends Filter
 	}
 
 	@Override
-	public Argument[] getParams()
+	public Argument[] getParamList()
 	{
 		return argumentList;
 	}
