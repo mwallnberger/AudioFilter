@@ -167,6 +167,11 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 		}
 	}
 	
+	public synchronized void removeAllMarkerChangedListeners() {
+		
+		listeners = new ArrayList<MarkerChangedListener>();
+	}
+	
 	private synchronized void fireChangeEvent()
 	{
 		MarkerChangedEvent event = new MarkerChangedEvent(currIndexDouble);

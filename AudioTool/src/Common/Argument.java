@@ -13,7 +13,19 @@ public class Argument
 		super();
 		this.min = min;
 		this.max = max;
-		this.value = initValue;
+		if(initValue < min) {
+			this.value = min;
+		}
+		else {
+			if(initValue > max) {
+				this.value = max;
+			}
+			else {
+				this.value = initValue;
+			}
+			
+		}
+		
 		this.name = name;
 	}
 	public float getValue()

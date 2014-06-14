@@ -19,11 +19,14 @@ public class SaveSignal{
 	 * 
 	 * @param component
 	 * @param controller
+	 * 
+	 * @return saveok		true if saveing was ok (or user desided not to save)
+	 * 		
 	 * @throws GeneralException
 	 * 			just when controller.getActiveSignal() returns null or controller == null
 	 */	
-	public static void saveActiveSignalIfChanged(Component component, MainController controller) throws GeneralException {
-		save(component, controller.getActiveSignal(), controller, 0, false);
+	public static boolean saveActiveSignalIfChanged(Component component, MainController controller) throws GeneralException {
+		return save(component, controller.getActiveSignal(), controller, 0, false);
 	}
 	
 	/**
@@ -33,11 +36,14 @@ public class SaveSignal{
 	 * 
 	 * @param component
 	 * @param controller
+	 * 
+	 * @return saveok		true if saveing was ok (or user desided not to save)
+	 * 		
 	 * @throws GeneralException
 	 * 			just when controller.getActiveSignal() returns null or controller == null
 	 */	
-	public static void saveSignalIfChanged(Component component, Signal signal, MainController controller) throws GeneralException {
-		save(component, controller.getActiveSignal(), controller, 0, false);
+	public static boolean saveSignalIfChanged(Component component, Signal signal, MainController controller) throws GeneralException {
+		return save(component, signal, controller, 0, false);
 	}
 	
 	
@@ -49,11 +55,14 @@ public class SaveSignal{
 	 * @param controller
 	 * @param askQuestion	0 - dialog asking to save
 	 * 						-1 - no dialog asking to save
+	 * 
+	 * @return saveok		true if saveing was ok (or user desided not to save)
+	 * 		
 	 * @throws GeneralException
 	 * 			just when signal or controller is null
 	 */	
-	public static void saveActiveSignal(Component component, MainController controller, int askQuestion, boolean saveWithoutChanges) throws GeneralException {
-		save(component, controller.getActiveSignal(), controller, askQuestion, saveWithoutChanges);
+	public static boolean saveActiveSignal(Component component, MainController controller, int askQuestion, boolean saveWithoutChanges) throws GeneralException {
+		return save(component, controller.getActiveSignal(), controller, askQuestion, saveWithoutChanges);
 	}
 	
 	/**
@@ -65,10 +74,13 @@ public class SaveSignal{
 	 * @param askQuestion	0 - dialog asking to save
 	 * 						-1 - no dialog asking to save
 	 * @param saveWithoutChanges ture signal will be saved even without signalchanged
+	 * 
+	 * @return saveok		true if saveing was ok (or user desided not to save)
+	 * 						false if user aborted
 	 * @throws GeneralException
 	 * 			just when signal or controller is null
 	 */	
-	private static void save(Component component, Signal signal, MainController controller, int askQuestion, boolean saveWithoutChanges) throws GeneralException {
+	private static boolean save(Component component, Signal signal, MainController controller, int askQuestion, boolean saveWithoutChanges) throws GeneralException {
 		
 		if(controller == null || signal == null) {
 			throw new GeneralException("Es ist kein Signal geöffnet.");
@@ -80,12 +92,17 @@ public class SaveSignal{
 		
 		if(signal.isChanged() || saveWithoutChanges) {
     		while(askQuestion < 1) {
+    			int desicion = 0;
     			if(askQuestion == 0) {
-    				if(JOptionPane.showConfirmDialog(component, 
+    				desicion = JOptionPane.showConfirmDialog(component, 
     			            "Möchten Sie die änderungen am Signal " + signal.getName() + " speichern?", "Änderungen speichern?", 
-    			            JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
-    					askQuestion = 1;
-    					break;
+    			            JOptionPane.YES_NO_OPTION);
+    				
+    				if (desicion == JOptionPane.NO_OPTION) {
+    					return true;
+    				}
+    				if(desicion == JOptionPane.CANCEL_OPTION || desicion == JOptionPane.CLOSED_OPTION) {
+    					return false;
     				}
     			}
     			
@@ -94,7 +111,8 @@ public class SaveSignal{
         			JFileChooser c = new JFileChooser();
         			FileFilter filter = new FileNameExtensionFilter("WAV File","wav");
         			c.setFileFilter(filter);
-        			if (c.showSaveDialog(component) == JFileChooser.APPROVE_OPTION) {
+        			desicion = c.showSaveDialog(component);
+        			if (desicion == JFileChooser.APPROVE_OPTION) {
         				try {
         					File file = new File(c.getSelectedFile().getAbsolutePath());
         					if(!filter.accept(file)) {
@@ -102,7 +120,7 @@ public class SaveSignal{
         					}
 							controller.export(file, signal);
 							signal.resetChanged();
-							askQuestion = 1;
+							return true;
 						} catch (GeneralException e) {
 							if(JOptionPane.showConfirmDialog(component, 
 						        "Fehler beim Speichern der Datei! \r\nMöchten Sie den Vorgang wiederholen?", "Fehler beim Speichern der Datei " + signal.getName(), 
@@ -118,11 +136,12 @@ public class SaveSignal{
         				
         			}
         			else {
-        				askQuestion = 1;
+        				return false;
         			}
 				}
     		}
     	}
+		return true;
 		
 		
 

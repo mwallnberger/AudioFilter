@@ -63,20 +63,7 @@ public class MainWindow extends JFrame{
 		
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				
-				if(JOptionPane.showConfirmDialog(jFrame, 
-			            "Möchten Sie AudioTool wirklich beenden ?", "Beenden", 
-			            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					
-					for(Signal s : controller.getSignals()) {
-						try {
-							SaveSignal.saveSignalIfChanged(jFrame, s, controller);
-						} catch (GeneralException e) {
-							
-						}
-					}
-					jFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-				}
+				closeOperation();
 			}
 		});
 		
@@ -126,22 +113,8 @@ public class MainWindow extends JFrame{
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(JOptionPane.showConfirmDialog(jFrame, 
-			            "Möchten Sie AudioTool wirklich beenden ?", "Beenden", 
-			            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					
-					for(Signal s : controller.getSignals()) {
-						try {
-							SaveSignal.saveSignalIfChanged(jFrame, s, controller);
-						} catch (GeneralException e) {
-							
-						}
-					}
-					jFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-					jFrame.dispose();
-				}
+				closeOperation();
 			}
-			
 		});
 		fileMenu.add(exit);
 		
@@ -227,5 +200,24 @@ public class MainWindow extends JFrame{
 
 	public TabPanel getTabPanel() {
 		return tabPanel;
+	}
+	
+	private void closeOperation() {
+		if(JOptionPane.showConfirmDialog(jFrame, 
+	            "Möchten Sie AudioTool wirklich beenden ?", "Beenden", 
+	            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+			
+			for(Signal s : controller.getSignals()) {
+				try {
+					if(!SaveSignal.saveSignalIfChanged(jFrame, s, controller)) {
+						return;
+					}
+				} catch (GeneralException e) {
+					
+				}
+			}
+			jFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+			jFrame.dispose();
+		}
 	}
 }

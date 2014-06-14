@@ -35,7 +35,9 @@ public class CloseTabActionHandler implements ActionListener {
         int index = tabPane.indexOfTab(getTabName());
         if (index >= 0) {
         	try {
-				SaveSignal.saveSignalIfChanged(tabPane, signal, controller);
+				if(!SaveSignal.saveSignalIfChanged(tabPane, signal, controller)) {
+					return;
+				}
 			} catch (GeneralException e) {
 
 			}

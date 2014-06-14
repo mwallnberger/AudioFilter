@@ -27,7 +27,7 @@ import GUI.elements.SignalEvent;
 import GUI.elements.SignalListener;
 
 
-public class SignalPanel extends JPanel {
+public class SignalPanel extends JPanel implements MarkerChangedListener{
 	
 	private List<MarkerChangedListener> listeners;
 	
@@ -135,6 +135,11 @@ public class SignalPanel extends JPanel {
 		}
 	}
 	
+	@Override
+	public synchronized void removeAllMarkerChangedListeners() {
+		listeners = new ArrayList<MarkerChangedListener>();
+	}
+	
 	private synchronized void fireChangeEvent()
 	{
 		MarkerChangedEvent event = new MarkerChangedEvent(currIndexDouble);
@@ -144,7 +149,10 @@ public class SignalPanel extends JPanel {
 		}
 	}
 	
-	
+	@Override
+	public synchronized void MarkerChanged(MarkerChangedEvent e) {
+		refreshMarker(e.getValue());
+	}	
 	
 	public void initialize() {
 		
@@ -219,14 +227,7 @@ public class SignalPanel extends JPanel {
 		
 		if(thread != null) {
 			addMarkerChangedListener(thread);
-			thread.addMarkerChangedListener(new MarkerChangedListener() {
-	
-				@Override
-				public void MarkerChanged(MarkerChangedEvent e) {
-					refreshMarker(e.getValue());
-				}
-				
-			});
+			thread.addMarkerChangedListener(this);
 		}
 		
 		ChartMouseClickListener mouseListener = new ChartMouseClickListener();
@@ -257,4 +258,5 @@ public class SignalPanel extends JPanel {
 			
 		}
 	}
+
 }

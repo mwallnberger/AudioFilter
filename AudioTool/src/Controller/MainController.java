@@ -156,6 +156,13 @@ public class MainController
 		}
 		tabPanel.createNewTab(s);
 	}
+	
+	public void removeAllCurrentListeners() {
+		tabPanel.getSignals().forEach(s -> {
+			getPlayingThread(s).removeAllMarkerChangedListeners();
+			s.removeAllListeners();
+		});
+	}
 
 	
 }
