@@ -18,7 +18,6 @@ import Common.Argument;
 import Common.GeneralException;
 import Common.Signal;
 import Controller.MainController;
-import Filter.Filter;
 import GUI.elements.SliderChangedListener;
 import SignalGeneration.Tone;
 

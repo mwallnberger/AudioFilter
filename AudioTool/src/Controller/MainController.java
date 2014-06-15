@@ -1,13 +1,9 @@
 package Controller;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-
 import Common.GeneralException;
 import Common.SaveSignal;
 import Common.Signal;
@@ -22,11 +18,8 @@ public class MainController
 {
 	private final MainWindow window;
 	private final TabPanel tabPanel;
-//	private final Map<Signal, PlayingThread> playThreads;
 
-	public MainController() {
-//		playThreads = new HashMap<Signal, PlayingThread>();
-		
+	public MainController() {		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -154,6 +147,5 @@ public class MainController
 	public void renameTab(Signal s) {
 		tabPanel.renameTab(s);
 	}
-
 	
 }

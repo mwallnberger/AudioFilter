@@ -1,20 +1,15 @@
 package GUI;
 
-import javax.swing.JButton;
-import javax.swing.JTabbedPane;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import Common.Signal;
 import Controller.MainController;
-import GUI.elements.CloseTabActionHandler;
 import GUI.elements.CloseTabPanel;
 import GUI.elements.PlayingThread;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JTabbedPane;
 
 public class TabPanel extends JTabbedPane {
 

@@ -1,7 +1,5 @@
 package Filter;
 
-import java.text.DecimalFormat;
-
 import Common.Argument;
 import Common.GeneralException;
 import Common.Signal;
@@ -26,11 +24,6 @@ public class TPFilter extends Filter
 		argumentList[1] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
 		
 		init();
-
-//		for (int x = 0; x < this.FIRkoeff.length; x++)
-//		{
-//			System.out.println(new DecimalFormat("#.########").format(this.FIRkoeff[x]));
-//		}
 
 	}
 

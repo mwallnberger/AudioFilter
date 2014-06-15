@@ -17,7 +17,6 @@ import Filter.BSFilter;
 import Filter.Filter;
 import Filter.HPFilter;
 import Filter.TPFilter;
-import GUI.elements.PlayingThread;
 
 public class OptionPanel extends JPanel {
 	
@@ -45,10 +44,6 @@ public class OptionPanel extends JPanel {
 		btnPlay = new JButton("Play");
 		btnPlay.setForeground(new Color(12, 206, 2));
 		btnPlay.setBackground(new Color(12, 206, 2));
-		
-		//create new thread for playing sound (controller manages starting and stopping)
-//		controller.addPlayingThread(new PlayingThread(signal, btnPlay), signal);
-		
 		btnPlay.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -67,7 +62,6 @@ public class OptionPanel extends JPanel {
 			}
 		});
 		this.add(btnStop);
-		
 	}
 	
 	public JButton getPlayButton() {

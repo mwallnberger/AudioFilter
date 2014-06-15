@@ -1,5 +1,8 @@
 package GUI.elements;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -8,7 +11,6 @@ import javax.swing.JPanel;
 import Common.Signal;
 import Controller.MainController;
 import GUI.MainWindow;
-import GUI.TabPanel;
 
 public class CloseTabPanel extends JPanel{
 	
@@ -18,7 +20,14 @@ public class CloseTabPanel extends JPanel{
 		JButton closeButton = new JButton(closeIcon);
 		JLabel tabTitle = new JLabel(signal.getName());
 		this.setOpaque(false);
-		closeButton.addActionListener(new CloseTabActionHandler(signal, controller));
+		closeButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+		        controller.closeSignal(signal);
+		    }
+			
+		});
 		
 		this.add(tabTitle);
 		this.add(closeButton);

@@ -12,13 +12,11 @@ import GUI.elements.PlayingThread;
 public class InnerTabPanel extends JPanel{
 	
 	private final Signal signal;
-	private final MainController controller;
 	private final PlayingThread thread;
 	private final SignalPanel signalChart;
 
 	public InnerTabPanel(Signal signal, MainController controller) {
 		this.signal = signal;
-		this.controller = controller;
 		
 		this.setLayout(new BorderLayout());
 		this.setBackground(Color.white); 

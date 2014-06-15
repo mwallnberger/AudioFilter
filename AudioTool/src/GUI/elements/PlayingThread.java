@@ -1,7 +1,6 @@
 package GUI.elements;
 
 import java.awt.Color;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +28,7 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 	private int playByteLength;
 	private boolean running;
 	private static double MARKER_STEPS = 0.001;
+	private static int PLAY_STEPS = 40000;
 
 	public PlayingThread(Signal signal, JButton button) {
 		this.signal = signal;
@@ -59,10 +59,18 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 		playing = false;
 		currIndex = 0;
 		currIndexDouble = 0;
-		playByteLength = audioFormat.getFrameSize() * (byteBuffer.length/40000);
-        if(playByteLength < audioFormat.getFrameSize()) {
-        	playByteLength = audioFormat.getFrameSize();
-        }
+		playByteLength = audioFormat.getFrameSize() * (byteBuffer.length/PLAY_STEPS);
+		int count = 10;
+		while(playByteLength < audioFormat.getFrameSize()*10) {
+			int play_steps = PLAY_STEPS/count;
+			if(play_steps <= 0) {
+				playByteLength = audioFormat.getFrameSize();
+				break;
+			}
+			playByteLength = audioFormat.getFrameSize() * (byteBuffer.length/play_steps);
+			count*=10;
+		}
+		
 		if(button != null) {
 			button.setText("Play");
 			button.setForeground(new Color(12, 206, 2));
@@ -184,13 +192,13 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 	public void MarkerChanged(MarkerChangedEvent e) {
 		boolean oldplaying = playing;
 		boolean oldpaused = paused;
+		
 		while(running) {
 			paused = true;
-		}		
+		}	
 
 		currIndexDouble = e.getValue();
 		currIndex = (int) (currIndexDouble * (byteBuffer.length / playByteLength));
-		//fireChangeEvent();
 
 		if(oldplaying && !oldpaused) {
 			startPlaying();

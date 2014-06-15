@@ -2,12 +2,8 @@ package Common;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioFormat;
-
 import edu.emory.mathcs.jtransforms.fft.FloatFFT_1D;
-import GUI.elements.MarkerChangedListener;
 import GUI.elements.SignalEvent;
 import GUI.elements.SignalListener;
 
@@ -64,7 +60,6 @@ public class Signal
 	public void setFormat(AudioFileFormat format)
 	{
 		this.format = format;
-//		fireChangeEvent();
 	}
 	
 	public void setSignal(float[] signalLeft, float[] signalRight) {

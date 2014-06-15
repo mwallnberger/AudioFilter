@@ -22,7 +22,6 @@ import Common.Signal;
 import Controller.MainController;
 import GUI.elements.MarkerChangedEvent;
 import GUI.elements.MarkerChangedListener;
-import GUI.elements.PlayingThread;
 import GUI.elements.SignalEvent;
 import GUI.elements.SignalListener;
 
@@ -50,7 +49,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 	private int signalLength;
 	private double currIndexDouble;
 	private ValueMarker valueMarker;
-	private MainController controller;
 	
 	private static int MAX_NUMBER_OF_VALUES = 50000;
 
@@ -60,7 +58,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		this.setLayout(new BorderLayout());
 		this.signal = signal;
 		this.stereo = false;
-		this.controller = controller;
 		xyDataRight = new XYSeriesCollection();
 		xyDataSpectrum = new XYSeriesCollection();
 		xyDataLeft = new XYSeriesCollection();		
