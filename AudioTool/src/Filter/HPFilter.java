@@ -20,7 +20,7 @@ public class HPFilter extends Filter
 		this.cutoffFreq = 500;
 		
 		argumentList = new Argument[2];
-		argumentList[0] = new Argument(0, this.samplingRate, this.cutoffFreq, "Grenzfrequenz");
+		argumentList[0] = new Argument(0, this.samplingRate/2, this.cutoffFreq, "Grenzfrequenz");
 		argumentList[1] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
 		
 		init();

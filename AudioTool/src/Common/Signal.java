@@ -115,19 +115,25 @@ public class Signal
 
 	public float[] getSpectrum()
 	{
-		FloatFFT_1D fft = new FloatFFT_1D((int) (this.format.getFormat().getSampleRate()/2.0));
-		float[] left = this.signalLeft;
-		fft.realForward(left);
-		
-		if(this.signalRight!=null)
-		{
-			float[] right = this.signalRight;
-			fft.realForward(right);
-			for(int x = 0 ; x< left.length; x++)
-			{
-				left[x]=(float) ((left[x]+right[x])/2.0);
-			}
-		}
-		return left;
+		 FloatFFT_1D fft = new FloatFFT_1D(this.signalLeft.length);
+
+         float[] specL = new float[this.signalLeft.length];
+         System.arraycopy( this.signalLeft, 0, specL, 0, this.signalLeft.length );
+         fft.realForward(specL);
+
+
+         if(this.signalRight!=null)
+         {
+                 float[] specR = new float[this.signalLeft.length];
+                 System.arraycopy( this.signalRight, 0, specR, 0, this.signalRight.length );
+                 fft.realForward(specR);
+
+                 for(int x = 0 ; x< specL.length; x++)
+                 {
+                         specL[x]=(float) ((specL[x]+specR[x])/2.0);
+                 }
+         }
+
+         return specL;
 	}
 }

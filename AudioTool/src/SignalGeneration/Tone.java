@@ -44,7 +44,7 @@ public class Tone
 			Signal[i] = getSinusValue((float) i / (float) sampleFrequency, signalFrequency);
 		}
 
-		return new Signal(new AudioFileFormat(AudioFileFormat.Type.WAVE, new AudioFormat(sampleFrequency, 16, 2, true, false), 44200), Signal,
+		return new Signal(new AudioFileFormat(AudioFileFormat.Type.WAVE, new AudioFormat(sampleFrequency, 16, 2, true, false), 44100), Signal,
 				Signal, "Sinus");
 	}
 
@@ -59,7 +59,7 @@ public class Tone
 			Signal[i] = getTriangleValue((float) i / (float) sampleFrequency, signalFrequency);
 		}
 
-		return new Signal(new AudioFileFormat(AudioFileFormat.Type.WAVE, new AudioFormat(sampleFrequency, 16, 2, true, false), 44200), Signal,
+		return new Signal(new AudioFileFormat(AudioFileFormat.Type.WAVE, new AudioFormat(sampleFrequency, 16, 2, true, false), 44100), Signal,
 				Signal, "Dreieck");
 	}
 
@@ -74,7 +74,7 @@ public class Tone
 			Signal[i] = getSawtoothValue((float) i / (float) sampleFrequency, signalFrequency);
 		}
 
-		return new Signal(new AudioFileFormat(AudioFileFormat.Type.WAVE, new AudioFormat(sampleFrequency, 16, 2, true, false), 44200), Signal,
+		return new Signal(new AudioFileFormat(AudioFileFormat.Type.WAVE, new AudioFormat(sampleFrequency, 16, 2, true, false), 44100), Signal,
 				Signal, "Sägezahn");
 	}
 
