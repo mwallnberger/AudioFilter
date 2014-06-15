@@ -17,8 +17,8 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 	
 	private List<MarkerChangedListener> listeners;
 	private final Signal signal;
-	private volatile boolean playing;
-	private volatile boolean paused;
+	private boolean playing;
+	private boolean paused;
 	private AudioFormat audioFormat;
 	private JButton button;
 	private int currIndex;
@@ -118,6 +118,7 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 			button.setBackground(new Color(205, 205, 0));
 		}
 		
+		
 		SourceDataLine soundLine;
 		try {
 			soundLine = AudioSystem.getSourceDataLine(audioFormat);
@@ -161,7 +162,7 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 		running = false;
 	}
 	
-	public synchronized void addMarkerChangedListener(MarkerChangedListener listener)
+	public void addMarkerChangedListener(MarkerChangedListener listener)
 	{
 		if (this.listeners != null)
 		{
@@ -169,17 +170,17 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 		}
 	}
 	
-	public synchronized void removeMarkerChangedListener(MarkerChangedListener listener) {
+	public void removeMarkerChangedListener(MarkerChangedListener listener) {
 		if(this.listeners != null) {
 			this.listeners.remove(listener);
 		}
 	}
 	
-	public synchronized void removeAllMarkerChangedListeners() {
+	public void removeAllMarkerChangedListeners() {
 		listeners = new ArrayList<MarkerChangedListener>();
 	}
 	
-	private synchronized void fireChangeEvent()
+	private void fireChangeEvent()
 	{
 		MarkerChangedEvent event = new MarkerChangedEvent(currIndexDouble);
 		for (MarkerChangedListener listener : this.listeners)
@@ -206,9 +207,18 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 		}	
 
 		currIndexDouble = e.getValue();
-		currIndex = (int) (currIndexDouble * (byteBuffer.length / playByteLength));
+		currIndex = (int) (e.getValue() * (byteBuffer.length / playByteLength));
 
+		
 		if(oldplaying && !oldpaused) {
+			try
+			{
+				Thread.sleep(10);
+			}
+			catch (InterruptedException e1)
+			{
+				e1.printStackTrace();
+			}
 			startPlaying();
 		}
 		else {

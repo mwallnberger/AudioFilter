@@ -116,7 +116,7 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		valueMarker.setValue(this.currIndexDouble * signalLength);
 	}
 	
-	public synchronized void addMarkerChangedListener(MarkerChangedListener listener)
+	public void addMarkerChangedListener(MarkerChangedListener listener)
 	{
 		if (this.listeners != null)
 		{
@@ -124,17 +124,17 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		}
 	}
 	
-	public synchronized void removeMarkerChangedListener(MarkerChangedListener listener) {
+	public void removeMarkerChangedListener(MarkerChangedListener listener) {
 		if(this.listeners != null) {
 			this.listeners.remove(listener);
 		}
 	}
 	
-	public synchronized void removeAllMarkerChangedListeners() {
+	public void removeAllMarkerChangedListeners() {
 		listeners = new ArrayList<MarkerChangedListener>();
 	}
 	
-	private synchronized void fireChangeEvent()
+	private void fireChangeEvent()
 	{
 		MarkerChangedEvent event = new MarkerChangedEvent(currIndexDouble);
 		for (MarkerChangedListener listener : this.listeners)
@@ -144,7 +144,7 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 	}
 	
 	@Override
-	public synchronized void MarkerChanged(MarkerChangedEvent e) {
+	public void MarkerChanged(MarkerChangedEvent e) {
 		refreshMarker(e.getValue());
 	}	
 	
