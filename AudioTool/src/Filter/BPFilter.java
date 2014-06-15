@@ -22,8 +22,6 @@ public class BPFilter extends Filter
 		argumentList[0] = new Argument(0, this.samplingRate/2, this.cutoffFreq, "Grenzfrequenz low");
 		argumentList[1] = new Argument(0, this.samplingRate/2, this.cutoffFreq2, "Grenzfrequenz high");
 		argumentList[2] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
-		
-		init();
 
 	}
 
@@ -38,13 +36,12 @@ public class BPFilter extends Filter
 		argumentList[0] = new Argument(0, this.samplingRate, this.cutoffFreq, "Grenzfrequenz low");
 		argumentList[1] = new Argument(0, this.samplingRate, this.cutoffFreq2, "Grenzfrequenz high");
 		argumentList[2] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
-		
-		this.init();
 	}
 
 	@Override
 	public void performFiltering()
 	{
+		init();
 		try
 		{
 			PerformFiltering(signal, false, 0);
@@ -64,9 +61,9 @@ public class BPFilter extends Filter
 	public void init()
 	{		
 		//nicht mehr nötig?
-//		this.numberOfTaps = (int) argumentList[2].getValue();
-//		this.cutoffFreq = (int) argumentList[0].getValue();
-//		this.cutoffFreq2 = (int) argumentList[1].getValue();
+     	this.numberOfTaps = (int) argumentList[2].getValue();
+     	this.cutoffFreq = (int) argumentList[0].getValue();
+		this.cutoffFreq2 = (int) argumentList[1].getValue();
 		
 		final double[] bs = createLowpass(this.numberOfTaps, this.cutoffFreq, this.cutoffFreq2, this.samplingRate);
 

@@ -28,7 +28,7 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 	private int playByteLength;
 	private boolean running;
 	private static double MARKER_STEPS = 0.001;
-	private static int PLAY_STEPS = 40000;
+	private static int PLAY_STEPS = 5000;
 
 	public PlayingThread(Signal signal, JButton button) {
 		this.signal = signal;
@@ -195,6 +195,14 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 		
 		while(running) {
 			paused = true;
+			try
+			{
+				Thread.sleep(10);
+			}
+			catch (InterruptedException e1)
+			{
+				e1.printStackTrace();
+			}
 		}	
 
 		currIndexDouble = e.getValue();
