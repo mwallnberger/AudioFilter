@@ -212,7 +212,6 @@ public class Utils
 		fmtChunk.setByteRate((long)sampleRate*2*fmtChunk.getAudioChannelCount());
 		fmtChunk.setSampleRate((long)sampleRate);
 		fmtChunk.setSize(16);// 16 for PCM
-		
 		waveChunk.addChildChunk(dataChunk);
 		waveChunk.addChildChunk(fmtChunk);
 		riffChunk.addChildChunk(waveChunk);

@@ -68,32 +68,22 @@ public class IOManager
 
 	}
 
-	public static void exportFile(File file, Signal signal) throws GeneralException // , FileType fileType) throws GeneralException
+	public static void exportFile(File file, Signal signal) throws GeneralException 																
 	{
-		/*
-		 * try { AudioFormat out = signal.getFormat().getFormat();
-		 * 
-		 * byte[] audioRaw = convertToBytes(signal);
-		 * 
-		 * InputStream b_in = new ByteArrayInputStream(audioRaw);
-		 * AudioInputStream stream = new AudioInputStream(b_in, out,
-		 * audioRaw.length);
-		 * 
-		 * AudioFileFormat.Type type = new AudioFileFormat.Type(fileType.name(),
-		 * fileType.getEnding()); if (AudioSystem.isFileTypeSupported(type,
-		 * stream)) { AudioSystem.write(stream, type, file);
-		 * 
-		 * } } catch(IOException e) { throw new GeneralException("Error!"); }
-		 */
-		float[][] buffer = convertSignalToByteArray(signal);
-
 		try
 		{
-			Utils.floatsToWAV(buffer, file, signal.getFormat().getFormat().getSampleRate());
+			AudioFormat out = signal.getFormat().getFormat();
+
+			byte[] audioRaw = convertToBytes(signal);
+
+			InputStream b_in = new ByteArrayInputStream(audioRaw);
+			
+			AudioInputStream stream = new AudioInputStream(b_in, out, audioRaw.length/(2*signal.getFormat().getFormat().getChannels()));
+			AudioSystem.write(stream, AudioFileFormat.Type.WAVE,  file);
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			throw new GeneralException("Error!");
 		}
 	}
 
@@ -101,12 +91,12 @@ public class IOManager
 	{
 		float[][] buffer = new float[signal.getSignalLeft().length][];
 		boolean isStereo = true;
-		if (signal.getSignalLeft() == null || signal.getSignalRight() == null)
+		float[] sigLeft = signal.getSignalLeft();
+		float[] sigRight = signal.getSignalRight();
+		if (signal.getSignalRight() == null)
 		{
 			isStereo = false;
 		}
-		float[] sigLeft = signal.getSignalLeft();
-		float[] sigRight = signal.getSignalRight();
 		for (int x = 0; x < sigLeft.length; x++)
 		{
 			if (isStereo)
@@ -158,9 +148,9 @@ public class IOManager
 			e.printStackTrace();
 		}
 		fileBuffer.rewind();
+		fileBuffer.getFloat();
 		byte[] b = new byte[fileBuffer.remaining()];
 		fileBuffer.get(b);
-		return b;
+		return dataChunk.getRawData();
 	}
-
 }
