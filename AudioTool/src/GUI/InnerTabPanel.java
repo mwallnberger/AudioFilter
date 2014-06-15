@@ -26,10 +26,13 @@ public class InnerTabPanel extends JPanel{
 		OptionPanel options = new OptionPanel(signal, controller);
 		//create new thread for playing sound (controller manages starting and stopping)
 		this.thread = new PlayingThread(signal, options.getPlayButton());
-//		controller.addPlayingThread(thread, signal);
-		this.signalChart = new SignalPanel(signal, controller, thread);
+		this.signalChart = new SignalPanel(signal, controller);
+		// add signalChangedListener signalChart to signal
+		signal.addListener(signalChart);
+		// adding MarkerChangedListener for marker in chart
 		thread.addMarkerChangedListener(signalChart);
-		
+		// adding MarkerChangedListener for jumping to pos in thread
+		signalChart.addMarkerChangedListener(thread);
 		
 		this.add(signalChart, BorderLayout.CENTER);
 		this.add(options, BorderLayout.LINE_END);

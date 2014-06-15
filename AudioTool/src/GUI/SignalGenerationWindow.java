@@ -31,6 +31,7 @@ public class SignalGenerationWindow extends JDialog{
 		this.setTitle("Signalerzeugung");
 		this.setModal(true);
 		this.controller = controller;
+		this.setResizable(false);
 		dialog = this;
 		
 		Argument[] params = Tone.getParamList();

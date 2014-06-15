@@ -30,7 +30,9 @@ public class GeneralFilterWindow extends JDialog{
 		super(mainFrame);
 		this.setTitle(filter.getName());
 		this.setModal(true);
+		this.setResizable(false);
 		dialog = this;
+		
 		
 		Argument[] params = filter.getParamList();
 		

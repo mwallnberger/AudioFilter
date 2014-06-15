@@ -27,7 +27,7 @@ import GUI.elements.SignalEvent;
 import GUI.elements.SignalListener;
 
 
-public class SignalPanel extends JPanel implements MarkerChangedListener{
+public class SignalPanel extends JPanel implements MarkerChangedListener, SignalListener{
 	
 	private List<MarkerChangedListener> listeners;
 	
@@ -51,12 +51,10 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 	private double currIndexDouble;
 	private ValueMarker valueMarker;
 	private MainController controller;
-
-	private PlayingThread thread;
 	
 	private static int MAX_NUMBER_OF_VALUES = 50000;
 
-	public SignalPanel(Signal signal, MainController controller, PlayingThread thread) {
+	public SignalPanel(Signal signal, MainController controller) {
 		super();
 		this.setBackground(new Color(0xC8DDF2));
 		this.setLayout(new BorderLayout());
@@ -67,19 +65,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 		xyDataSpectrum = new XYSeriesCollection();
 		xyDataLeft = new XYSeriesCollection();		
 		listeners = new ArrayList<MarkerChangedListener>();
-		this.thread = thread;
-		if(thread != null) {
-			addMarkerChangedListener(thread);
-		}
-		
-		signal.addListener(new SignalListener() {
-
-			@Override
-			public void SignalChanged(SignalEvent e) {
-				refresh();
-			}
-			
-		});
 		initialize();
 	}
 	
@@ -115,8 +100,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 		for(int i = 0; i < spectrumSignal.length; i+= ticking) {
 			seriesSpectrum.add(i, spectrumSignal[i]);
 		}
-		
-		
 	}
 	
 	public void refresh() {
@@ -150,7 +133,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 		}
 	}
 	
-	@Override
 	public synchronized void removeAllMarkerChangedListeners() {
 		listeners = new ArrayList<MarkerChangedListener>();
 	}
@@ -169,12 +151,15 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 		refreshMarker(e.getValue());
 	}	
 	
+	@Override
+	public synchronized void SignalChanged(SignalEvent e) {
+		refresh();
+	}
+	
 	public void initialize() {
 
 		SignalWindow = new JPanel(new GridLayout(2,1));
 		SpectrumWindow = new JPanel(new GridLayout());
-		
-		
 		
 		JFreeChart chartRight = ChartFactory.createXYLineChart("","","",xyDataRight,PlotOrientation.VERTICAL,false,false,false);
 		chartRight.setBackgroundPaint(new Color(0xC8DDF2));
@@ -244,7 +229,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 			if(e.getEntity() instanceof XYItemEntity) {
 				XYItemEntity item = (XYItemEntity) e.getEntity();
 				XYDataset dataset = item.getDataset();
-//				System.out.println("value: " + dataset.getXValue(item.getSeriesIndex(), item.getItem()) + " relativ: " + dataset.getXValue(item.getSeriesIndex(), item.getItem()) / signalLength);
 				double markerValue = dataset.getXValue(item.getSeriesIndex(), item.getItem());
 				currIndexDouble = markerValue / signalLength;
 				valueMarker.setValue(markerValue);

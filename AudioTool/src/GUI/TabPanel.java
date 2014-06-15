@@ -18,51 +18,17 @@ import java.util.List;
 
 public class TabPanel extends JTabbedPane {
 
-//	private final JTabbedPane panel = new JTabbedPane();
-	
 	private final MainController controller;
-//	private final List<Signal> signals;
 	
 	public TabPanel(MainController controller) {
 		super();
 		this.controller = controller;
-//		setLayout(new GridLayout(1, 1));
-//		signals = new ArrayList<Signal>();
-//		add(panel);
 	}
-	
-//	protected JPanel createInnerPanel(Signal signal) {
-//		JPanel panel = new JPanel(new BorderLayout());
-//		panel.setBackground(Color.white); 
-//		
-//		OptionPanel options = new OptionPanel(signal, controller);
-//		//create new thread for playing sound (controller manages starting and stopping)
-//		PlayingThread thread = new PlayingThread(signal, options.getPlayButton());
-//		controller.addPlayingThread(thread, signal);
-//		SignalPanel chart = new SignalPanel(signal, controller, thread);
-//		thread.addMarkerChangedListener(chart);
-//		
-//		
-//		panel.add(chart, BorderLayout.CENTER);
-//		panel.add(options, BorderLayout.LINE_END);
-//		return panel;
-//	}
 	
 	public void createNewTab(Signal signal) {
 		InnerTabPanel innerPanel = new InnerTabPanel(signal, controller);
 		addTab(signal.getName(), innerPanel);
 		int index = indexOfTab(signal.getName());
-		
-//		//for "x" button in tab
-//		JPanel closePanel = new JPanel();
-//		JButton closeButton = new JButton(closeIcon);
-//		JLabel tabTitle = new JLabel(signal.getName());
-//		closePanel.setOpaque(false);
-//		closeButton.addActionListener(new CloseTabActionHandler(signal, this, controller));
-//		
-//		closePanel.add(tabTitle);
-//		closePanel.add(closeButton);
-////		signals.add(index, signal);
 		
 		setTabComponentAt(index, new CloseTabPanel(signal, controller));	
 		setSelectedIndex(index);
@@ -128,13 +94,16 @@ public class TabPanel extends JTabbedPane {
 	public void removeTabOf(Signal s) {
 		InnerTabPanel innerTab = getComponentOf(s);
 		if(innerTab != null) {
+			// stop playing
 			PlayingThread thread = innerTab.getThread();
 			if(thread.isPlaying()) {
 				thread.stopPlaying();
 			}
+			// remove all listeners
 			thread.removeAllMarkerChangedListeners();
 			s.removeAllListeners();
 			innerTab.getSignalChart().removeAllMarkerChangedListeners();
+			// close tab
 			this.removeTabAt(getIndexOf(s));
 		}
 

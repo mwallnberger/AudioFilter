@@ -168,7 +168,6 @@ public class PlayingThread implements Runnable, MarkerChangedListener{
 	}
 	
 	public synchronized void removeAllMarkerChangedListeners() {
-		
 		listeners = new ArrayList<MarkerChangedListener>();
 	}
 	
