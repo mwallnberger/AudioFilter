@@ -51,10 +51,12 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 	private double currIndexDouble;
 	private ValueMarker valueMarker;
 	private MainController controller;
+
+	private PlayingThread thread;
 	
 	private static int MAX_NUMBER_OF_VALUES = 50000;
 
-	public SignalPanel(Signal signal, MainController controller) {
+	public SignalPanel(Signal signal, MainController controller, PlayingThread thread) {
 		super();
 		this.setBackground(new Color(0xC8DDF2));
 		this.setLayout(new BorderLayout());
@@ -65,6 +67,19 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 		xyDataSpectrum = new XYSeriesCollection();
 		xyDataLeft = new XYSeriesCollection();		
 		listeners = new ArrayList<MarkerChangedListener>();
+		this.thread = thread;
+		if(thread != null) {
+			addMarkerChangedListener(thread);
+		}
+		
+		signal.addListener(new SignalListener() {
+
+			@Override
+			public void SignalChanged(SignalEvent e) {
+				refresh();
+			}
+			
+		});
 		initialize();
 	}
 	
@@ -155,15 +170,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 	}	
 	
 	public void initialize() {
-		
-		signal.addListener(new SignalListener() {
-
-			@Override
-			public void SignalChanged(SignalEvent e) {
-				refresh();
-			}
-			
-		});
 
 		SignalWindow = new JPanel(new GridLayout(2,1));
 		SpectrumWindow = new JPanel(new GridLayout());
@@ -222,14 +228,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener{
 		plotLeft.addDomainMarker(valueMarker);
 		if(stereo) {
 			plotRight.addDomainMarker(valueMarker);
-		}
-		
-		// add MarkerChangedListener in PlayingThread and also add this Thrad as Listener
-		PlayingThread thread = controller.getPlayingThread(signal);
-		
-		if(thread != null) {
-			addMarkerChangedListener(thread);
-			thread.addMarkerChangedListener(this);
 		}
 		
 		ChartMouseClickListener mouseListener = new ChartMouseClickListener();

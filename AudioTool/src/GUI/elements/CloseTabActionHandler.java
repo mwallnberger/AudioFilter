@@ -14,36 +14,16 @@ import Controller.MainController;
  *
  */
 public class CloseTabActionHandler implements ActionListener {
-	
-	private JTabbedPane tabPane;
-	private String tabName;
+
 	private Signal signal;
 	private MainController controller;
 
-    public CloseTabActionHandler(Signal signal, JTabbedPane tabPane, MainController controller) {
+    public CloseTabActionHandler(Signal signal, MainController controller) {
     	this.signal = signal;
-        this.tabName = signal.getName();
-        this.tabPane = tabPane;
         this.controller = controller;
     }
 
-    public String getTabName() {
-        return tabName;
-    }
-
     public void actionPerformed(ActionEvent evt) {
-        int index = tabPane.indexOfTab(getTabName());
-        if (index >= 0) {
-        	try {
-				if(!SaveSignal.saveSignalIfChanged(tabPane, signal, controller)) {
-					return;
-				}
-			} catch (GeneralException e) {
-
-			}
-        	controller.signalClose(signal);
-            tabPane.removeTabAt(index);
-        }
-
+        controller.closeSignal(signal);
     }
 }

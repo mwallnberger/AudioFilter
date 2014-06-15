@@ -36,6 +36,12 @@ public class Signal
 	{
 		return name;
 	}
+	
+	public void setName(String name) {
+		if(name != null) {
+			this.name = name;
+		}
+	}
 
 	public synchronized void addListener(SignalListener listener)
 	{

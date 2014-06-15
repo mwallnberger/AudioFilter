@@ -9,8 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import Common.GeneralException;
+import Common.SaveSignal;
 import Common.Signal;
 import Filter.Filter;
+import GUI.InnerTabPanel;
 import GUI.MainWindow;
 import GUI.TabPanel;
 import GUI.elements.PlayingThread;
@@ -20,10 +22,10 @@ public class MainController
 {
 	private final MainWindow window;
 	private final TabPanel tabPanel;
-	private final Map<Signal, PlayingThread> playThreads;
+//	private final Map<Signal, PlayingThread> playThreads;
 
 	public MainController() {
-		playThreads = new HashMap<Signal, PlayingThread>();
+//		playThreads = new HashMap<Signal, PlayingThread>();
 		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -68,13 +70,14 @@ public class MainController
 		return true;
 	}
 	
-	public boolean signalClose(Signal signal) {
-		//wiedergabe stoppen
-		PlayingThread playThread = playThreads.get(signal);
-		if(playThread != null) {
-			playThread.stopPlaying();
+	public void closeSignal(Signal signal) {
+		try {
+			if(!SaveSignal.saveSignalIfChanged(tabPanel.getComponentOf(signal), signal, this)) {
+				return;
+			}
+		} catch (GeneralException e) {
 		}
-		return tabPanel.removeSignal(signal) && removePlayingThread(signal);
+		tabPanel.removeTabOf(signal);
 	}
 	
 	public void performFilter(Filter filter) {
@@ -93,16 +96,16 @@ public class MainController
 		return tabPanel.getSignals();
 	}
 	
-	public void addPlayingThread(PlayingThread playThread, Signal signal) {
-		playThreads.put(signal, playThread);
+	public List<InnerTabPanel> getTabs() {
+		return tabPanel.getTabs();
 	}
 	
 	public PlayingThread getPlayingThread(Signal s) {
-		return playThreads.get(s);
+		return tabPanel.getComponentOf(s).getThread();
 	}
 	
 	public void tooglePlaying(Signal s) {
-		PlayingThread playThread = playThreads.get(s);
+		PlayingThread playThread = tabPanel.getComponentOf(s).getThread();
 		if(playThread != null) {
 			if(!playThread.isPlaying() || playThread.isPaused()) {
 				playThread.startPlaying();
@@ -114,40 +117,31 @@ public class MainController
 	}
 	
 	public void startPlaying(Signal s) {
-		PlayingThread thread = playThreads.get(s);
+		PlayingThread thread = tabPanel.getComponentOf(s).getThread();
 		if(thread != null) {
 			thread.startPlaying();
 		}
 	}
 	
 	public void pausePlaying(Signal s) {
-		PlayingThread thread = playThreads.get(s);
+		PlayingThread thread = tabPanel.getComponentOf(s).getThread();
 		if(thread != null) {
 			thread.pausePlaying();
 		}
 	}
 	
 	public void stopPlaying(Signal s) {
-		PlayingThread thread = playThreads.get(s);
+		PlayingThread thread = tabPanel.getComponentOf(s).getThread();
 		if(thread != null) {
 			thread.stopPlaying();
 		}
 	}
 	
 	public void pauseAllPlaying() {
-		List<Signal> signals = tabPanel.getSignals();
-		for(Signal s : signals) {
-			if(playThreads.get(s).isPlaying()) {
-				pausePlaying(s);
-			}
-		}
-	}
-	
-	private boolean removePlayingThread(Signal s) {
-		if(playThreads.remove(s) != null) {
-			return true;
-		}
-		return false;
+		List<InnerTabPanel> innerTabList = tabPanel.getTabs();
+		innerTabList.forEach(t -> {
+			t.getThread().pausePlaying();
+		});
 	}
 	
 	public void addNewTab(Signal s) throws GeneralException {
@@ -157,11 +151,8 @@ public class MainController
 		tabPanel.createNewTab(s);
 	}
 	
-	public void removeAllCurrentListeners() {
-		tabPanel.getSignals().forEach(s -> {
-			getPlayingThread(s).removeAllMarkerChangedListeners();
-			s.removeAllListeners();
-		});
+	public void renameTab(Signal s) {
+		tabPanel.renameTab(s);
 	}
 
 	

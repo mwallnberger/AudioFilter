@@ -22,6 +22,7 @@ import GUI.elements.PlayingThread;
 public class OptionPanel extends JPanel {
 	
 	private final Filter[] filters;
+	private JButton btnPlay;
 	
 	public OptionPanel(Signal signal, MainController controller) {
 		
@@ -41,32 +42,36 @@ public class OptionPanel extends JPanel {
 			this.add(btnFilter);
 		}
 		
-		JButton play = new JButton("Play");
-		play.setForeground(new Color(12, 206, 2));
-		play.setBackground(new Color(12, 206, 2));
+		btnPlay = new JButton("Play");
+		btnPlay.setForeground(new Color(12, 206, 2));
+		btnPlay.setBackground(new Color(12, 206, 2));
 		
 		//create new thread for playing sound (controller manages starting and stopping)
-		controller.addPlayingThread(new PlayingThread(signal, play), signal);
+//		controller.addPlayingThread(new PlayingThread(signal, btnPlay), signal);
 		
-		play.addActionListener(new ActionListener() {
+		btnPlay.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				controller.tooglePlaying(signal);
 			}
 		});
-		this.add(play);
+		this.add(btnPlay);
 		
-		JButton stop = new JButton("Stop");
-		stop.setForeground(Color.red);
-		stop.setBackground(Color.red);
-		stop.addActionListener(new ActionListener() {
+		JButton btnStop = new JButton("Stop");
+		btnStop.setForeground(Color.red);
+		btnStop.setBackground(Color.red);
+		btnStop.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				controller.stopPlaying(signal);
 			}
 		});
-		this.add(stop);
+		this.add(btnStop);
 		
+	}
+	
+	public JButton getPlayButton() {
+		return btnPlay;
 	}
 		
 	class OpenFilterPanelAction implements ActionListener {

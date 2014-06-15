@@ -207,15 +207,19 @@ public class MainWindow extends JFrame{
 	            "Möchten Sie AudioTool wirklich beenden ?", "Beenden", 
 	            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			
-			for(Signal s : controller.getSignals()) {
-				try {
-					if(!SaveSignal.saveSignalIfChanged(jFrame, s, controller)) {
-						return;
-					}
-				} catch (GeneralException e) {
-					
-				}
-			}
+			controller.getTabs().forEach(t -> {
+				controller.closeSignal(t.getSignal());
+			});
+			
+//			for(Signal s : controller.getSignals()) {
+//				try {
+//					if(!SaveSignal.saveSignalIfChanged(jFrame, s, controller)) {
+//						return;
+//					}
+//				} catch (GeneralException e) {
+//					
+//				}
+//			}
 			jFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 			jFrame.dispose();
 		}

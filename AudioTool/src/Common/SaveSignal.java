@@ -119,6 +119,8 @@ public class SaveSignal{
         						file = new File(file.getAbsolutePath() + ".wav");
         					}
 							controller.export(file, signal);
+							signal.setName(file.getName());
+							controller.renameTab(signal);
 							signal.resetChanged();
 							return true;
 						} catch (GeneralException e) {
