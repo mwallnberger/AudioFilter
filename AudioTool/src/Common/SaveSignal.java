@@ -118,6 +118,7 @@ public class SaveSignal{
         					if(!filter.accept(file)) {
         						file = new File(file.getAbsolutePath() + ".wav");
         					}
+        					controller.pauseAllPlaying();
 							controller.export(file, signal);
 							signal.setName(file.getName());
 							controller.renameTab(signal);
