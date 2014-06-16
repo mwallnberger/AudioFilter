@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import Common.Argument;
 import Controller.MainController;
 import Filter.Filter;
-import GUI.elements.SliderChangedListener;
+import GUI.elements.ValueChangedListener;
 
 public class GeneralFilterWindow extends JDialog{
 	
@@ -39,7 +39,7 @@ public class GeneralFilterWindow extends JDialog{
 			paramLabel.setPreferredSize(new Dimension(100, 50));
 			paramLabel.setHorizontalAlignment(JLabel.RIGHT);
 			JTextField paramValue = new JTextField(String.valueOf(params[i].getValue()));
-			paramValue.setEditable(false);
+			paramValue.setEditable(true);
 			paramValue.setPreferredSize(new Dimension(50, 20));
 			paramValue.setHorizontalAlignment(JTextField.RIGHT);
 			int max = Math.round(params[i].getMax());
@@ -50,7 +50,9 @@ public class GeneralFilterWindow extends JDialog{
 			paramSlider.setMinorTickSpacing((max - min) / 100);
 			paramSlider.setPaintLabels(true);
 			paramSlider.setPreferredSize(new Dimension(400, 50));
-			paramSlider.addChangeListener(new SliderChangedListener(params[i], paramValue, paramSlider));
+			ValueChangedListener changeListener = new ValueChangedListener(params[i], paramValue, paramSlider);
+			paramSlider.addChangeListener(changeListener);
+			paramValue.addActionListener(changeListener);
 			paramPanel.add(paramLabel);
 			paramPanel.add(paramValue);
 			paramPanel.add(paramSlider);
