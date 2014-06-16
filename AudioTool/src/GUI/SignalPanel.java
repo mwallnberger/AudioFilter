@@ -11,6 +11,8 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import org.jfree.chart.*;
+import org.jfree.chart.axis.LogarithmicAxis;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.entity.XYItemEntity;
 import org.jfree.chart.plot.*;
 import org.jfree.chart.renderer.xy.*;
@@ -95,7 +97,9 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		}	
 		
 		for(int i = 0; i < spectrumSignal.length; i+= ticking) {
-			seriesSpectrum.add(i, spectrumSignal[i]);
+			if(Math.abs(spectrumSignal[i]) > 0) {
+				seriesSpectrum.add(i, Math.abs(spectrumSignal[i]));
+			}
 		}
 	}
 	
@@ -180,7 +184,9 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		TextTitle spectrumTitle = new TextTitle("Spectrum", new Font("Verdana", Font.PLAIN, 20));
 		chartSpectrum.setTitle(spectrumTitle);
 		plotSpectrum = chartSpectrum.getXYPlot();
-		plotSpectrum.getRangeAxis().setVisible(false);
+		NumberAxis rangeAxis = new LogarithmicAxis("Log");
+		plotSpectrum.setRangeAxis(rangeAxis);
+		plotSpectrum.getRangeAxis().setVisible(true);
 		plotSpectrum.getDomainAxis().setVisible(false);
 		
 		XYItemRenderer test = plotRight.getRenderer();
