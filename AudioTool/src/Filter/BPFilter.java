@@ -65,7 +65,7 @@ public class BPFilter extends Filter
      	this.cutoffFreq = (int) argumentList[0].getValue();
 		this.cutoffFreq2 = (int) argumentList[1].getValue();
 		
-		final double[] bs = createLowpass(this.numberOfTaps, this.cutoffFreq, this.cutoffFreq2, this.samplingRate);
+		final double[] bs = createBandStopp(this.numberOfTaps, this.cutoffFreq, this.cutoffFreq2, this.samplingRate);
 
 		final int half = this.numberOfTaps >> 1;
 		for (int i = 0; i < bs.length; i++)
@@ -81,9 +81,13 @@ public class BPFilter extends Filter
 		return FIRkoeff;
 	}
 
-	private double[] createLowpass(int tapTotal, float cutoffFreq, float cutoffFreq2, float samplingRate)
+	private double[] createBandStopp(int tapTotal, float cutoffFreq, float cutoffFreq2, float samplingRate)
 	{
-		BSFilter filter = new BSFilter(tapTotal, cutoffFreq, cutoffFreq2, samplingRate);
+		BSFilter filter = new BSFilter(signal);
+		Argument[] args = filter.getParamList();
+		args[0].setValue(tapTotal);
+		args[1].setValue(cutoffFreq);
+		args[1].setValue(cutoffFreq2);
 		return filter.getFIRkoeff();
 	}
 

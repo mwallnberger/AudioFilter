@@ -60,13 +60,12 @@ public class BSFilter extends Filter
 
 	public void init()
 	{
-		//nicht mehr nötig?
 		this.numberOfTaps = (int) argumentList[2].getValue();
 		this.cutoffFreq = (int) argumentList[0].getValue();
 		this.cutoffFreq2 = (int) argumentList[1].getValue();
 		
-		final double[] low = createLowpass(this.numberOfTaps, this.cutoffFreq, this.samplingRate);
-	    final double[] high = createHighpass(this.numberOfTaps, this.cutoffFreq2, this.samplingRate);
+		final double[] low = createLowpass(this.numberOfTaps, this.cutoffFreq, this.signal);
+	    final double[] high = createHighpass(this.numberOfTaps, this.cutoffFreq2, this.signal);
 	    for(int i = 0; i < low.length; i++)
 	    {
 	        low[i] += high[i];
@@ -79,21 +78,26 @@ public class BSFilter extends Filter
 		return FIRkoeff;
 	}
 
-	private double[] createHighpass(int tapTotal, float cutoffFreq, float samplingRate)
+	private double[] createHighpass(int tapTotal, float cutoffFreq, Signal signal)
 	{
-		HPFilter filter = new HPFilter(tapTotal,cutoffFreq,samplingRate);
+		HPFilter filter = new HPFilter(signal);
+		Argument[] args = filter.getParamList();
+		args[0].setValue(cutoffFreq);
+		args[1].setValue(tapTotal);
 		return filter.getFIRkoeff();
 	}
 
-	private double[] createLowpass(int tapTotal, float cutoffFreq, float samplingRate)
+	private double[] createLowpass(int tapTotal, float cutoffFreq, Signal signal)
 	{
-		TPFilter filter = new TPFilter(tapTotal,cutoffFreq,samplingRate);
+		TPFilter filter = new TPFilter(signal);
+		Argument[] args = filter.getParamList();
+		args[0].setValue(cutoffFreq);
+		args[1].setValue(tapTotal);
 		return filter.getFIRkoeff();
 	}
 
 	@Override
 	public String getFilterInfo() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

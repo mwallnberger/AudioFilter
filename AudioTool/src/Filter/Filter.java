@@ -116,6 +116,10 @@ public abstract class Filter
 			}
 		}
 
+		if(SigRight==null)
+		{
+			OutRight=null;
+		}
 		signal.setSignal(OutLeft, OutRight);
 	}
 
