@@ -126,7 +126,7 @@ public class Signal
          {
                  float[] specR = new float[this.signalLeft.length];
                  System.arraycopy( this.signalRight, 0, specR, 0, this.signalRight.length );
-                 fft.realForwardFull(specR);
+                 fft.realForward(specR);
 
                  for(int x = 0 ; x< specL.length; x++)
                  {

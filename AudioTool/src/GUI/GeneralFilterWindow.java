@@ -38,7 +38,7 @@ public class GeneralFilterWindow extends JDialog{
 			JLabel paramLabel = new JLabel(params[i].getName());
 			paramLabel.setPreferredSize(new Dimension(100, 50));
 			paramLabel.setHorizontalAlignment(JLabel.RIGHT);
-			JTextField paramValue = new JTextField(String.valueOf(params[i].getValue()));
+			JTextField paramValue = new JTextField(String.valueOf((int) params[i].getValue()));
 			paramValue.setEditable(true);
 			paramValue.setPreferredSize(new Dimension(50, 20));
 			paramValue.setHorizontalAlignment(JTextField.RIGHT);

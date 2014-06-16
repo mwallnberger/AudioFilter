@@ -96,10 +96,8 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 			}
 		}	
 		
-		for(int i = 0; i < spectrumSignal.length; i+= ticking) {
-			if(Math.abs(spectrumSignal[i]) > 0) {
-				seriesSpectrum.add(i, Math.abs(spectrumSignal[i]));
-			}
+		for(int i = 1; i < spectrumSignal.length; i++) {
+			seriesSpectrum.add(i, Math.abs(spectrumSignal[i]));
 		}
 	}
 	
@@ -184,10 +182,11 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		TextTitle spectrumTitle = new TextTitle("Spectrum", new Font("Verdana", Font.PLAIN, 20));
 		chartSpectrum.setTitle(spectrumTitle);
 		plotSpectrum = chartSpectrum.getXYPlot();
-		NumberAxis rangeAxis = new LogarithmicAxis("Log");
-		//plotSpectrum.setRangeAxis(rangeAxis);
-		plotSpectrum.getRangeAxis().setVisible(true);
-		plotSpectrum.getDomainAxis().setVisible(false);
+		
+		plotSpectrum.getRangeAxis().setVisible(false);
+		NumberAxis domainAxis = new LogarithmicAxis("Hz");
+		plotSpectrum.setDomainAxis(domainAxis);
+		plotSpectrum.getDomainAxis().setVisible(true);
 		
 		XYItemRenderer test = plotRight.getRenderer();
         test.setSeriesPaint(0, Color.BLUE);		
