@@ -185,7 +185,7 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		chartSpectrum.setTitle(spectrumTitle);
 		plotSpectrum = chartSpectrum.getXYPlot();
 		NumberAxis rangeAxis = new LogarithmicAxis("Log");
-		plotSpectrum.setRangeAxis(rangeAxis);
+		//plotSpectrum.setRangeAxis(rangeAxis);
 		plotSpectrum.getRangeAxis().setVisible(true);
 		plotSpectrum.getDomainAxis().setVisible(false);
 		
