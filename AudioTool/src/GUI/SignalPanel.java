@@ -48,7 +48,7 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 	private boolean stereo;
 	
 	private int ticking = 1;
-	private int signalLength;
+	private double signalLength;
 	private double currIndexDouble;
 	private ValueMarker valueMarker;
 	
@@ -77,7 +77,9 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		float[] rightSignal = signal.getSignalRight();
 		float[] spectrumSignal = signal.getSpectrum();
 		
-		signalLength = leftSignal.length;
+		double sampleRate = signal.getFormat().getFormat().getSampleRate() * 60;
+		signalLength = leftSignal.length / sampleRate;
+		
 		
 		if(rightSignal != null) {
 			stereo = true;
@@ -88,11 +90,11 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		}
 		
 		for(int i = 0; i < leftSignal.length; i+= ticking) {
-			seriesLeft.add(i, leftSignal[i]);
+			seriesLeft.add(i/sampleRate, leftSignal[i]);
 		}
 		if(stereo) {
 			for(int i = 0; i < rightSignal.length; i+=ticking) {
-				seriesRight.add(i, rightSignal[i]);
+				seriesRight.add(i/sampleRate, rightSignal[i]);
 			}
 		}	
 		
@@ -160,14 +162,6 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		SignalWindow = new JPanel(new GridLayout(2,1));
 		SpectrumWindow = new JPanel(new GridLayout());
 		
-		JFreeChart chartRight = ChartFactory.createXYLineChart("","","",xyDataRight,PlotOrientation.VERTICAL,false,false,false);
-		chartRight.setBackgroundPaint(new Color(0xC8DDF2));
-		TextTitle rightTitle = new TextTitle("Right", new Font("Verdana", Font.PLAIN, 20));
-		chartRight.setTitle(rightTitle);
-		
-		plotRight = chartRight.getXYPlot();
-		plotRight.getRangeAxis().setVisible(false);
-		plotRight.getDomainAxis().setVisible(false);
 		
 		JFreeChart chartLeft = ChartFactory.createXYLineChart("","","",xyDataLeft,PlotOrientation.VERTICAL,false,false,false);
 		chartLeft.setBackgroundPaint(new Color(0xC8DDF2));
@@ -175,7 +169,17 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		chartLeft.setTitle(leftTitle);
 		plotLeft = chartLeft.getXYPlot();
 		plotLeft.getRangeAxis().setVisible(false);
-		plotLeft.getDomainAxis().setVisible(false);
+		plotLeft.getDomainAxis().setAttributedLabel("min");
+		plotLeft.getDomainAxis().setVisible(true);
+		
+		JFreeChart chartRight = ChartFactory.createXYLineChart("","","",xyDataRight,PlotOrientation.VERTICAL,false,false,false);
+		chartRight.setBackgroundPaint(new Color(0xC8DDF2));
+		TextTitle rightTitle = new TextTitle("Right", new Font("Verdana", Font.PLAIN, 20));
+		chartRight.setTitle(rightTitle);
+		plotRight = chartRight.getXYPlot();
+		plotRight.getRangeAxis().setVisible(false);
+		plotRight.getDomainAxis().setAttributedLabel("min");
+		plotRight.getDomainAxis().setVisible(true);
 		
 		JFreeChart chartSpectrum = ChartFactory.createXYLineChart("","","",xyDataSpectrum,PlotOrientation.VERTICAL,false,false,false);
 		chartSpectrum.setBackgroundPaint(new Color(0xC8DDF2));
