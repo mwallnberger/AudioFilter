@@ -107,7 +107,6 @@ public class SaveSignal{
     			}
     			
         		if(askQuestion <= 0) {
-        			
         			JFileChooser c = new JFileChooser();
         			FileFilter filter = new FileNameExtensionFilter("WAV File","wav");
         			c.setFileFilter(filter);
@@ -118,12 +117,21 @@ public class SaveSignal{
         					if(!filter.accept(file)) {
         						file = new File(file.getAbsolutePath() + ".wav");
         					}
-        					controller.pauseAllPlaying();
-							controller.export(file, signal);
-							signal.setName(file.getName());
-							controller.renameTab(signal);
-							signal.resetChanged();
-							return true;
+        					if(file.exists()) {
+        						if(JOptionPane.showConfirmDialog(c, "Die Datei existiert bereits.\r\nMöchten Sie die Datei Überschreiben", "Datei " + signal.getName() + " existiert bereits", 
+						        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        							controller.pauseAllPlaying();
+        							controller.export(file, signal);
+        							signal.setName(file.getName());
+        							controller.renameTab(signal);
+        							signal.resetChanged();
+        							return true;
+        						}
+        						else {
+        							askQuestion = -1;
+        						}
+        					}
+        					
 						} catch (GeneralException e) {
 							if(JOptionPane.showConfirmDialog(component, 
 						        "Fehler beim Speichern der Datei! \r\nMöchten Sie den Vorgang wiederholen?", "Fehler beim Speichern der Datei " + signal.getName(), 

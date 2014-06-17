@@ -37,7 +37,8 @@ public class MainWindow extends JFrame {
 	public MainWindow(MainController controller) {
 		super();
 		this.controller = controller;
-		jFrame = new JFrame();
+		jFrame = this;
+		this.setResizable(false);
 		initialize();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -54,7 +55,7 @@ public class MainWindow extends JFrame {
 	private void initialize(){
 		//create frame (maybe change title)
 		jFrame.setTitle("AudioTool!");
-		jFrame.setBounds(100, 100, 1100, 450);
+		jFrame.setBounds(100, 100, 1150, 500);
 		jFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		jFrame.addWindowListener(new WindowAdapter() {
 		
