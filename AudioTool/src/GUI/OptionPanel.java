@@ -18,6 +18,10 @@ import Filter.Filter;
 import Filter.HPFilter;
 import Filter.TPFilter;
 
+/**
+ * Creates OptionPanel with all possible Filters for given Signal, and Play/Pause/Stop Buttons.
+ */
+
 public class OptionPanel extends JPanel {
 	
 	private final Filter[] filters;

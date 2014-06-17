@@ -13,6 +13,10 @@ import javax.swing.JButton;
 import Common.Signal;
 import IO.IOManager;
 
+/**
+ * Thread for playing Signals
+ */
+
 public class PlayingThread implements Runnable, MarkerChangedListener{
 	
 	private List<MarkerChangedListener> listeners;

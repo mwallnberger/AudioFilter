@@ -12,6 +12,10 @@ import Common.Signal;
 import Controller.MainController;
 import GUI.MainWindow;
 
+/**
+ * Creates a simple panel with title of the signal and an close button for each tab label
+ */
+
 public class CloseTabPanel extends JPanel{
 	
 	private final ImageIcon closeIcon = new ImageIcon(MainWindow.class.getResource("/fatcow-hosting-icons-3000/16x16/cross.png"));

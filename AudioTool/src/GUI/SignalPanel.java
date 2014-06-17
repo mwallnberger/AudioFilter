@@ -27,6 +27,9 @@ import GUI.elements.MarkerChangedListener;
 import GUI.elements.SignalEvent;
 import GUI.elements.SignalListener;
 
+/**
+ * Creates (left/right and spectrum) charts for given signal, and listens to mouseclicks on left/right charts to change current play time
+ */
 
 public class SignalPanel extends JPanel implements MarkerChangedListener, SignalListener{
 	

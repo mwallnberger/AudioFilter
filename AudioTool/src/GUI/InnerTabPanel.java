@@ -9,6 +9,10 @@ import Common.Signal;
 import Controller.MainController;
 import GUI.elements.PlayingThread;
 
+/**
+ * Creates an Panel for a single Tab with signalCharts created from given Signal
+ */
+
 public class InnerTabPanel extends JPanel{
 	
 	private final Signal signal;

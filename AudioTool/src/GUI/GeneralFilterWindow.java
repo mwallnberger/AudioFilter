@@ -16,6 +16,11 @@ import Controller.MainController;
 import Filter.Filter;
 import GUI.elements.ValueChangedListener;
 
+
+/**
+ * Creates a panel with sliders for all arguments of given filter
+ */
+
 public class GeneralFilterWindow extends JDialog{
 	
 	JDialog dialog;

@@ -20,7 +20,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class MainWindow extends JFrame{
+/**
+ * creates the MainWindow with menubar, toolbar and tabpanel
+ */
+
+public class MainWindow extends JFrame {
 	
 	MainController controller;
 	

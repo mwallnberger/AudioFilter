@@ -14,6 +14,10 @@ import GUI.TabPanel;
 import GUI.elements.PlayingThread;
 import IO.IOManager;
 
+/**
+ * MainController for AudioTool.
+ */
+
 public class MainController
 {
 	private final MainWindow window;

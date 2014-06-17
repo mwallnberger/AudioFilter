@@ -11,6 +11,10 @@ import java.util.List;
 
 import javax.swing.JTabbedPane;
 
+/**
+ * Creates new JTabbedPane for AudioTool, with methods to close tab, rename tab and create new tab
+ */
+
 public class TabPanel extends JTabbedPane {
 
 	private final MainController controller;

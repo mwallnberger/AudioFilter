@@ -21,6 +21,10 @@ import Controller.MainController;
 import GUI.elements.ValueChangedListener;
 import SignalGeneration.Tone;
 
+/**
+ * Creates a window for signal creation, includes all possible signalforms and slider for all arguments
+ */
+
 public class SignalGenerationWindow extends JDialog{
 	private JDialog dialog;
 	MainController controller;
