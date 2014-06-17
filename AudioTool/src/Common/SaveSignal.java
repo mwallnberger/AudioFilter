@@ -120,16 +120,16 @@ public class SaveSignal{
         					if(file.exists()) {
         						if(JOptionPane.showConfirmDialog(c, "Die Datei existiert bereits.\r\nMöchten Sie die Datei Überschreiben", "Datei " + signal.getName() + " existiert bereits", 
 						        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-        							controller.pauseAllPlaying();
-        							controller.export(file, signal);
-        							signal.setName(file.getName());
-        							controller.renameTab(signal);
-        							signal.resetChanged();
+        							save(controller, signal, file);
         							return true;
         						}
         						else {
         							askQuestion = -1;
         						}
+        					}
+        					else {
+        						save(controller, signal, file);
+        						return true;
         					}
         					
 						} catch (GeneralException e) {
@@ -153,10 +153,14 @@ public class SaveSignal{
     		}
     	}
 		return true;
-		
-		
-
-		
+	}
+	
+	private static void save(MainController controller, Signal signal, File file) throws GeneralException {
+		controller.pauseAllPlaying();
+		controller.export(file, signal);
+		signal.setName(file.getName());
+		controller.renameTab(signal);
+		signal.resetChanged();
 	}
 
 }
