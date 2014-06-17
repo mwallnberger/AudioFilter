@@ -67,14 +67,15 @@ public class MainController
 		return true;
 	}
 	
-	public void closeSignal(Signal signal) {
+	public boolean closeSignal(Signal signal) {
 		try {
 			if(!SaveSignal.saveSignalIfChanged(tabPanel.getComponentOf(signal), signal, this)) {
-				return;
+				return false;
 			}
 		} catch (GeneralException e) {
 		}
 		tabPanel.removeTabOf(signal);
+		return true;
 	}
 	
 	public void performFilter(Filter filter) {

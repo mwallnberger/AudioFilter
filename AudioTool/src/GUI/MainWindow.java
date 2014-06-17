@@ -204,8 +204,13 @@ public class MainWindow extends JFrame {
 	            "Möchten Sie AudioTool wirklich beenden ?", "Beenden", 
 	            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			
+			for(InnerTabPanel tab : controller.getTabs()) {
+				if(!controller.closeSignal(tab.getSignal())) {
+					return;
+				}
+			}
 			controller.getTabs().forEach(t -> {
-				controller.closeSignal(t.getSignal());
+				
 			});
 			
 			jFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);

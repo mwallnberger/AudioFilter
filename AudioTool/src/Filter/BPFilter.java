@@ -6,22 +6,20 @@ import Common.Signal;
 
 public class BPFilter extends Filter
 {
-	int numberOfTaps;
+	
 	double tapTotal;
-	float cutoffFreq, samplingRate, cutoffFreq2;
+	float cutoffFreq, cutoffFreq2;
 
 	public BPFilter(Signal signal)
 	{
 		this.name = "BPFilter";
 		this.signal = signal;
-		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
-		this.cutoffFreq = 500;
 		
 		argumentList = new Argument[3];
-		argumentList[0] = new Argument(0, this.samplingRate/2, this.cutoffFreq, "Grenzfrequenz low");
-		argumentList[1] = new Argument(0, this.samplingRate/2, this.cutoffFreq2, "Grenzfrequenz high");
-		argumentList[2] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
+		argumentList[0] = new Argument(0, this.samplingRate/2, 500, "Grenzfrequenz low");
+		argumentList[1] = new Argument(0, this.samplingRate/2, 1000, "Grenzfrequenz high");
+		argumentList[2] = new Argument(0, 500, 100, "Fenstergröße");
 
 	}
 
@@ -41,7 +39,6 @@ public class BPFilter extends Filter
 	@Override
 	public void performFiltering()
 	{
-		init();
 		try
 		{
 			PerformFiltering(signal, false, 0);
@@ -52,20 +49,14 @@ public class BPFilter extends Filter
 		}
 	}
 
-	@Override
-	public Argument[] getParamList()
-	{
-		return argumentList;
-	}
-
+	
 	public void init()
 	{		
-		//nicht mehr nötig?
      	this.numberOfTaps = (int) argumentList[2].getValue();
      	this.cutoffFreq = (int) argumentList[0].getValue();
 		this.cutoffFreq2 = (int) argumentList[1].getValue();
 		
-		final double[] bs = createBandStopp(this.numberOfTaps, this.cutoffFreq, this.cutoffFreq2, this.samplingRate);
+		final double[] bs = createBandPass(this.numberOfTaps, this.cutoffFreq, this.cutoffFreq2, this.samplingRate);
 
 		final int half = this.numberOfTaps >> 1;
 		for (int i = 0; i < bs.length; i++)
@@ -76,25 +67,15 @@ public class BPFilter extends Filter
 
 	}
 
-	double[] getFIRkoeff()
-	{
-		return FIRkoeff;
-	}
-
-	private double[] createBandStopp(int tapTotal, float cutoffFreq, float cutoffFreq2, float samplingRate)
+	private double[] createBandPass(int tapTotal, float cutoffFreq, float cutoffFreq2, float samplingRate)
 	{
 		BSFilter filter = new BSFilter(signal);
 		Argument[] args = filter.getParamList();
 		args[0].setValue(tapTotal);
 		args[1].setValue(cutoffFreq);
 		args[1].setValue(cutoffFreq2);
+		filter.init();
 		return filter.getFIRkoeff();
-	}
-
-	@Override
-	public String getFilterInfo() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

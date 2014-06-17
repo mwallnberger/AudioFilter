@@ -6,7 +6,6 @@ import Common.Signal;
 
 public class BSFilter extends Filter
 {
-	int numberOfTaps;
 	double tapTotal;
 	float cutoffFreq, cutoffFreq2;
 
@@ -14,16 +13,12 @@ public class BSFilter extends Filter
 	{
 		this.name = "BSFilter";
 		this.signal = signal;
-		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
-		this.cutoffFreq = 500;
 		
 		argumentList = new Argument[3];
-		argumentList[0] = new Argument(0, this.samplingRate/2, this.cutoffFreq, "Grenzfrequenz low");
-		argumentList[1] = new Argument(0, this.samplingRate/2, this.cutoffFreq2, "Grenzfrequenz high");
-		argumentList[2] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
-		
-		init();
+		argumentList[0] = new Argument(0, this.samplingRate/2, 500, "Grenzfrequenz low");
+		argumentList[1] = new Argument(0, this.samplingRate/2, 1000, "Grenzfrequenz high");
+		argumentList[2] = new Argument(0, 500, 100, "Fenstergröße");
 
 	}
 	
@@ -53,11 +48,6 @@ public class BSFilter extends Filter
 		}
 	}
 
-	public Argument[] getParamList()
-	{
-		return argumentList;
-	}
-
 	public void init()
 	{
 		this.numberOfTaps = (int) argumentList[2].getValue();
@@ -72,11 +62,6 @@ public class BSFilter extends Filter
 	    }
 	    this.FIRkoeff=windowHamming(low);
 	}
-	
-	double[] getFIRkoeff()
-	{
-		return FIRkoeff;
-	}
 
 	private double[] createHighpass(int tapTotal, float cutoffFreq, Signal signal)
 	{
@@ -84,6 +69,7 @@ public class BSFilter extends Filter
 		Argument[] args = filter.getParamList();
 		args[0].setValue(cutoffFreq);
 		args[1].setValue(tapTotal);
+		filter.init();
 		return filter.getFIRkoeff();
 	}
 
@@ -93,12 +79,8 @@ public class BSFilter extends Filter
 		Argument[] args = filter.getParamList();
 		args[0].setValue(cutoffFreq);
 		args[1].setValue(tapTotal);
+		filter.init();
 		return filter.getFIRkoeff();
-	}
-
-	@Override
-	public String getFilterInfo() {
-		return null;
 	}
 
 }

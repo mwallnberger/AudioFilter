@@ -6,25 +6,19 @@ import Common.Signal;
 
 public class TPFilter extends Filter
 {
-	int numberOfTaps;
 	double tapTotal;
 	float cutoffFreq;
-	private Argument[] argumentList;
 
 	public TPFilter(Signal signal)
 	{
 		this.name = "TPFilter";
 		this.signal = signal;
-		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
-		this.cutoffFreq = 500;
 		
 		argumentList = new Argument[2];
-		argumentList[0] = new Argument(0, this.samplingRate/2, this.cutoffFreq, "Grenzfrequenz");
-		argumentList[1] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
-		
-		init();
-
+		argumentList[0] = new Argument(0, this.samplingRate/2, 500, "Grenzfrequenz");
+		argumentList[1] = new Argument(0, 500, 100, "Fenstergröße");
+	
 	}
 
 	TPFilter(int numberOfTaps, float cutoffFrequ, float samplingRate)
@@ -32,12 +26,12 @@ public class TPFilter extends Filter
 		this.numberOfTaps = numberOfTaps;
 		this.cutoffFreq = cutoffFrequ;
 		this.samplingRate = samplingRate;
-		this.init();
 	}
 
 	@Override
 	public void performFiltering()
 	{
+		init();
 		try
 		{
 			PerformFiltering(signal, false, 0);
@@ -49,17 +43,11 @@ public class TPFilter extends Filter
 
 	}
 
-	@Override
-	public Argument[] getParamList()
-	{
-		return argumentList;
-	}
-
 	public void init()
 	{
-		// nicht benötigt
-//		this.cutoffFreq = argumentList[0].getValue();
-//		this.numberOfTaps = (int) argumentList[1].getValue();
+
+		this.cutoffFreq = argumentList[0].getValue();
+		this.numberOfTaps = (int) argumentList[1].getValue();
 
 		final double cutoff = this.cutoffFreq / this.samplingRate;
 		FIRkoeff = new double[this.numberOfTaps + 1];
@@ -73,16 +61,5 @@ public class TPFilter extends Filter
 
 		windowHamming(this.FIRkoeff);
 
-	}
-
-	double[] getFIRkoeff()
-	{
-		return FIRkoeff;
-	}
-
-	@Override
-	public String getFilterInfo() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

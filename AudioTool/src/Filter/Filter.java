@@ -10,17 +10,26 @@ public abstract class Filter
 	protected Signal signal;
 	protected double[] FIRkoeff;
 	protected float samplingRate;
+	int numberOfTaps;
 
 	protected Argument[] argumentList;
 
 	public abstract void performFiltering();
-
-	public abstract Argument[] getParamList();
-
-	public abstract String getFilterInfo();
+	
+	public abstract void init();
+	
+	public Argument[] getParamList() {
+		return argumentList;
+	}
+	
+	double[] getFIRkoeff()
+	{
+		return FIRkoeff;
+	}
 
 	public void PerformFiltering(Signal signal, boolean doScaling, int resolution) throws GeneralException
 	{
+		init();
 		// Filter-Matrix
 		float[][] Filter;
 

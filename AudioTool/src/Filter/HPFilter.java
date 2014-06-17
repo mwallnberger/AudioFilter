@@ -7,7 +7,6 @@ import Common.Signal;
 
 public class HPFilter extends Filter
 {
-	int numberOfTaps;
 	double tapTotal;
 	float cutoffFreq;
 
@@ -15,15 +14,11 @@ public class HPFilter extends Filter
 	{
 		this.name = "HPFilter";
 		this.signal = signal;
-		this.numberOfTaps = 1000;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
-		this.cutoffFreq = 500;
 		
 		argumentList = new Argument[2];
-		argumentList[0] = new Argument(0, this.samplingRate/2, this.cutoffFreq, "Grenzfrequenz");
-		argumentList[1] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
-		
-		init();
+		argumentList[0] = new Argument(0, this.samplingRate/2, 500, "Grenzfrequenz");
+		argumentList[1] = new Argument(0, 500, 100, "Fenstergröße");
 
 	}
 
@@ -32,8 +27,6 @@ public class HPFilter extends Filter
 		this.numberOfTaps = numberOfTaps;
 		this.cutoffFreq = cutoffFrequ;
 		this.samplingRate = samplingRate;
-		
-		this.init();
 	}
 
 	@Override
@@ -50,14 +43,11 @@ public class HPFilter extends Filter
 
 	}
 
-	@Override
-	public Argument[] getParamList()
-	{
-		return argumentList;
-	}
-
 	public void init()
 	{
+		this.cutoffFreq = argumentList[0].getValue();
+		this.numberOfTaps = (int) argumentList[1].getValue();
+		
 		final double cutoff = this.cutoffFreq / this.samplingRate;
 		FIRkoeff = new double[this.numberOfTaps + 1];
 		final double factor = 2.0 * cutoff;
@@ -68,15 +58,5 @@ public class HPFilter extends Filter
 		}
 		windowHamming(this.FIRkoeff);
 	}
-
-	double[] getFIRkoeff()
-	{
-		return FIRkoeff;
-	}
-
-	@Override
-	public String getFilterInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }
