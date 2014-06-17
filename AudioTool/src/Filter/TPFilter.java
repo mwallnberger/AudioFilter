@@ -17,7 +17,7 @@ public class TPFilter extends Filter
 		
 		argumentList = new Argument[2];
 		argumentList[0] = new Argument(0, this.samplingRate/2, 500, "Grenzfrequenz");
-		argumentList[1] = new Argument(0, 500, 100, "Fenstergröße");
+		argumentList[1] = new Argument(0, 500, 200, "Fenstergröße");
 	
 	}
 

@@ -171,7 +171,9 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		TextTitle leftTitle = new TextTitle("Left", new Font("Verdana", Font.PLAIN, 20));
 		chartLeft.setTitle(leftTitle);
 		plotLeft = chartLeft.getXYPlot();
-		plotLeft.getRangeAxis().setVisible(false);
+		plotLeft.getRangeAxis().setRange(-1.0, 1.0);
+		plotLeft.getRangeAxis().setAutoRange(false);
+		plotLeft.getRangeAxis().setVisible(true);
 		plotLeft.getDomainAxis().setAttributedLabel("min");
 		plotLeft.getDomainAxis().setVisible(true);
 		
@@ -180,7 +182,9 @@ public class SignalPanel extends JPanel implements MarkerChangedListener, Signal
 		TextTitle rightTitle = new TextTitle("Right", new Font("Verdana", Font.PLAIN, 20));
 		chartRight.setTitle(rightTitle);
 		plotRight = chartRight.getXYPlot();
-		plotRight.getRangeAxis().setVisible(false);
+		plotRight.getRangeAxis().setRange(-1.0, 1.0);
+		plotRight.getRangeAxis().setAutoRange(false);
+		plotRight.getRangeAxis().setVisible(true);
 		plotRight.getDomainAxis().setAttributedLabel("min");
 		plotRight.getDomainAxis().setVisible(true);
 		

@@ -19,7 +19,7 @@ public class BPFilter extends Filter
 		argumentList = new Argument[3];
 		argumentList[0] = new Argument(0, this.samplingRate/2, 500, "Grenzfrequenz low");
 		argumentList[1] = new Argument(0, this.samplingRate/2, 1000, "Grenzfrequenz high");
-		argumentList[2] = new Argument(0, 500, 100, "Fenstergröße");
+		argumentList[2] = new Argument(0, 500, 200, "Fenstergröße");
 
 	}
 
