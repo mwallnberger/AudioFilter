@@ -30,8 +30,8 @@ public class RiffChunk_WAVE extends RiffChunk
 		parseRiff(fileBuffer);
 		format = (RiffChunk_fmt_)this.childMap.get(RiffChunk_fmt_.class);
 		data = (RiffChunk_data)this.childMap.get(RiffChunk_data.class);
-		bytesPerFrame = format.getAudioChannelCount()+format.getBitsPerSample()/8;
 		bytesPerSample = format.getBitsPerSample()/8;
+		bytesPerFrame = format.getAudioChannelCount()*bytesPerSample;
 		}
 	
 	@Override

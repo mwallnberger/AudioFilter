@@ -78,7 +78,7 @@ public class IOManager
 
 			InputStream b_in = new ByteArrayInputStream(audioRaw);
 			
-			AudioInputStream stream = new AudioInputStream(b_in, out, audioRaw.length/(2*signal.getFormat().getFormat().getChannels()));
+			AudioInputStream stream = new AudioInputStream(b_in, out, audioRaw.length/(signal.getFormat().getFormat().getFrameSize()));
 			AudioSystem.write(stream, AudioFileFormat.Type.WAVE,  file);
 		}
 		catch (IOException e)
