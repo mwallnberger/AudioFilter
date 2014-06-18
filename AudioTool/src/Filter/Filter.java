@@ -37,7 +37,7 @@ public abstract class Filter
 	
 	public Argument[] getParamList() {
 		
-		Argument[] objects = (Argument[])argumentMap.values().stream().sorted().toArray();
+		Object[] objects = argumentMap.values().stream().sorted().toArray();
 		Argument[] args = new Argument[objects.length];
 		for(int i = 0; i < args.length; i++) {
 			args[i] = (Argument) objects[i];
