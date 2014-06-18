@@ -6,9 +6,6 @@ import Common.Signal;
 
 public class BPFilter extends Filter
 {
-	
-	double tapTotal;
-	float cutoffFreq, cutoffFreq2;
 
 	public BPFilter(Signal signal)
 	{
@@ -18,19 +15,6 @@ public class BPFilter extends Filter
 		argumentMap.put(CUTOFFFREQU_HIGH, new Argument(0, this.samplingRate/2, 1000, CUTOFFFREQU_HIGH, "Hz"));
 
 	}
-
-//	BPFilter(int numberOfTaps, float cutoffFrequ, float cutoffFrequ2, float samplingRate)
-//	{
-//		this.numberOfTaps = numberOfTaps;
-//		this.cutoffFreq = cutoffFrequ;
-//		this.cutoffFreq2 = cutoffFrequ2;
-//		this.samplingRate = samplingRate;
-//		
-//		argumentMap = new Argument[3];
-//		argumentMap[0] = new Argument(0, this.samplingRate, this.cutoffFreq, "Grenzfrequenz low");
-//		argumentMap[1] = new Argument(0, this.samplingRate, this.cutoffFreq2, "Grenzfrequenz high");
-//		argumentMap[2] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");
-//	}
 
 	@Override
 	public void performFiltering()
@@ -62,16 +46,5 @@ public class BPFilter extends Filter
 		this.FIRkoeff = windowHamming(bs);
 
 	}
-
-//	private double[] createBandPass(int tapTotal, float cutoffFreq, float cutoffFreq2, float samplingRate)
-//	{
-//		BSFilter filter = new BSFilter(signal);
-//		Argument[] args = filter.getParamList();
-//		args[0].setValue(tapTotal);
-//		args[1].setValue(cutoffFreq);
-//		args[1].setValue(cutoffFreq2);
-//		filter.init();
-//		return filter.getFIRkoeff();
-//	}
 
 }

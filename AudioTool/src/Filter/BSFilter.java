@@ -6,9 +6,6 @@ import Common.Signal;
 
 public class BSFilter extends Filter
 {
-	double tapTotal;
-	float cutoffFreq, cutoffFreq2;
-
 	public BSFilter(Signal signal)
 	{
 		super("BSFilter", signal);
@@ -24,19 +21,6 @@ public class BSFilter extends Filter
 		argumentMap.get(CUTOFFFREQU_LOW).setValue(cutoffFreq);
 		argumentMap.get(CUTOFFFREQU_HIGH).setValue(cutoffFreq2);
 	}
-	
-//	BSFilter(int numberOfTaps, float cutoffFrequ,float cutoffFrequ2, float samplingRate)
-//	{
-//		this.numberOfTaps = numberOfTaps;
-//		this.cutoffFreq = cutoffFrequ;
-//		this.cutoffFreq2 = cutoffFrequ2;
-//		this.samplingRate = samplingRate;
-//		
-//		argumentMap = new Argument[3];
-//		argumentMap[0] = new Argument(0, this.samplingRate, this.cutoffFreq, "Grenzfrequenz low");
-//		argumentMap[1] = new Argument(0, this.samplingRate, this.cutoffFreq2, "Grenzfrequenz high");
-//		argumentMap[2] = new Argument(0, 500, this.numberOfTaps, "Fenstergröße");	
-//	}
 
 	@Override
 	public void performFiltering()

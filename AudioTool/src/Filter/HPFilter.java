@@ -7,7 +7,6 @@ import Common.Signal;
 
 public class HPFilter extends Filter
 {
-	double tapTotal;
 
 	public HPFilter(Signal signal)
 	{
@@ -23,13 +22,6 @@ public class HPFilter extends Filter
 		argumentMap.get(NUMBER_OF_TAPS).setValue(tabTotal);
 		argumentMap.get(CUTOFFFREQU).setValue(cutoffFreq);
 	}
-
-//	HPFilter(int numberOfTaps, float cutoffFrequ, float samplingRate)
-//	{
-//		this.numberOfTaps = numberOfTaps;
-//		this.cutoffFreq = cutoffFrequ;
-//		this.samplingRate = samplingRate;
-//	}
 
 	@Override
 	public void performFiltering()

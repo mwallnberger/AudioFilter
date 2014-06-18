@@ -6,7 +6,6 @@ import Common.Signal;
 
 public class TPFilter extends Filter
 {
-	double tapTotal;
 
 	public TPFilter(Signal signal)
 	{
@@ -21,13 +20,6 @@ public class TPFilter extends Filter
 		argumentMap.get(NUMBER_OF_TAPS).setValue(tabTotal);
 		argumentMap.get(CUTOFFFREQU).setValue(cutoffFreq);
 	}
-
-//	TPFilter(int numberOfTaps, float cutoffFrequ, float samplingRate)
-//	{
-//		this.numberOfTaps = numberOfTaps;
-//		this.cutoffFreq = cutoffFrequ;
-//		this.samplingRate = samplingRate;
-//	}
 
 	@Override
 	public void performFiltering()
