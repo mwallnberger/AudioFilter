@@ -1,25 +1,43 @@
 package Filter;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import Common.Argument;
 import Common.GeneralException;
 import Common.Signal;
 
 public abstract class Filter
 {
-	protected String name = "Unknown";
+	protected String name;
 	protected Signal signal;
-	protected double[] FIRkoeff;
 	protected float samplingRate;
-	int numberOfTaps;
+	
+	protected double[] FIRkoeff;
 
-	protected Argument[] argumentList;
+	protected Map<String, Argument> argumentMap;
+	
+	protected static final String NUMBER_OF_TAPS = "Fenstergröße";
+	protected static final String CUTOFFFREQU = "Grenzfrequenz";
+	protected static final String CUTOFFFREQU_LOW = "Grenzfrequenz low";
+	protected static final String CUTOFFFREQU_HIGH = "Grenzfrequenz high";
 
 	public abstract void performFiltering();
 	
 	public abstract void init();
 	
-	public Argument[] getParamList() {
-		return argumentList;
+	public Filter(String name, Signal signal) {
+		this.name = name;
+		this.signal = signal;
+		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
+		argumentMap = new HashMap<String, Argument>();
+		
+		argumentMap.put(NUMBER_OF_TAPS, new Argument(0, 500, 200, NUMBER_OF_TAPS, "N"));
+	}
+	
+	public Collection<Argument> getParamList() {
+		return argumentMap.values();
 	}
 	
 	double[] getFIRkoeff()

@@ -95,7 +95,7 @@ public class SaveSignal{
     			int desicion = 0;
     			if(askQuestion == 0) {
     				desicion = JOptionPane.showConfirmDialog(component, 
-    			            "Möchten Sie die änderungen am Signal " + signal.getName() + " speichern?", "Änderungen speichern?", 
+    			            "Möchten Sie die Änderungen am Signal " + signal.getName() + " speichern?", "Änderungen speichern?", 
     			            JOptionPane.YES_NO_OPTION);
     				
     				if (desicion == JOptionPane.NO_OPTION) {

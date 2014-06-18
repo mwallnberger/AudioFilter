@@ -54,7 +54,7 @@ public class MainWindow extends JFrame {
 	
 	private void initialize(){
 		//create frame (maybe change title)
-		jFrame.setTitle("AudioTool!");
+		jFrame.setTitle("Audio FIR-Filter Tool");
 		jFrame.setBounds(100, 100, 1150, 500);
 		jFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		jFrame.addWindowListener(new WindowAdapter() {

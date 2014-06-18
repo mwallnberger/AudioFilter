@@ -7,10 +7,10 @@ public class Argument
 	float min;
 	float max;
 	String name;
+	String einheit;
 	
-	public Argument(float min, float max, float initValue, String name)
+	public Argument(float min, float max, float initValue, String name, String einheit)
 	{
-		super();
 		this.min = min;
 		this.max = max;
 		if(initValue < min) {
@@ -25,8 +25,8 @@ public class Argument
 			}
 			
 		}
-		
 		this.name = name;
+		this.einheit = einheit;
 	}
 	public float getValue()
 	{
@@ -59,6 +59,13 @@ public class Argument
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+	public String getEinheit() {
+		return einheit;
+	}
+	
+	public String toString() {
+		return name + " [" + einheit + "]";
 	}
 	
 }

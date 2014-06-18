@@ -2,12 +2,10 @@ package IO;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.channels.FileChannel;
 
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
@@ -16,7 +14,6 @@ import javax.sound.sampled.AudioSystem;
 
 import Common.GeneralException;
 import Common.Signal;
-import IO.API.RiffChunk;
 import IO.API.RiffChunk_RIFF;
 import IO.API.RiffChunk_WAVE;
 import IO.API.RiffChunk_data;

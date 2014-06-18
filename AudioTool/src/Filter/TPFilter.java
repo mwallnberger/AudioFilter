@@ -7,26 +7,27 @@ import Common.Signal;
 public class TPFilter extends Filter
 {
 	double tapTotal;
-	float cutoffFreq;
 
 	public TPFilter(Signal signal)
 	{
-		this.name = "TPFilter";
-		this.signal = signal;
-		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
+		super("TPFilter", signal);
 		
-		argumentList = new Argument[2];
-		argumentList[0] = new Argument(0, this.samplingRate/2, 500, "Grenzfrequenz");
-		argumentList[1] = new Argument(0, 500, 200, "Fenstergröße");
+		argumentMap.put(CUTOFFFREQU, new Argument(0, this.samplingRate/2, 500, CUTOFFFREQU, "Hz"));
+
+	}
 	
+	public TPFilter(Signal signal, int tabTotal, float cutoffFreq) {
+		this(signal);
+		argumentMap.get(NUMBER_OF_TAPS).setValue(tabTotal);
+		argumentMap.get(CUTOFFFREQU).setValue(cutoffFreq);
 	}
 
-	TPFilter(int numberOfTaps, float cutoffFrequ, float samplingRate)
-	{
-		this.numberOfTaps = numberOfTaps;
-		this.cutoffFreq = cutoffFrequ;
-		this.samplingRate = samplingRate;
-	}
+//	TPFilter(int numberOfTaps, float cutoffFrequ, float samplingRate)
+//	{
+//		this.numberOfTaps = numberOfTaps;
+//		this.cutoffFreq = cutoffFrequ;
+//		this.samplingRate = samplingRate;
+//	}
 
 	@Override
 	public void performFiltering()
@@ -45,14 +46,13 @@ public class TPFilter extends Filter
 
 	public void init()
 	{
-
-		this.cutoffFreq = argumentList[0].getValue();
-		this.numberOfTaps = (int) argumentList[1].getValue();
-
-		final double cutoff = this.cutoffFreq / this.samplingRate;
-		FIRkoeff = new double[this.numberOfTaps + 1];
+		int numofTabs = (int) argumentMap.get(NUMBER_OF_TAPS).getValue();
+		
+		final double cutoff = argumentMap.get(CUTOFFFREQU).getValue() / this.samplingRate;
+		
+		FIRkoeff = new double[numofTabs + 1];
 		final double factor = 2.0 * cutoff;
-		final int half = this.numberOfTaps >> 1;
+		final int half = numofTabs >> 1;
 
 		for (int i = 0; i < FIRkoeff.length; i++)
 		{
