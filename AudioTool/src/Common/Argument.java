@@ -1,6 +1,6 @@
 package Common;
 
-public class Argument
+public class Argument implements Comparable<Argument>
 {
 	float value;
 	float step;
@@ -66,6 +66,11 @@ public class Argument
 	
 	public String toString() {
 		return name + " [" + einheit + "]";
+	}
+
+	@Override
+	public int compareTo(Argument arg0) {
+		return -name.compareTo(arg0.getName());
 	}
 	
 }

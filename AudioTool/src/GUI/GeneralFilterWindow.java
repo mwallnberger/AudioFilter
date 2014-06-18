@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collection;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -36,29 +35,29 @@ public class GeneralFilterWindow extends JDialog{
 		dialog = this;
 		
 		
-		Collection<Argument> params = filter.getParamList();
+		Argument[] params = filter.getParamList();
 		
-		this.setLayout(new GridLayout(params.size() + 1, 1));
+		this.setLayout(new GridLayout(params.length + 1, 1));
 		
-		for(Argument param : params) {
+		for(int i = 0; i < params.length; i++) {
 			
 			JPanel paramPanel = new JPanel();
-			JLabel paramLabel = new JLabel(param.toString());
+			JLabel paramLabel = new JLabel(params[i].toString());
 			paramLabel.setPreferredSize(new Dimension(120, 50));
 			paramLabel.setHorizontalAlignment(JLabel.RIGHT);
-			JTextField paramValue = new JTextField(String.valueOf((int) param.getValue()));
+			JTextField paramValue = new JTextField(String.valueOf((int) params[i].getValue()));
 			paramValue.setEditable(true);
 			paramValue.setPreferredSize(new Dimension(50, 20));
 			paramValue.setHorizontalAlignment(JTextField.RIGHT);
-			int max = Math.round(param.getMax());
-			int min = Math.round(param.getMin());
-			int init = Math.round(param.getValue());
+			int max = Math.round(params[i].getMax());
+			int min = Math.round(params[i].getMin());
+			int init = Math.round(params[i].getValue());
 			JSlider paramSlider = new JSlider(JSlider.HORIZONTAL, min, max, init);
 			paramSlider.setMajorTickSpacing((max - min) / 10);
 			paramSlider.setMinorTickSpacing((max - min) / 100);
 			paramSlider.setPaintLabels(true);
 			paramSlider.setPreferredSize(new Dimension(400, 50));
-			ValueChangedListener changeListener = new ValueChangedListener(param, paramValue, paramSlider);
+			ValueChangedListener changeListener = new ValueChangedListener(params[i], paramValue, paramSlider);
 			paramSlider.addChangeListener(changeListener);
 			paramValue.addActionListener(changeListener);
 			paramPanel.add(paramLabel);

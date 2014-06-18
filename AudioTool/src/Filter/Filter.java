@@ -1,6 +1,5 @@
 package Filter;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +35,13 @@ public abstract class Filter
 		argumentMap.put(NUMBER_OF_TAPS, new Argument(0, 500, 200, NUMBER_OF_TAPS, "N"));
 	}
 	
-	public Collection<Argument> getParamList() {
-		return argumentMap.values();
+	public Argument[] getParamList() {
+		Argument[] objects = (Argument[])argumentMap.values().stream().sorted().toArray();
+		Argument[] args = new Argument[objects.length];
+		for(int i = 0; i < args.length; i++) {
+			args[i] = (Argument) objects[i];
+		}
+		return args;
 	}
 	
 	double[] getFIRkoeff()
