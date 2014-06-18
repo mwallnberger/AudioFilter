@@ -48,13 +48,7 @@ public abstract class Filter
 			objects[x] = itr.next();
 			x++;
 		}
-
-		Argument[] args = new Argument[objects.length];
-		for (int i = 0; i < args.length; i++)
-		{
-			args[i] = (Argument) objects[i];
-		}
-		return args;
+		return objects;
 	}
 
 	double[] getFIRkoeff()
