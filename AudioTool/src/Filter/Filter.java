@@ -1,6 +1,7 @@
 package Filter;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import Common.Argument;
@@ -12,39 +13,50 @@ public abstract class Filter
 	protected String name;
 	protected Signal signal;
 	protected float samplingRate;
-	
+
 	protected double[] FIRkoeff;
 
 	protected Map<String, Argument> argumentMap;
-	
+
 	protected static final String NUMBER_OF_TAPS = "Fenstergröße";
 	protected static final String CUTOFFFREQU = "Grenzfrequenz";
 	protected static final String CUTOFFFREQU_LOW = "Grenzfrequenz low";
 	protected static final String CUTOFFFREQU_HIGH = "Grenzfrequenz high";
 
 	public abstract void performFiltering();
-	
+
 	public abstract void init();
-	
-	public Filter(String name, Signal signal) {
+
+	public Filter(String name, Signal signal)
+	{
 		this.name = name;
 		this.signal = signal;
 		this.samplingRate = signal.getFormat().getFormat().getSampleRate();
 		argumentMap = new HashMap<String, Argument>();
-		
+
 		argumentMap.put(NUMBER_OF_TAPS, new Argument(0, 500, 200, NUMBER_OF_TAPS, "N"));
 	}
-	
-	public Argument[] getParamList() {
-		
-		Object[] objects = argumentMap.values().stream().sorted().toArray();
+
+	public Argument[] getParamList()
+	{
+
+		Iterator<Argument> itr = argumentMap.values().stream().sorted().iterator();
+		Argument[] objects = new Argument[argumentMap.values().size()];
+		int x = 0;
+		while (itr.hasNext())
+		{
+			objects[x] = itr.next();
+			x++;
+		}
+
 		Argument[] args = new Argument[objects.length];
-		for(int i = 0; i < args.length; i++) {
+		for (int i = 0; i < args.length; i++)
+		{
 			args[i] = (Argument) objects[i];
 		}
 		return args;
 	}
-	
+
 	double[] getFIRkoeff()
 	{
 		return FIRkoeff;
@@ -148,9 +160,9 @@ public abstract class Filter
 			}
 		}
 
-		if(SigRight==null)
+		if (SigRight == null)
 		{
-			OutRight=null;
+			OutRight = null;
 		}
 		signal.setSignal(OutLeft, OutRight);
 	}
